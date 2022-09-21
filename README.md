@@ -4,18 +4,32 @@ A semestral project for PV179 course at FI MUNI.
 WILL BE UPDATED
 
 USE CASES:
-- authentication
-- friends management
-- uploading pictures to profilegallery
-- adding status to profiles
-- controlling visibility of profile status
-- adding comments to photos
-- adding comments to profile statuses
+- USER & ADMIN & GROUP CEO 
+- - authentication
+- - role
+- profile (user/admin public information)
+- - CRUD
+- - friends management
+- - adding post to profiles
+- - controlling visibility of profile status (private/friends only/public)
+- gallery (banch of photos)
+- - CRUD
+- - uploading pictures to profile-gallery
+- - adding comments to photos
+- post (only text)
+- - CRUD (by owner/D by admin)
+- - adding comments to posts
 - sending personal messages to other users
-- adding and modifying profile information
-- creating groups
-- creating events
-- signing up for an event
+- groups
+- - CRUD 
+- - group posts
+- events
+- - CRUD 
+- - sign up for a event
+- user search/filter (diff parameters such as name/age/sex/common friends)
+- private chat
+- group chats
+
 
 ## Team members (UCO, name, email):
 - 484946, Michal Cizek, -
