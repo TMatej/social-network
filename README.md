@@ -3,7 +3,7 @@ A semestral project for PV179 course at FI MUNI.
 
 WILL BE UPDATED
 
-USE CASES:
+## USE CASES
 - USER & ADMIN & GROUP CEO 
 - - authentication
 - - role
@@ -30,6 +30,8 @@ USE CASES:
 - private chat
 - group chats
 
+## Conceptual ERD diagram
+![Conceptual erd - Chans notation](diagrams/social_network_diagrams-ERD_conceptual.jpg)
 
 ## Team members (UCO, name, email):
 - 484946, Michal Cizek, -
