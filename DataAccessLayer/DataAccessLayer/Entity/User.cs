@@ -14,7 +14,7 @@ namespace DataAccessLayer.Entity
     {
         [Key]
         [Column("UserId")]
-        public int Id { get; set; }
+        public int UserId { get; set; }
 
         [Column("Username")]
         [MinLength(4)]
@@ -35,6 +35,7 @@ namespace DataAccessLayer.Entity
         [Required]
         public string PasswordHash { get; set; }
 
+        public Profile Profile { get; set; }
         // more properties and associations will follow
     }
 }
