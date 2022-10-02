@@ -6,13 +6,13 @@ namespace DataAccessLayer.Entity
     [Table("Group")]
     public class Group : Postable
     {
+        [Required]
         [MinLength(4)]
         [MaxLength(64)]
-        [Required]
         public string Name { get; set; }
 
-        [MaxLength(255)]
         [Required]
+        [MaxLength(255)]
         public string Description { get; set; }
 
         [Required]

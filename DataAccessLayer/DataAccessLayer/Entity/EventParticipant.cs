@@ -11,15 +11,21 @@ namespace DataAccessLayer.Entity
 
         [Required]
         public int EventId { get; set; }
+
+        [Required]
         public Event Event { get; set; }
 
         [Required]
         public int UserId { get; set; }
+
+        [Required]
         public User User { get; set; }
 
 
         [Required]
         public int ParticipationTypeId { get; set; }
+        
+        [Required]
         public ParticipationType ParticipationType { get; set; }
 
         [Required]
