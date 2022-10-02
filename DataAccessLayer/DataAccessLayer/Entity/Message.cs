@@ -33,7 +33,7 @@ namespace DataAccessLayer.Entity
 
         [Column("Timestamp")]
         [Required]
-        public string Timestamp { get; set; }
-        public Attachment Attachment { get; set; }
+        public DateTime Timestamp { get; set; }
+        public Attachment? Attachment { get; set; }
     }
 }
