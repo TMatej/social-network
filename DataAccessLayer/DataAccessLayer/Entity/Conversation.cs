@@ -13,11 +13,11 @@ namespace DataAccessLayer.Entity
     {
         [Key]
         [Column("ConversationId")]
-        public int ID;
+        public int Id;
 
         [Column("OwnerId")]
         [Required]
-        public int OwnerID;
+        public int OwnerId;
         [Required]
         public User Owner { get; set; }
 
