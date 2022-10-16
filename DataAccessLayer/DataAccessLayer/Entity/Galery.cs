@@ -12,7 +12,6 @@ namespace DataAccessLayer.Entity
     public class Galery
     {
         [Key]
-        [Column("Id")]
         public int Id { get; set; }
 
         [Column("Title")]
