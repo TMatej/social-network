@@ -21,11 +21,11 @@ namespace DataAccessLayer
         public DbSet<Message> Messages { get; set; }
         public DbSet<ParticipationType> ParticipationTypes { get; set; }
         public DbSet<Photo> Photos { get; set; }
-        public DbSet<Post> Posts { get; set; } 
+        public DbSet<Post> Posts { get; set; }
         public DbSet<Profile> Profiles { get; set; }
         public DbSet<User> Users { get; set; }
 
-        public SocialNetworkDBContext() {}
+        public SocialNetworkDBContext() { }
 
         public SocialNetworkDBContext(string connectionString)
         {
