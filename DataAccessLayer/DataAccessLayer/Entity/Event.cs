@@ -1,11 +1,12 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DataAccessLayer.Entity
 {
-    [Table("Event")]
-    public class Event
+    public class Event : IEntity
     {
+        [Key]
+        public int Id { get; set; }
+
         [Required]
         public int UserId { get; set; }
 

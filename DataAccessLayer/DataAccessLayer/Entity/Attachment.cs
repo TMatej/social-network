@@ -1,26 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace DataAccessLayer.Entity
 {
-    [Table("Attachment")]
-    class Attachment
+    public class Attachment : IEntity
     {
         [Key]
-        [Column("AttachmentId")]
-        public int ID { get; set; }
+        public int Id { get; set; }
 
-        [Column("MessageId")]
         [Required]
-        public int MessageID { get; set; }
+        public int MessageId { get; set; }
+        
         [Required]
         public Message Message { get; set; }
-        [Column("Url")]
+        
         [Required]
         public string Url { get; set; }
     }

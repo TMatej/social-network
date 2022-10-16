@@ -1,10 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DataAccessLayer.Entity
 {
-    [Table("Commentable")]
-    public class Commentable
+    public class Commentable : IEntity
     {
         [Key]
         public int Id { get; set; }

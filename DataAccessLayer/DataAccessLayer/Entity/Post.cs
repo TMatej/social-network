@@ -1,10 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DataAccessLayer.Entity
 {
-    [Table("Post")]
-    internal class Post: Commentable
+    public class Post: Commentable
     {
         [Required]
         public int UserId { get; set; }
@@ -27,5 +25,7 @@ namespace DataAccessLayer.Entity
 
         [Required]
         public DateTime CreatedDate { get; set; }
+
+        public List<Comment> Comments { get; set; }
     }
 }

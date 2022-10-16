@@ -1,23 +1,31 @@
-﻿using DataAccessLayer.Entity;
+﻿using DataAccessLayer.Data;
+using DataAccessLayer.Entity;
 using Microsoft.EntityFrameworkCore;
-using PizzaShopDAL.Data;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection.Emit;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DataAccessLayer
 {
     public class SocialNetworkDBContext : DbContext
     {
-        public DbSet<User> Users { get; set; }
-        public DbSet<Profile> Profiles { get; set; }
-        public DbSet<Galery> Galeries { get; set; }
-        public DbSet<Photo> Photos { get; set; }
-        
         private string connectionString { get; set; }
+
+        public DbSet<Address> Addresses { get; set; }
+        public DbSet<Attachment> Attachments { get; set; }
+        public DbSet<Comment> Comments { get; set; }
+        public DbSet<Conversation> Conversations { get; set; }
+        public DbSet<Event> Events { get; set; }
+        public DbSet<EventParticipant> EventParticipants { get; set; }
+        public DbSet<Galery> Galeries { get; set; }
+        public DbSet<Group> Groups { get; set; }
+        public DbSet<GroupMember> GroupMembers { get; set; }
+        public DbSet<GroupRole> GroupRoles { get; set; }
+        public DbSet<Message> Messages { get; set; }
+        public DbSet<ParticipationType> ParticipationTypes { get; set; }
+        public DbSet<Photo> Photos { get; set; }
+        public DbSet<Post> Posts { get; set; } 
+        public DbSet<Profile> Profiles { get; set; }
+        public DbSet<User> Users { get; set; }
+
+        public SocialNetworkDBContext() {}
 
         public SocialNetworkDBContext(string connectionString)
         {
@@ -40,27 +48,32 @@ namespace DataAccessLayer
 
             /* setup One-To-Many relationship */
             modelBuilder.Entity<Galery>()
-                 .HasOne(g => g.Profile)
-                 .WithMany(p => p.Galeries)
-                 .HasForeignKey(a => a.ProfileId);
+                .HasOne(g => g.Profile)
+                .WithMany(p => p.Galeries)
+                .HasForeignKey(a => a.ProfileId);
 
             modelBuilder.Entity<Photo>()
-                 .HasOne(p => p.Galery)
-                 .WithMany(g => g.Photos)
-                 .HasForeignKey(a => a.GaleryId);
+                .ToTable("Photo")
+                .HasOne(p => p.Galery)
+                .WithMany(g => g.Photos)
+                .HasForeignKey(a => a.GaleryId);
 
             modelBuilder.Entity<User>()
                 .HasOne<Profile>(u => u.Profile)
-                .WithOne(o => o.Owner)
-                .HasForeignKey<Profile>(p => p.OwnerId);
+                .WithOne(o => o.User)
+                .HasForeignKey<Profile>(p => p.UserId);
+
+            modelBuilder.Entity<Post>().ToTable("Post");
+            modelBuilder.Entity<Comment>().ToTable("Comment");
 
             modelBuilder.Entity<Profile>()
-                    .Property(p => p.Id)
-                    .HasColumnName("ProfileId");
+                .ToTable("Profile")
+                .Property(p => p.Id)
+                .HasColumnName("ProfileId");
 
             modelBuilder.Entity<Photo>()
-                    .Property(p => p.Id)
-                    .HasColumnName("PhotoId");
+                .Property(p => p.Id)
+                .HasColumnName("PhotoId");
 
             modelBuilder.Seed();
 

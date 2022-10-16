@@ -1,10 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DataAccessLayer.Entity
 {
-    [Table("ParticipationType")]
-    public class ParticipationType
+    public class ParticipationType : IEntity
     {
         [Key]
         public int Id { get; set; }

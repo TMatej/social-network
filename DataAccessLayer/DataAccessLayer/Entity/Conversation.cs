@@ -1,26 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace DataAccessLayer.Entity
 {
-    [Table("Conversation")]
-    class Conversation
+    public class Conversation : IEntity
     {
         [Key]
-        [Column("ConversationId")]
-        public int ID;
+        public int Id { get; set; }
 
-        [Column("OwnerId")]
         [Required]
-        public int OwnerID;
+        public int UserId;
+
         [Required]
-        public User Owner { get; set; }
-
-
+        public User User { get; set; }
     }
 }
