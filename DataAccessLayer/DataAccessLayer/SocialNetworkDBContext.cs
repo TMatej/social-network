@@ -49,10 +49,18 @@ namespace DataAccessLayer
                  .WithMany(g => g.Photos)
                  .HasForeignKey(a => a.GaleryId);
 
-           modelBuilder.Entity<User>()
+            modelBuilder.Entity<User>()
                 .HasOne<Profile>(u => u.Profile)
                 .WithOne(o => o.Owner)
                 .HasForeignKey<Profile>(p => p.OwnerId);
+
+            modelBuilder.Entity<Profile>()
+                    .Property(p => p.Id)
+                    .HasColumnName("ProfileId");
+
+            modelBuilder.Entity<Photo>()
+                    .Property(p => p.Id)
+                    .HasColumnName("PhotoId");
 
             modelBuilder.Seed();
 

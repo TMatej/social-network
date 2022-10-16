@@ -9,12 +9,8 @@ using System.Threading.Tasks;
 
 namespace DataAccessLayer.Entity
 {
-    public class Profile
+    public class Profile : Postable
     {
-        [Key]
-        [Column("ProfileId")]
-        public int ProfileId { get; set; } // should be the same as UserId
-
         [MaxLength(64)]
         [Column("Name")]
         public string? Name { get; set; }
