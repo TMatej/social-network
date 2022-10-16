@@ -26,7 +26,7 @@ namespace PizzaShopDAL.Data
             (
                 new Profile
                 {
-                    ProfileId = 1,
+                    Id = 1,
                     CreatedAt = DateTime.Now,
                     OwnerId = 1
                 }

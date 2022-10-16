@@ -10,12 +10,8 @@ using System.Threading.Tasks;
 namespace DataAccessLayer.Entity
 {
     [Table("Photo")]
-    public class Photo
+    public class Photo : Commentable
     {
-        [Key]
-        [Column("PhotoId")]
-        public int PhotoId { get; set; }
-
         [StringLength(64)]
         [Column("Title")]
         public string Title { get; set; }
