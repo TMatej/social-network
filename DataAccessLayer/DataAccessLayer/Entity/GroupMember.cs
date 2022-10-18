@@ -1,28 +1,26 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DataAccessLayer.Entity
 {
-    public class GroupMember : IEntity
+    public class GroupMember
     {
-        [Key]
-        public int Id { get; set; }
-
         [Required]
         public int GroupId { get; set; }
         
-        [Required]
+        [ForeignKey(nameof(GroupId))]
         public Group Group { get; set; }
 
         [Required]
         public int UserId { get; set; }
 
-        [Required]
+        [ForeignKey(nameof(UserId))]
         public User User { get; set; }
 
         [Required]
         public int GroupRoleId { get; set; }
-        
-        [Required]
+
+        [ForeignKey(nameof(GroupRoleId))]
         public GroupRole GroupRole{ get; set; }
 
         [Required]

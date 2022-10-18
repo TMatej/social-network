@@ -1,28 +1,26 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DataAccessLayer.Entity
 {
-    public class EventParticipant : IEntity
+    public class EventParticipant
     {
-        [Key]
-        public int Id { get; set; }
-
         [Required]
         public int EventId { get; set; }
 
-        [Required]
+        [ForeignKey(nameof(EventId))]
         public Event Event { get; set; }
 
         [Required]
         public int UserId { get; set; }
 
-        [Required]
+        [ForeignKey(nameof(UserId))]
         public User User { get; set; }
 
         [Required]
         public int ParticipationTypeId { get; set; }
-        
-        [Required]
+
+        [ForeignKey(nameof(ParticipationTypeId))]
         public ParticipationType ParticipationType { get; set; }
 
         [Required]

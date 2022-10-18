@@ -1,17 +1,17 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DataAccessLayer.Entity
 {
     public class Event : IEntity
     {
         [Key]
-        [Column("Id")]
         public int Id { get; set; }
         
         [Required]
         public int UserId { get; set; }
 
-        [Required]
+        [ForeignKey(nameof(UserId))]
         public User User { get; set; }
 
         [Required]
@@ -32,5 +32,7 @@ namespace DataAccessLayer.Entity
 
         [Required]
         public DateTime CreatedAt { get; set; }
+
+        public IList<EventParticipant> EventParticipants { get; set; }
     }
 }

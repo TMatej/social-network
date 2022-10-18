@@ -1,5 +1,6 @@
 ﻿using DataAccessLayer.Entity.Enum;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DataAccessLayer.Entity
 {
@@ -24,9 +25,9 @@ namespace DataAccessLayer.Entity
         [Required]
         public int UserId { get; set; }
 
-        [Required]
+        [ForeignKey(nameof(UserId))]
         public User User { get; set; }        
 
-        public List<Post> Posts { get; set; }
+        public IList<Post> Posts { get; set; }
     }
 }

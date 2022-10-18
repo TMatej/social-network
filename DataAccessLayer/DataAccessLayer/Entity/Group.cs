@@ -15,5 +15,7 @@ namespace DataAccessLayer.Entity
 
         [Required]
         public DateTime CreatedAt { get; set; }
+
+        public IList<GroupMember> GroupMembers { get; set; }
     }
 }

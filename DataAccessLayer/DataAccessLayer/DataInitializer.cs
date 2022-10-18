@@ -5,12 +5,8 @@ namespace DataAccessLayer.Data
 {
     public static class DataInitializer
     {
-        //Specifying IDs is mandatory if seeding db through OnModelCreating method
         public static void Seed(this ModelBuilder modelBuilder)
         {
-            /*modelBuilder.Entity<Shape>().HasData(triangle);
-            modelBuilder.Entity<Ingredient>().HasData(ham);*/
-
             modelBuilder.Entity<User>().HasData
             (
                 new User
@@ -27,7 +23,15 @@ namespace DataAccessLayer.Data
                 {
                     Id = 1,
                     CreatedAt = DateTime.Now,
-                    UserId = 1
+                    UserId = 1,
+                    Address = new Address
+                    {
+                        State = "Example State",
+                        Street = "Example Street",
+                        City = "Example City",
+                        PostalCode = "Example Postal Code",
+                        Region = "Example Region"
+                    }
                 }
             );
             modelBuilder.Entity<Post>().HasData
@@ -66,7 +70,7 @@ namespace DataAccessLayer.Data
                 {
                     Id = 1,
                     Content = "Hello World!",
-                    ConversationID = 1,
+                    ConversationId = 1,
                     AuthorId = 1,
                     Timestamp = DateTime.Now
 
@@ -82,7 +86,6 @@ namespace DataAccessLayer.Data
             modelBuilder.Entity<GroupMember>().HasData(
                 new GroupMember
                 {
-                    Id = 1,
                     GroupId = 1,
                     UserId = 1,
                     GroupRoleId = 1,
@@ -110,7 +113,6 @@ namespace DataAccessLayer.Data
             modelBuilder.Entity<EventParticipant>().HasData(
                 new EventParticipant
                 {
-                    Id = 1,
                     EventId = 1,
                     UserId = 1,
                     ParticipationTypeId = 1,
@@ -128,13 +130,13 @@ namespace DataAccessLayer.Data
                     CreatedAt = DateTime.Now
                 }
                 ) ;
-            modelBuilder.Entity<Conversation>().HasData(
+            /*modelBuilder.Entity<Conversation>().HasData(
                 new Conversation
                 {
                     Id = 1,
-                    OwnerId = 1
+                    UserId = 1
                 }
-                );
+                );*/
             modelBuilder.Entity<Attachment>().HasData(
                 new Attachment
                 {
@@ -142,16 +144,6 @@ namespace DataAccessLayer.Data
                     Url = "https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png",
                     MessageId = 1
                 }
-                );
-            modelBuilder.Entity<Address>().HasData(
-                new Address
-                {
-                    Id = 1,
-                    State = "Example State",
-                    Street = "Example Street",
-                    City = "Example City",
-                    PostalCode = "Example Postal Code",
-                    Region = "Example Region"                }
                 );
         }
     }
