@@ -2,7 +2,6 @@
 
 namespace DataAccessLayer.Entity
 {
-    [Table("Commentable")]
     public abstract class Commentable : IEntity
     {
         [Key]
