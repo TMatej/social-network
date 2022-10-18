@@ -13,6 +13,10 @@ namespace DataAccessLayer.Entity
     // [Keyless]
     public class Address
     {
+        [Key]
+        [Column("Id")]
+        public int Id;
+        
         [MaxLength(64)]
         public string State { get; set; }
 

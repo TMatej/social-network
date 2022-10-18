@@ -6,6 +6,9 @@ namespace DataAccessLayer.Entity
     [Table("Event")]
     public class Event
     {
+        [Key]
+        [Column("Id")]
+        public int Id { get; set; }
         [Required]
         public int UserId { get; set; }
 

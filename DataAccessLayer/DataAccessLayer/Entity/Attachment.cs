@@ -13,11 +13,11 @@ namespace DataAccessLayer.Entity
     {
         [Key]
         [Column("AttachmentId")]
-        public int ID { get; set; }
+        public int Id { get; set; }
 
         [Column("MessageId")]
         [Required]
-        public int MessageID { get; set; }
+        public int MessageId { get; set; }
         [Required]
         public Message Message { get; set; }
         [Column("Url")]

@@ -13,7 +13,7 @@ namespace DataAccessLayer.Entity
     {
         [Key]
         [Column("MessageId")]
-        public int ID { get; set; }
+        public int Id { get; set; }
 
         [Column("ConversationId")]
         [Required]
@@ -23,7 +23,7 @@ namespace DataAccessLayer.Entity
 
         [Column("AuthorId")]
         [Required]
-        public int AuthorID { get; set; }
+        public int AuthorId { get; set; }
         [Required]
         public User Author { get; set; }
 
