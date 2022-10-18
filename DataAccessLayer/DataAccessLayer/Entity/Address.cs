@@ -4,11 +4,8 @@ using System.ComponentModel.DataAnnotations;
 namespace DataAccessLayer.Entity
 {
     [Owned]
-    public class Address : IEntity
+    public class Address
     {
-        [Key]
-        public int Id { get; set; }
-
         [MaxLength(64)]
         public string State { get; set; }
 
