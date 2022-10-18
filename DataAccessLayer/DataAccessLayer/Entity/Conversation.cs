@@ -5,6 +5,7 @@ namespace DataAccessLayer.Entity
     public class Conversation : IEntity
     {
         [Key]
+        [Column("Id")]
         public int Id { get; set; }
 
         [Required]

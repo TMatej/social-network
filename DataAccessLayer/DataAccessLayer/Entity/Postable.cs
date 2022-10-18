@@ -2,7 +2,8 @@
 
 namespace DataAccessLayer.Entity
 {
-    public class Postable : IEntity
+    [Table("Postable")]
+    public abstract class Postable : IEntity
     {
         [Key]
         public int Id { get; set; }

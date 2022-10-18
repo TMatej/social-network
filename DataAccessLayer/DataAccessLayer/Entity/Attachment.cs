@@ -5,11 +5,12 @@ namespace DataAccessLayer.Entity
     public class Attachment : IEntity
     {
         [Key]
+        [Column("Id")]
         public int Id { get; set; }
 
         [Required]
         public int MessageId { get; set; }
-        
+
         [Required]
         public Message Message { get; set; }
         
