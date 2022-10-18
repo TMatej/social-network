@@ -1,10 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DataAccessLayer.Entity
 {
-    [Table("GroupMember")]
-    public class GroupMember
+    public class GroupMember : IEntity
     {
         [Key]
         public int Id { get; set; }
