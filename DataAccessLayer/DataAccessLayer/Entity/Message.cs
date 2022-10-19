@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
+using System.ComponentModel.DataAnnotations.Schema;
 namespace DataAccessLayer.Entity
 {
     public class Message : IEntity
@@ -26,6 +27,6 @@ namespace DataAccessLayer.Entity
         [Required]
         public DateTime Timestamp { get; set; }
 
-        public Attachment? Attachment { get; set; }
+        public Attachment Attachment { get; set; }
     }
 }

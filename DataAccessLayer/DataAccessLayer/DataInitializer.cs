@@ -66,7 +66,7 @@ namespace DataAccessLayer.Data
                 {
                     Id = 1,
                     Content = "Hello World!",
-                    ConversationID = 1,
+                    ConversationId = 1,
                     AuthorId = 1,
                     Timestamp = DateTime.Now
 
@@ -132,7 +132,7 @@ namespace DataAccessLayer.Data
                 new Conversation
                 {
                     Id = 1,
-                    OwnerId = 1
+                    UserId = 1
                 }
                 );
             modelBuilder.Entity<Attachment>().HasData(
