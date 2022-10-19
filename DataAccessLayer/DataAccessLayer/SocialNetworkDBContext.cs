@@ -94,6 +94,11 @@ namespace DataAccessLayer
                 .HasKey(c => new { c.User1Id, c.User2Id });
 
             modelBuilder.Entity<Contact>()
+                .HasOne(c => c.User2)
+                .WithMany(u => u.Contacts)
+                .HasForeignKey(c => c.User2Id);
+
+            modelBuilder.Entity<Contact>()
                 .HasOne(c => c.User1)
                 .WithMany(u => u.ContactsOf)
                 .HasForeignKey(c => c.User1Id)
@@ -109,12 +114,22 @@ namespace DataAccessLayer
              * https://stackoverflow.com/questions/49214748/many-to-many-self-referencing-relationship/49219124#49219124
              */
 
-            modelBuilder.Entity<Contact>()
-                .HasOne(c => c.User2)
-                .WithMany(u => u.Contacts)
-                .HasForeignKey(c => c.User2Id);
+            modelBuilder.Entity<User>()
+                .HasMany(u => u.ConversationParticipants)
+                .WithOne(c => c.User)
+                .OnDelete(DeleteBehavior.Restrict);
 
-            modelBuilder.Seed();
+            modelBuilder.Entity<Message>()
+                .HasOne(m => m.Author)
+                .WithMany()
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<User>()
+                .HasMany(u => u.EventParticipants)
+                .WithOne(c => c.User)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            //modelBuilder.Seed();
 
             base.OnModelCreating(modelBuilder);
         }
