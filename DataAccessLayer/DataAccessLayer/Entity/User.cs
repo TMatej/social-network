@@ -13,6 +13,7 @@ namespace DataAccessLayer.Entity
         public string Username { get; set; }
 
         [Required]
+        [MaxLength(64)]
         public string PasswordHash { get; set; }
 
         [Required]
