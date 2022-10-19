@@ -1,8 +1,6 @@
 # Social network
 A semestral project for PV179 course at FI MUNI.
 
-WILL BE UPDATED
-
 ## USE CASES
 - USER & ADMIN & GROUP CEO 
 - - authentication
@@ -32,6 +30,9 @@ WILL BE UPDATED
 
 ## Conceptual ERD diagram
 ![Conceptual erd - Chans notation](diagrams/social_network_diagrams-ERD_conceptual.jpg)
+
+## Physical ERD diagram
+![Physical erd - Crows notation](diagrams/social_network_diagrams-ERD_physical.jpg)
 
 ## Team members (UCO, name, email):
 - 484946, Michal Cizek, -
