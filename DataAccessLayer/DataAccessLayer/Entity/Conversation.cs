@@ -13,5 +13,7 @@ namespace DataAccessLayer.Entity
         public User User { get; set; }
 
         public IList<ConversationParticipant> ConversationParticipants { get; set; }
+
+        public IList<Message> Messages { get; set; }
     }
 }
