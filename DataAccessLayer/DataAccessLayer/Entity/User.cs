@@ -22,7 +22,7 @@ namespace DataAccessLayer.Entity
         public string PrimaryEmail { get; set; }
 
         [MaxLength(255)]
-        public string? SecondaryEmail { get; set; }
+        public string SecondaryEmail { get; set; }
 
         public Profile Profile { get; set; }
 
