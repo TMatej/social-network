@@ -26,6 +26,13 @@ namespace Infrastructure.EFCore.Test
                 PasswordHash = "aaafht3x"
             });
 
+            dbContext.Users.Add(new User
+            {
+                Username = "john",
+                PrimaryEmail = "john@gmail.com",
+                PasswordHash = "51df6545ecvd"
+            });
+
             dbContext.SaveChanges();
         }
 
@@ -47,6 +54,7 @@ namespace Infrastructure.EFCore.Test
                 PrimaryEmail = "thomas@gmail.com",
                 PasswordHash = "541dremnb4"
             });
+
             dbContext.SaveChanges();
 
             var countAfter = dbContext.Users.Count();
@@ -54,6 +62,15 @@ namespace Infrastructure.EFCore.Test
 
             var user = dbContext.Users.Where(u => u.Username == "thomas");
             Assert.IsNotNull(user);
+        }
+
+        [Test]
+        public void GetAllTest()
+        {
+            var found = repository.GetAll();
+            var expected = dbContext.Users.ToList();
+
+            Assert.That(found, Is.EqualTo(expected));
         }
 
         [Test]
