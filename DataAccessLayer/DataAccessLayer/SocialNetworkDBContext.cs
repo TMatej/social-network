@@ -48,6 +48,18 @@ namespace DataAccessLayer
                 .HasIndex(u => u.Username)
                 .IsUnique();
 
+            modelBuilder.Entity<EventParticipant>()
+                .HasIndex(ep => ep.UserId)
+                .IsUnique();
+
+            modelBuilder.Entity<Contact>()
+                .HasIndex(c => new { c.User1Id, c.User2Id })
+                .IsUnique();
+
+            modelBuilder.Entity<Contact>()
+                .HasIndex(c => new { c.User2Id, c.User1Id })
+                .IsUnique();
+
             /* Set owning property of Profile - Address */
             modelBuilder.Entity<Profile>().OwnsOne(p => p.Address);
 
@@ -63,10 +75,10 @@ namespace DataAccessLayer
                 .HasForeignKey(a => a.GaleryId);
 
             /* Set One-To-One relationship */
-            modelBuilder.Entity<User>()
+            /*modelBuilder.Entity<User>()
                 .HasOne<Profile>(u => u.Profile)
                 .WithOne(o => o.User)
-                .HasForeignKey<Profile>(p => p.UserId);
+                .HasForeignKey<Profile>(p => p.UserId);*/
 
             /* Commentable */
             modelBuilder.Entity<Comment>().ToTable("Comment");
