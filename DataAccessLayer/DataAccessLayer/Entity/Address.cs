@@ -7,21 +7,21 @@ namespace DataAccessLayer.Entity
     public class Address
     {
         [MaxLength(64)]
-        public string? State { get; set; }
+        public string State { get; set; }
 
         [MaxLength(64)]
-        public string? Region { get; set; }
+        public string Region { get; set; }
 
         [MaxLength(64)]
-        public string? City { get; set; }
+        public string City { get; set; }
 
         [MaxLength(64)]
-        public string? Street { get; set; }
+        public string Street { get; set; }
 
         [MaxLength(32)]
-        public string? HouseNumber { get; set; }
+        public string HouseNumber { get; set; }
 
         [MaxLength(32)]
-        public string? PostalCode { get; set; }
+        public string PostalCode { get; set; }
     }
 }
