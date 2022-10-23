@@ -4,7 +4,7 @@ using Infrastructure.EFCore.Query;
 
 namespace Infrastructure.EFCore.Test
 {
-    public class Tests
+    public class QueryTest
     {
         private SocialNetworkDBContext dbContext;
         private const string ConnectionString = @"Data Source=(localdb)\MSSQLLocalDB; Initial Catalog=PV179-SocialNetworkDB";
@@ -106,29 +106,30 @@ namespace Infrastructure.EFCore.Test
                 .Select(a => a.Id)
                 .ToList();
 
-            var ExpectedResult = dbContext.Users
+            var expected = dbContext.Users
                 .Select(a => a.Id)
                 .OrderBy(a => a)
                 .ToList();
 
-            Assert.That(result, Is.EqualTo(ExpectedResult));
+            Assert.That(result, Is.EqualTo(expected));
         }
 
         [Test]
         public void UsersOrderedDescending_QueryOrderBy_Test()
         {
             var query = new EntityFrameworkQuery<User>(dbContext);
-            query.OrderBy<int>("Id", false);
-            var result = query.Execute()
+            var result = query
+                .OrderBy<int>("Id", false)
+                .Execute()
                 .Select(a => a.Id)
                 .ToList();
 
-            var ExpectedResult = dbContext.Users
+            var expected = dbContext.Users
                 .Select(a => a.Id)
                 .OrderByDescending(a => a)
                 .ToList();
 
-            Assert.That(result, Is.EqualTo(ExpectedResult));
+            Assert.That(result, Is.EqualTo(expected));
         }
 
         [Test]
@@ -171,6 +172,16 @@ namespace Infrastructure.EFCore.Test
                 .ToList();
 
             Assert.That(result, Is.EqualTo(expected));
+        }
+
+        [Test]
+        public void UnknownColumnNameThrowsTest()
+        {
+            var query = new EntityFrameworkQuery<User>(dbContext);
+            var result = query
+                .Where<string>(u => u.StartsWith("b"), "SomeRandomColumnNameThatDoesntExist");
+
+            Assert.Throws<ArgumentNullException>(() => query.Execute());
         }
     }
 }
