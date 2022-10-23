@@ -26,7 +26,5 @@ namespace DataAccessLayer.Entity
 
         [Required]
         public DateTime CreatedDate { get; set; }
-
-        public IList<Comment> Comments { get; set; }
     }
 }

@@ -49,7 +49,7 @@ namespace DataAccessLayer
                 .IsUnique();
 
             /* Set owning property of Profile - Address */
-            modelBuilder.Entity<Profile>().OwnsOne(a => a.Address);
+            modelBuilder.Entity<Profile>().OwnsOne(p => p.Address);
 
             /* Set One-To-Many relationship */
             modelBuilder.Entity<Galery>()
@@ -128,6 +128,11 @@ namespace DataAccessLayer
                 .HasMany(u => u.EventParticipants)
                 .WithOne(c => c.User)
                 .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Comment>()
+                .HasOne(c => c.Commentable)
+                .WithMany(c => c.Comments)
+                .HasForeignKey(c => c.CommentableId);
 
             modelBuilder.Seed();
 

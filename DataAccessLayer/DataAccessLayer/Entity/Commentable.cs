@@ -6,5 +6,7 @@ namespace DataAccessLayer.Entity
     {
         [Key]
         public int Id { get; set; }
+
+        public IList<Comment> Comments { get; set; }
     }
 }

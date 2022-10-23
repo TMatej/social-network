@@ -9,9 +9,9 @@ namespace DataAccessLayer.Entity
         [MaxLength(64)]
         public string? Name { get; set; }
 
-        public Address Address { get; set; }
+        public Address? Address { get; set; }
 
-        public Sex Sex { get; set; }
+        public Sex? Sex { get; set; }
 
         public List<Galery> Galeries { get; set; }
 

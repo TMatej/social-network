@@ -18,23 +18,24 @@ namespace DataAccessLayer.Data
                     PasswordHash = "0123456789abcde0"
                 }
             );
-            modelBuilder.Entity<Profile>().HasData
-            (
-                new Profile
+            modelBuilder.Entity<Profile>(p =>
+            {
+                p.HasData(new Profile
                 {
                     Id = 1,
                     CreatedAt = DateTime.Now,
                     UserId = 1,
-                    Address = new Address
-                    {
-                        State = "Example State",
-                        Street = "Example Street",
-                        City = "Example City",
-                        PostalCode = "Example Postal Code",
-                        Region = "Example Region"
-                    }
-                }
-            );
+                });
+                p.OwnsOne(p => p.Address).HasData(new
+                {
+                    ProfileId = 1,
+                    State = "Example State",
+                    Street = "Example Street",
+                    City = "Example City",
+                    PostalCode = "Example Postal Code",
+                    Region = "Example Region"
+                });
+            });   
             modelBuilder.Entity<Post>().HasData
             (
                 new Post
@@ -74,7 +75,6 @@ namespace DataAccessLayer.Data
                     ConversationId = 1,
                     AuthorId = 1,
                     Timestamp = DateTime.Now
-
                 }
                 ) ;
             modelBuilder.Entity<GroupRole>().HasData(
@@ -109,7 +109,8 @@ namespace DataAccessLayer.Data
                     Id = 1,
                     Title = "Example Galery",
                     Description = "This is an example galery",
-                    CreatedAt = DateTime.Now
+                    CreatedAt = DateTime.Now,
+                    ProfileId = 1
                 }
                 );
             modelBuilder.Entity<EventParticipant>().HasData(
@@ -133,13 +134,13 @@ namespace DataAccessLayer.Data
                     CreatedAt = DateTime.Now
                 }
                 ) ;
-            /*modelBuilder.Entity<Conversation>().HasData(
+            modelBuilder.Entity<Conversation>().HasData(
                 new Conversation
                 {
                     Id = 1,
                     UserId = 1
                 }
-                );*/
+                );
             modelBuilder.Entity<Attachment>().HasData(
                 new Attachment
                 {
