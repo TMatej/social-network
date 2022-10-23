@@ -13,6 +13,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Infrastructure", "Infrastru
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Infrastructure.EFCore", "Infrastructure.EFCore\Infrastructure.EFCore.csproj", "{34F5938E-2A6D-4234-9CF7-0A07EAD1DE39}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure.EFCore.Test", "Infrastructure.EFCore.Test\Infrastructure.EFCore.Test.csproj", "{F04D36CF-C162-4CE0-BC52-78595BEB58C7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{34F5938E-2A6D-4234-9CF7-0A07EAD1DE39}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{34F5938E-2A6D-4234-9CF7-0A07EAD1DE39}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{34F5938E-2A6D-4234-9CF7-0A07EAD1DE39}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F04D36CF-C162-4CE0-BC52-78595BEB58C7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F04D36CF-C162-4CE0-BC52-78595BEB58C7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F04D36CF-C162-4CE0-BC52-78595BEB58C7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F04D36CF-C162-4CE0-BC52-78595BEB58C7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

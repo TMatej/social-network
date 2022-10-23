@@ -15,6 +15,11 @@ namespace Infrastructure.EFCore.Repository
             dbSet = context.Set<TEntity>();
         }
 
+        public virtual List<TEntity> GetAll()
+        {
+            return dbSet.ToList();
+        }
+
         public virtual TEntity GetByID(object id)
         {
             return dbSet.Find(id);
