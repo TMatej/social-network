@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DataAccessLayer.Entity
 {
-    public class Post: Commentable
+    public class Post : Commentable
     {
         [Required]
         public int UserId { get; set; }
@@ -14,11 +14,14 @@ namespace DataAccessLayer.Entity
         [Required]
         public int PostableId { get; set; }
 
+        [ForeignKey(nameof(PostableId))]
+        public Postable Postable { get; set; }
+
         [Required]
         [MinLength(4)]
         [MaxLength(64)]
         public string Title { get; set; }
-    
+
         [Required]
         [MinLength(4)]
         [MaxLength(256)]

@@ -1,5 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
-using DataAccessLayer.Entity.JoinEntity;
+﻿using DataAccessLayer.Entity.JoinEntity;
+using System.ComponentModel.DataAnnotations;
 
 namespace DataAccessLayer.Entity
 {

@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DataAccessLayer.Entity
 {
@@ -13,7 +12,7 @@ namespace DataAccessLayer.Entity
 
         [Required]
         public Message Message { get; set; }
-        
+
         [Required]
         public string Url { get; set; }
     }

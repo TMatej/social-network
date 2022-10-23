@@ -22,13 +22,11 @@ namespace DataAccessLayer.Entity
 
         [Required]
         public DateTime CreatedAt { get; set; }
-        
+
         [Required]
         public int UserId { get; set; }
 
         [ForeignKey(nameof(UserId))]
-        public User User { get; set; }        
-
-        public IList<Post> Posts { get; set; }
+        public User User { get; set; }
     }
 }

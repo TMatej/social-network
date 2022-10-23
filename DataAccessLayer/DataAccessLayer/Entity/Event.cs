@@ -1,15 +1,14 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using DataAccessLayer.Entity.JoinEntity;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using DataAccessLayer.Entity.JoinEntity;
 
-using System.ComponentModel.DataAnnotations.Schema;
 namespace DataAccessLayer.Entity
 {
     public class Event : IEntity
     {
         [Key]
         public int Id { get; set; }
-        
+
         [Required]
         public int UserId { get; set; }
 
@@ -18,7 +17,7 @@ namespace DataAccessLayer.Entity
 
         [Required]
         public int GroupId { get; set; }
-        
+
         [Required]
         public Group Group { get; set; }
 

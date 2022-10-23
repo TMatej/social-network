@@ -35,7 +35,7 @@ namespace DataAccessLayer.Data
                     PostalCode = "Example Postal Code",
                     Region = "Example Region"
                 });
-            });   
+            });
             modelBuilder.Entity<Post>().HasData
             (
                 new Post
@@ -76,7 +76,7 @@ namespace DataAccessLayer.Data
                     AuthorId = 1,
                     Timestamp = DateTime.Now
                 }
-                ) ;
+                );
             modelBuilder.Entity<GroupRole>().HasData(
                 new GroupRole
                 {
@@ -88,7 +88,7 @@ namespace DataAccessLayer.Data
                 new GroupMember
                 {
                     Id = 1,
-                    GroupId = 1,
+                    GroupId = 2,
                     UserId = 1,
                     GroupRoleId = 1,
                     CreatedAt = DateTime.Now
@@ -97,7 +97,7 @@ namespace DataAccessLayer.Data
             modelBuilder.Entity<Group>().HasData(
                 new Group
                 {
-                    Id = 1,
+                    Id = 2,
                     Name = "Example Group",
                     Description = "This is an example group",
                     CreatedAt = DateTime.Now
@@ -128,12 +128,12 @@ namespace DataAccessLayer.Data
                 {
                     Id = 1,
                     UserId = 1,
-                    GroupId = 1,
+                    GroupId = 2,
                     Title = "Example Event",
                     Description = "This is an example event",
                     CreatedAt = DateTime.Now
                 }
-                ) ;
+                );
             modelBuilder.Entity<Conversation>().HasData(
                 new Conversation
                 {
