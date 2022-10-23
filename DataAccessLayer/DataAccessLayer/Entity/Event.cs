@@ -2,6 +2,7 @@
 using System.ComponentModel.DataAnnotations.Schema;
 using DataAccessLayer.Entity.JoinEntity;
 
+using System.ComponentModel.DataAnnotations.Schema;
 namespace DataAccessLayer.Entity
 {
     public class Event : IEntity
