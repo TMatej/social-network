@@ -1,5 +1,6 @@
-﻿using DataAccessLayer.Entity.Enum;
+using DataAccessLayer.Entity.Enum;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DataAccessLayer.Entity
 {
@@ -14,6 +15,7 @@ namespace DataAccessLayer.Entity
 
         public List<Galery> Galeries { get; set; }
 
+        [MaxLength(20)]
         public string PhoneNumber { get; set; }
 
         public DateTime DateOfBirth { get; set; }
@@ -24,9 +26,9 @@ namespace DataAccessLayer.Entity
         [Required]
         public int UserId { get; set; }
 
-        [Required]
+        [ForeignKey(nameof(UserId))]
         public User User { get; set; }        
 
-        public List<Post> Posts { get; set; }
+        public IList<Post> Posts { get; set; }
     }
 }

@@ -3,10 +3,11 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DataAccessLayer.Entity
 {
-    [Table("Commentable")]
     public abstract class Commentable : IEntity
     {
         [Key]
         public int Id { get; set; }
+
+        public IList<Comment> Comments { get; set; }
     }
 }

@@ -1,16 +1,13 @@
 ﻿using DataAccessLayer.Entity;
+using DataAccessLayer.Entity.JoinEntity;
 using Microsoft.EntityFrameworkCore;
 
 namespace DataAccessLayer.Data
 {
     public static class DataInitializer
     {
-        //Specifying IDs is mandatory if seeding db through OnModelCreating method
         public static void Seed(this ModelBuilder modelBuilder)
         {
-            /*modelBuilder.Entity<Shape>().HasData(triangle);
-            modelBuilder.Entity<Ingredient>().HasData(ham);*/
-
             modelBuilder.Entity<User>().HasData
             (
                 new User
@@ -21,20 +18,29 @@ namespace DataAccessLayer.Data
                     PasswordHash = "0123456789abcde0"
                 }
             );
-            modelBuilder.Entity<Profile>().HasData
-            (
-                new Profile
+            modelBuilder.Entity<Profile>(p =>
+            {
+                p.HasData(new Profile
                 {
                     Id = 1,
                     CreatedAt = DateTime.Now,
-                    UserId = 1
-                }
-            );
+                    UserId = 1,
+                });
+                p.OwnsOne(p => p.Address).HasData(new
+                {
+                    ProfileId = 1,
+                    State = "Example State",
+                    Street = "Example Street",
+                    City = "Example City",
+                    PostalCode = "Example Postal Code",
+                    Region = "Example Region"
+                });
+            });   
             modelBuilder.Entity<Post>().HasData
             (
                 new Post
                 {
-                    Id = 1,
+                    Id = 2,
                     UserId = 1,
                     PostableId = 1,
                     Title = "Hello World!",
@@ -69,7 +75,6 @@ namespace DataAccessLayer.Data
                     ConversationId = 1,
                     AuthorId = 1,
                     Timestamp = DateTime.Now
-
                 }
                 ) ;
             modelBuilder.Entity<GroupRole>().HasData(
@@ -104,7 +109,8 @@ namespace DataAccessLayer.Data
                     Id = 1,
                     Title = "Example Galery",
                     Description = "This is an example galery",
-                    CreatedAt = DateTime.Now
+                    CreatedAt = DateTime.Now,
+                    ProfileId = 1
                 }
                 );
             modelBuilder.Entity<EventParticipant>().HasData(
@@ -142,16 +148,6 @@ namespace DataAccessLayer.Data
                     Url = "https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png",
                     MessageId = 1
                 }
-                );
-            modelBuilder.Entity<Address>().HasData(
-                new Address
-                {
-                    Id = 1,
-                    State = "Example State",
-                    Street = "Example Street",
-                    City = "Example City",
-                    PostalCode = "Example Postal Code",
-                    Region = "Example Region"                }
                 );
         }
     }

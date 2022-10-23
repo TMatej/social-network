@@ -9,13 +9,13 @@ namespace DataAccessLayer.Entity
         [Required]
         public int CommentableId { get; set; }
 
-        [Required]
+        [ForeignKey(nameof(CommentableId))]
         public Commentable Commentable { get; set; }
 
         [Required]
         public int UserId { get; set; }
 
-        [Required]
+        [ForeignKey(nameof(UserId))]
         public User User { get; set; }
 
         [Required]

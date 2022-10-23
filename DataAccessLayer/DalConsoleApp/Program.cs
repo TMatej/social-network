@@ -12,9 +12,30 @@ if (connectionString != null)
         db.Database.EnsureDeleted();
         db.Database.EnsureCreated();
 
-        db.Users.Add(new User { Username="lokomotiva123", PrimaryEmail="cokoloko@gmail.com", PasswordHash="0123456789abcde0"});
+        db.Users.Add(
+            new User 
+            { 
+                Username="lokomotiva123", 
+                PrimaryEmail="cokoloko@gmail.com", 
+                PasswordHash="0123456789abcde0"
+            }
+            );
+
+        
         db.SaveChanges();
 
+        db.Profiles.Add(
+            new Profile
+            {
+                CreatedAt = DateTime.Now,
+                UserId = 2,
+                Address = new Address 
+                { 
+                    State = "Slovakia"
+                }
+            });
+
+        db.SaveChanges();
         var user = db.Users.FirstOrDefault();
 
         Console.WriteLine(JsonConvert.SerializeObject(user, Formatting.Indented));     

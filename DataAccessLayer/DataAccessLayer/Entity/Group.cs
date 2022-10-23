@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using DataAccessLayer.Entity.JoinEntity;
 
 namespace DataAccessLayer.Entity
 {
@@ -15,5 +16,7 @@ namespace DataAccessLayer.Entity
 
         [Required]
         public DateTime CreatedAt { get; set; }
+
+        public IList<GroupMember> GroupMembers { get; set; }
     }
 }
