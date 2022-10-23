@@ -23,6 +23,6 @@ namespace DataAccessLayer.Entity
         [Required]
         public int GaleryId { get; set; }
 
-        public List<Comment> Comments { get; set; }
+        public IList<Commentable> Comments { get; set; }
     }
 }

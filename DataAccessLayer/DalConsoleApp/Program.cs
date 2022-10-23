@@ -12,7 +12,7 @@ if (connectionString != null)
         db.Database.EnsureDeleted();
         db.Database.EnsureCreated();
 
-        db.Users.Add(new User { Username="lokomotiva123", PrimaryEmail="cokoloko@gmail.com", PasswordHash="0123456789abcde0"});
+        db.Users.Add(new User { Username="lokomotiva123", PrimaryEmail="cokoloko@gmail.com", PasswordHash="0123456789abcde0", SecondaryEmail=null });
         db.SaveChanges();
 
         var user = db.Users.FirstOrDefault();

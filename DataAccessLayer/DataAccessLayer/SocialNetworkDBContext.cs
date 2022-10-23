@@ -1,5 +1,6 @@
 ﻿using DataAccessLayer.Data;
 using DataAccessLayer.Entity;
+using DataAccessLayer.Entity.JoinEntity;
 using Microsoft.EntityFrameworkCore;
 
 namespace DataAccessLayer
@@ -36,6 +37,7 @@ namespace DataAccessLayer
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseSqlServer(connectionString);
+            optionsBuilder.EnableSensitiveDataLogging();
             base.OnConfiguring(optionsBuilder);
         }
 
@@ -56,7 +58,6 @@ namespace DataAccessLayer
                 .HasForeignKey(a => a.ProfileId);
 
             modelBuilder.Entity<Photo>()
-                .ToTable("Photo")
                 .HasOne(p => p.Galery)
                 .WithMany(g => g.Photos)
                 .HasForeignKey(a => a.GaleryId);
@@ -67,31 +68,30 @@ namespace DataAccessLayer
                 .WithOne(o => o.User)
                 .HasForeignKey<Profile>(p => p.UserId);
 
-            modelBuilder.Entity<Post>().ToTable("Post");
+            /* Commentable */
             modelBuilder.Entity<Comment>().ToTable("Comment");
+            modelBuilder.Entity<Photo>().ToTable("Photo");
+            modelBuilder.Entity<Post>().ToTable("Post");
 
-            modelBuilder.Entity<Profile>()
-                .ToTable("Profile");
-
-            modelBuilder.Entity<Photo>()
-                .Property(p => p.Id)
-                .HasColumnName("PhotoId");
+            /* Postable */
+            modelBuilder.Entity<Group>().ToTable("Group");
+            modelBuilder.Entity<Profile>().ToTable("Profile");
 
             /* Set Many-To-Many relationship for User <-> Event */
-            modelBuilder.Entity<EventParticipant>()
-                .HasKey(ep => new { ep.UserId, ep.EventId });
+            /*modelBuilder.Entity<EventParticipant>()
+                .HasKey(ep => new { ep.UserId, ep.EventId });*/
 
             /* Set Many-To-Many relationship for User <-> Conversation */
-            modelBuilder.Entity<ConversationParticipant>()
-                .HasKey(cp => new { cp.UserId, cp.ConversationId });
+            /*modelBuilder.Entity<ConversationParticipant>()
+                .HasKey(cp => new { cp.UserId, cp.ConversationId });*/
 
             /* Set Many-To-Many relationship for User <-> Group */
-            modelBuilder.Entity<GroupMember>()
-                .HasKey(gm => new { gm.UserId, gm.GroupId });
+            /*modelBuilder.Entity<GroupMember>()
+                .HasKey(gm => new { gm.UserId, gm.GroupId });*/
 
             /* Set Many-To-Many relationship for User <-> User */
-            modelBuilder.Entity<Contact>()
-                .HasKey(c => new { c.User1Id, c.User2Id });
+            /*modelBuilder.Entity<Contact>()
+                .HasKey(c => new { c.User1Id, c.User2Id });*/
 
             modelBuilder.Entity<Contact>()
                 .HasOne(c => c.User2)
@@ -129,7 +129,7 @@ namespace DataAccessLayer
                 .WithOne(c => c.User)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            //modelBuilder.Seed();
+            modelBuilder.Seed();
 
             base.OnModelCreating(modelBuilder);
         }

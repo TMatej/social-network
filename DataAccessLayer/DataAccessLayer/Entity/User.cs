@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using DataAccessLayer.Entity.JoinEntity;
 
 namespace DataAccessLayer.Entity
 {
@@ -23,7 +24,7 @@ namespace DataAccessLayer.Entity
         [MaxLength(255)]
         public string? SecondaryEmail { get; set; }
 
-        public Profile? Profile { get; set; }
+        public Profile Profile { get; set; }
 
         public IList<EventParticipant> EventParticipants { get; set; }
 

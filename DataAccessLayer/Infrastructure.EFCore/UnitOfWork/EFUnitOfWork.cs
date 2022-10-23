@@ -1,5 +1,6 @@
 ﻿using DataAccessLayer;
 using DataAccessLayer.Entity;
+using DataAccessLayer.Entity.JoinEntity;
 using Infrastructure.EFCore.Repository;
 using Infrastructure.Repository;
 using Infrastructure.UnitOfWork;

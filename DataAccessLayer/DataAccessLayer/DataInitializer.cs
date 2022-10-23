@@ -1,4 +1,5 @@
 ﻿using DataAccessLayer.Entity;
+using DataAccessLayer.Entity.JoinEntity;
 using Microsoft.EntityFrameworkCore;
 
 namespace DataAccessLayer.Data
@@ -38,7 +39,7 @@ namespace DataAccessLayer.Data
             (
                 new Post
                 {
-                    Id = 1,
+                    Id = 2,
                     UserId = 1,
                     PostableId = 1,
                     Title = "Hello World!",
@@ -86,6 +87,7 @@ namespace DataAccessLayer.Data
             modelBuilder.Entity<GroupMember>().HasData(
                 new GroupMember
                 {
+                    Id = 1,
                     GroupId = 1,
                     UserId = 1,
                     GroupRoleId = 1,
@@ -113,6 +115,7 @@ namespace DataAccessLayer.Data
             modelBuilder.Entity<EventParticipant>().HasData(
                 new EventParticipant
                 {
+                    Id = 1,
                     EventId = 1,
                     UserId = 1,
                     ParticipationTypeId = 1,

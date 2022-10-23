@@ -1,10 +1,13 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace DataAccessLayer.Entity
+namespace DataAccessLayer.Entity.JoinEntity
 {
-    public class ConversationParticipant
+    public class ConversationParticipant : IEntity
     {
+        [Key]
+        public int Id { get; set; }
+
         [Required]
         public int UserId { get; set; }
 

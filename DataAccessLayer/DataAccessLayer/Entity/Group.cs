@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using DataAccessLayer.Entity.JoinEntity;
 
 namespace DataAccessLayer.Entity
 {
