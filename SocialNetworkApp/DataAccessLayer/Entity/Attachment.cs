@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DataAccessLayer.Entity
 {
@@ -10,7 +11,7 @@ namespace DataAccessLayer.Entity
         [Required]
         public int MessageId { get; set; }
 
-        [Required]
+        [ForeignKey(nameof(MessageId))]
         public Message Message { get; set; }
 
         [Required]

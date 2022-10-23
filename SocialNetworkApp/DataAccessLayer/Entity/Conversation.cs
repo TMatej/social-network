@@ -15,6 +15,9 @@ namespace DataAccessLayer.Entity
         [ForeignKey(nameof(UserId))]
         public User User { get; set; }
 
+        [Required]
+        public DateTime CreatedAt { get; set; }
+
         public IList<ConversationParticipant> ConversationParticipants { get; set; }
 
         public IList<Message> Messages { get; set; }

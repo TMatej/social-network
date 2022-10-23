@@ -11,14 +11,14 @@ namespace DataAccessLayer.Entity
 
         public Address Address { get; set; }
 
-        public Sex Sex { get; set; }
+        public Sex? Sex { get; set; }
 
         public List<Galery> Galeries { get; set; }
 
         [MaxLength(20)]
         public string PhoneNumber { get; set; }
 
-        public DateTime DateOfBirth { get; set; }
+        public DateTime? DateOfBirth { get; set; }
 
         [Required]
         public DateTime CreatedAt { get; set; }

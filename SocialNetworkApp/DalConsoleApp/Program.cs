@@ -12,14 +12,14 @@ if (connectionString != null)
         db.Database.EnsureDeleted();
         db.Database.EnsureCreated();
 
-        db.Users.Add(
-            new User 
-            { 
-                Username="lokomotiva123", 
-                PrimaryEmail="cokoloko@gmail.com", 
-                PasswordHash="0123456789abcde0"
-            }
-            );
+        var user = new User
+        {
+            Username = "lokomotiva123",
+            PrimaryEmail = "cokoloko@gmail.com",
+            PasswordHash = "0123456789abcde0"
+        };
+
+        db.Users.Add(user);
 
         
         db.SaveChanges();
@@ -28,7 +28,7 @@ if (connectionString != null)
             new Profile
             {
                 CreatedAt = DateTime.Now,
-                UserId = 2,
+                UserId = user.Id,
                 Address = new Address 
                 { 
                     State = "Slovakia"
@@ -36,9 +36,11 @@ if (connectionString != null)
             });
 
         db.SaveChanges();
-        var user = db.Users.FirstOrDefault();
+        var db_user = db.Users.Where(u => u.Username.Equals(user.Username)).FirstOrDefault();
+        var db_profile = db.Profiles.Where(p => p.UserId == user.Id).FirstOrDefault();
 
-        Console.WriteLine(JsonConvert.SerializeObject(user, Formatting.Indented));     
+        Console.WriteLine(JsonConvert.SerializeObject(db_user, Formatting.Indented));
+        Console.WriteLine(JsonConvert.SerializeObject(db_profile, Formatting.Indented));
     }
 }
 
