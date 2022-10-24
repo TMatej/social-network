@@ -1,10 +1,15 @@
-﻿using DataAccessLayer;
-using DataAccessLayer.Entity;
+﻿using DataAccessLayer.Entity;
+using DataAccessLayer;
 using Microsoft.EntityFrameworkCore;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace DalUnitTests.EntityTests
 {
-    public class UserTest
+    public class EventTest
     {
         private const string connectionString = @"Data Source=(localdb)\MSSQLLocalDB; Initial Catalog=PV179-SocialNetworkDB";
 
@@ -15,6 +20,7 @@ namespace DalUnitTests.EntityTests
             {
                 db.Database.EnsureDeleted();
                 db.Database.EnsureCreated();
+                db.SaveChanges();
             }
         }
 
@@ -32,33 +38,33 @@ namespace DalUnitTests.EntityTests
         {
             using (var db = new SocialNetworkDBContext(connectionString))
             {
-                db.Users.Add(new User { Username = "lokomotiva123", PrimaryEmail = "cokoloko@gmail.com", PasswordHash = "0123456789abcde0" });
+                db.Events.Add(new Event
+                {
+                    UserId = 1,
+                    GroupId = 2,
+                    Title = "Example Event",
+                    Description = "This is an example event",
+                    CreatedAt = DateTime.Now
+                });
                 db.SaveChanges();
 
-                var user = db.Users.FirstOrDefault();
-                Assert.That(user, Is.Not.Null);
-                Assert.That(user.Id, Is.EqualTo(1));
+                var _event = db.Events.FirstOrDefault();
+                Assert.That(_event, Is.Not.Null);
+                Assert.That(_event.Id, Is.EqualTo(1));
             }
         }
+
         [Test]
         public void Test_Add_Incomplete()
         {
             using (var db = new SocialNetworkDBContext(connectionString))
             {
-                db.Users.Add(new User { Username = "lokomotiva123" });
-
-                Assert.Throws<DbUpdateException>(() => db.SaveChanges());
-            }
-        }
-        [Test]
-        public void Test_Add_Duplicate()
-        {
-            using (var db = new SocialNetworkDBContext(connectionString))
-            {
-                db.Users.Add(new User { Username = "lokomotiva123", PrimaryEmail = "cokoloko@gmail.com", PasswordHash = "0123456789abcde0" });
-
-                db.Users.Add(new User { Username = "lokomotiva123", PrimaryEmail = "cokolokojine@gmail.com", PasswordHash = "ffffffffffff" });
-
+                db.Events.Add(new Event
+                {
+                    Title = "Example Event",
+                    Description = "This is an example event",
+                    CreatedAt = DateTime.Now
+                });
                 Assert.Throws<DbUpdateException>(() => db.SaveChanges());
             }
         }
@@ -67,9 +73,14 @@ namespace DalUnitTests.EntityTests
         {
             using (var db = new SocialNetworkDBContext(connectionString))
             {
-                db.Users.Add(new User { Username = new String('l', 100), PrimaryEmail = new String('l', 500), PasswordHash = "0" });
-
-
+                db.Events.Add(new Event
+                {
+                    UserId = 1,
+                    GroupId = 2,
+                    Title = new String('l',1000),
+                    Description = new String('l', 1000),
+                    CreatedAt = DateTime.Now
+                });
                 Assert.Throws<DbUpdateException>(() => db.SaveChanges());
             }
         }

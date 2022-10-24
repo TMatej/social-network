@@ -1,10 +1,15 @@
 ﻿using DataAccessLayer;
 using DataAccessLayer.Entity;
 using Microsoft.EntityFrameworkCore;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace DalUnitTests.EntityTests
 {
-    public class UserTest
+    public class GaleryTest
     {
         private const string connectionString = @"Data Source=(localdb)\MSSQLLocalDB; Initial Catalog=PV179-SocialNetworkDB";
 
@@ -15,6 +20,7 @@ namespace DalUnitTests.EntityTests
             {
                 db.Database.EnsureDeleted();
                 db.Database.EnsureCreated();
+                db.SaveChanges();
             }
         }
 
@@ -32,33 +38,31 @@ namespace DalUnitTests.EntityTests
         {
             using (var db = new SocialNetworkDBContext(connectionString))
             {
-                db.Users.Add(new User { Username = "lokomotiva123", PrimaryEmail = "cokoloko@gmail.com", PasswordHash = "0123456789abcde0" });
+                db.Galeries.Add(new Galery
+                {
+                    Title = "Example Galery",
+                    Description = "This is an example galery",
+                    CreatedAt = DateTime.Now,
+                    ProfileId = 1
+                });
                 db.SaveChanges();
 
-                var user = db.Users.FirstOrDefault();
-                Assert.That(user, Is.Not.Null);
-                Assert.That(user.Id, Is.EqualTo(1));
+                var galery = db.Galeries.FirstOrDefault();
+                Assert.That(galery, Is.Not.Null);
+                Assert.That(galery.Id, Is.EqualTo(1));
             }
         }
+
         [Test]
         public void Test_Add_Incomplete()
         {
             using (var db = new SocialNetworkDBContext(connectionString))
             {
-                db.Users.Add(new User { Username = "lokomotiva123" });
-
-                Assert.Throws<DbUpdateException>(() => db.SaveChanges());
-            }
-        }
-        [Test]
-        public void Test_Add_Duplicate()
-        {
-            using (var db = new SocialNetworkDBContext(connectionString))
-            {
-                db.Users.Add(new User { Username = "lokomotiva123", PrimaryEmail = "cokoloko@gmail.com", PasswordHash = "0123456789abcde0" });
-
-                db.Users.Add(new User { Username = "lokomotiva123", PrimaryEmail = "cokolokojine@gmail.com", PasswordHash = "ffffffffffff" });
-
+                db.Galeries.Add(new Galery
+                {
+                    Description = "This is an example galery",
+                    CreatedAt = DateTime.Now,
+                });
                 Assert.Throws<DbUpdateException>(() => db.SaveChanges());
             }
         }
@@ -67,9 +71,13 @@ namespace DalUnitTests.EntityTests
         {
             using (var db = new SocialNetworkDBContext(connectionString))
             {
-                db.Users.Add(new User { Username = new String('l', 100), PrimaryEmail = new String('l', 500), PasswordHash = "0" });
-
-
+                db.Galeries.Add(new Galery
+                {
+                    Title = new String('l', 500),
+                    Description = new String('l', 5000),
+                    CreatedAt = DateTime.Now,
+                    ProfileId = 1
+                });
                 Assert.Throws<DbUpdateException>(() => db.SaveChanges());
             }
         }

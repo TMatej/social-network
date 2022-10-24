@@ -1,10 +1,15 @@
-﻿using DataAccessLayer;
-using DataAccessLayer.Entity;
+﻿using DataAccessLayer.Entity;
+using DataAccessLayer;
 using Microsoft.EntityFrameworkCore;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace DalUnitTests.EntityTests
 {
-    public class UserTest
+    internal class CommentTest
     {
         private const string connectionString = @"Data Source=(localdb)\MSSQLLocalDB; Initial Catalog=PV179-SocialNetworkDB";
 
@@ -15,6 +20,7 @@ namespace DalUnitTests.EntityTests
             {
                 db.Database.EnsureDeleted();
                 db.Database.EnsureCreated();
+                db.SaveChanges();
             }
         }
 
@@ -32,44 +38,46 @@ namespace DalUnitTests.EntityTests
         {
             using (var db = new SocialNetworkDBContext(connectionString))
             {
-                db.Users.Add(new User { Username = "lokomotiva123", PrimaryEmail = "cokoloko@gmail.com", PasswordHash = "0123456789abcde0" });
+                db.Comments.Add(new Comment
+                {
+                    Content = "This is an example comment",
+                    CommentableId = 2,
+                    UserId = 1,
+                    CreatedAt = DateTime.Now
+                });
                 db.SaveChanges();
 
-                var user = db.Users.FirstOrDefault();
-                Assert.That(user, Is.Not.Null);
-                Assert.That(user.Id, Is.EqualTo(1));
+                var comment = db.Comments.FirstOrDefault();
+                Assert.That(comment, Is.Not.Null);
+                Assert.That(comment.Id, Is.EqualTo(3));
             }
         }
+
         [Test]
         public void Test_Add_Incomplete()
         {
             using (var db = new SocialNetworkDBContext(connectionString))
             {
-                db.Users.Add(new User { Username = "lokomotiva123" });
-
-                Assert.Throws<DbUpdateException>(() => db.SaveChanges());
+                db.Comments.Add(new Comment
+                {
+                    Content = "This is an example comment",
+                    CreatedAt = DateTime.Now
+                }); Assert.Throws<DbUpdateException>(() => db.SaveChanges());
             }
         }
-        [Test]
-        public void Test_Add_Duplicate()
-        {
-            using (var db = new SocialNetworkDBContext(connectionString))
-            {
-                db.Users.Add(new User { Username = "lokomotiva123", PrimaryEmail = "cokoloko@gmail.com", PasswordHash = "0123456789abcde0" });
 
-                db.Users.Add(new User { Username = "lokomotiva123", PrimaryEmail = "cokolokojine@gmail.com", PasswordHash = "ffffffffffff" });
-
-                Assert.Throws<DbUpdateException>(() => db.SaveChanges());
-            }
-        }
         [Test]
         public void Test_Add_Long()
         {
             using (var db = new SocialNetworkDBContext(connectionString))
             {
-                db.Users.Add(new User { Username = new String('l', 100), PrimaryEmail = new String('l', 500), PasswordHash = "0" });
-
-
+                db.Comments.Add(new Comment
+                {
+                    Content = new String('l', 1000),
+                    CommentableId = 2,
+                    UserId = 1,
+                    CreatedAt = DateTime.Now
+                });
                 Assert.Throws<DbUpdateException>(() => db.SaveChanges());
             }
         }
