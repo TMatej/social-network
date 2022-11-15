@@ -1,14 +1,14 @@
-﻿using DataAccessLayer;
+﻿using Autofac;
+using DalConsoleApp;
+using DataAccessLayer;
 using DataAccessLayer.Entity;
 using Newtonsoft.Json;
 using System.Configuration;
 
-var connectionString = ConfigurationManager.AppSettings["ConnectionString"];
-
-if (connectionString != null)
+using var ioc = new Bootstrapper();
+using var scope = ioc.Container.BeginLifetimeScope()
+using (var db = scope.Resolve<SocialNetworkDBContext>())
 {
-    using (var db = new SocialNetworkDBContext(connectionString))
-    {
         db.Database.EnsureDeleted();
         db.Database.EnsureCreated();
 
@@ -42,5 +42,4 @@ if (connectionString != null)
         Console.WriteLine(JsonConvert.SerializeObject(db_user, Formatting.Indented));
         Console.WriteLine(JsonConvert.SerializeObject(db_profile, Formatting.Indented));
     }
-}
 
