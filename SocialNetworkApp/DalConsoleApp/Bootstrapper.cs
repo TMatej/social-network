@@ -1,20 +1,17 @@
 ﻿using Autofac;
+using BusinessLayer.Services;
 using Infrastructure.EFCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DalConsoleApp
 {
-    internal class Bootstrapper :IDisposable
+    internal class Bootstrapper : IDisposable
     {
         public IContainer Container { get; private set; }
         public Bootstrapper()
         {
             var builder = new ContainerBuilder();
             builder.RegisterEFCore();
+            builder.RegisterType<UserService>().InstancePerLifetimeScope();
             Container = builder.Build();
         }
 
