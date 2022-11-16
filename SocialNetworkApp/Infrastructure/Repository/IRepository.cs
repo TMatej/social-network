@@ -2,7 +2,7 @@
 {
     public interface IRepository<TEntity> where TEntity : class
     {
-        List<TEntity> GetAll();
+        IEnumerable<TEntity> GetAll();
 
         TEntity GetByID(object id);
 

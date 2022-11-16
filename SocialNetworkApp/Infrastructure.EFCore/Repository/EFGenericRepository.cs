@@ -6,16 +6,16 @@ namespace Infrastructure.EFCore.Repository
 {
     public class EFGenericRepository<TEntity> : IRepository<TEntity> where TEntity : class
     {
-        internal EFUnitOfWork iow;
+        internal EFUnitOfWork uow;
         internal DbSet<TEntity> dbSet;
 
-        public EFGenericRepository(EFUnitOfWork iow)
+        public EFGenericRepository(EFUnitOfWork uow)
         {
-            this.iow = iow;
-            dbSet = iow.Context.Set<TEntity>();
+            this.uow = uow;
+            dbSet = uow.Context.Set<TEntity>();
         }
 
-        public virtual List<TEntity> GetAll()
+        public virtual IEnumerable<TEntity> GetAll()
         {
             return dbSet.ToList();
         }
@@ -38,7 +38,7 @@ namespace Infrastructure.EFCore.Repository
 
         public virtual void Delete(TEntity entityToDelete)
         {
-            if (iow.Context.Entry(entityToDelete).State == EntityState.Detached)
+            if (uow.Context.Entry(entityToDelete).State == EntityState.Detached)
             {
                 dbSet.Attach(entityToDelete);
             }
@@ -48,7 +48,7 @@ namespace Infrastructure.EFCore.Repository
         public virtual void Update(TEntity entityToUpdate)
         {
             dbSet.Attach(entityToUpdate);
-            iow.Context.Entry(entityToUpdate).State = EntityState.Modified;
+            uow.Context.Entry(entityToUpdate).State = EntityState.Modified;
         }
     }
 }
