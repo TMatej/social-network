@@ -1,7 +1,6 @@
 ﻿using BusinessLayer.Contracts;
 using BusinessLayer.DTOs;
 using DataAccessLayer.Entity;
-using Infrastructure.EFCore.UnitOfWork;
 using Infrastructure.Repository;
 using Infrastructure.UnitOfWork;
 
@@ -10,12 +9,12 @@ namespace BusinessLayer.Services
     public class UserService : IUserService
     {
         public readonly IRepository<User> repository;
-        private IUnitOfWork iow;
+        private IUnitOfWork uow;
 
-        public UserService(IRepository<User> repository, IUnitOfWork iow)
+        public UserService(IRepository<User> repository, IUnitOfWork uow)
         {
             this.repository = repository;
-            this.iow = iow;
+            this.uow = uow;
         }
 
         public async Task Register(RegisterDTO registerDTO)
@@ -28,7 +27,7 @@ namespace BusinessLayer.Services
             };
 
             repository.Insert(user);
-            await iow.Commit();
+            await uow.Commit(); // always neccessary to call iow.Commit() to persist the data into DB
         }
     }
 }
