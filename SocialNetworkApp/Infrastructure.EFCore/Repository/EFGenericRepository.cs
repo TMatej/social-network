@@ -1,4 +1,4 @@
-﻿using DataAccessLayer;
+﻿using Infrastructure.EFCore.UnitOfWork;
 using Infrastructure.Repository;
 using Microsoft.EntityFrameworkCore;
 
@@ -6,13 +6,13 @@ namespace Infrastructure.EFCore.Repository
 {
     public class EFGenericRepository<TEntity> : IRepository<TEntity> where TEntity : class
     {
-        internal SocialNetworkDBContext context;
+        internal EFUnitOfWork iow;
         internal DbSet<TEntity> dbSet;
 
-        public EFGenericRepository(SocialNetworkDBContext dbcontext)
+        public EFGenericRepository(EFUnitOfWork iow)
         {
-            context = dbcontext;
-            dbSet = context.Set<TEntity>();
+            this.iow = iow;
+            dbSet = iow.Context.Set<TEntity>();
         }
 
         public virtual List<TEntity> GetAll()
@@ -38,7 +38,7 @@ namespace Infrastructure.EFCore.Repository
 
         public virtual void Delete(TEntity entityToDelete)
         {
-            if (context.Entry(entityToDelete).State == EntityState.Detached)
+            if (iow.Context.Entry(entityToDelete).State == EntityState.Detached)
             {
                 dbSet.Attach(entityToDelete);
             }
@@ -48,7 +48,7 @@ namespace Infrastructure.EFCore.Repository
         public virtual void Update(TEntity entityToUpdate)
         {
             dbSet.Attach(entityToUpdate);
-            context.Entry(entityToUpdate).State = EntityState.Modified;
+            iow.Context.Entry(entityToUpdate).State = EntityState.Modified;
         }
     }
 }

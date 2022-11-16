@@ -1,16 +1,21 @@
-﻿using BusinessLayer.DTOs;
+﻿using BusinessLayer.Contracts;
+using BusinessLayer.DTOs;
 using DataAccessLayer.Entity;
 using Infrastructure.EFCore.UnitOfWork;
+using Infrastructure.Repository;
+using Infrastructure.UnitOfWork;
 
 namespace BusinessLayer.Services
 {
-    public class UserService
+    public class UserService : IUserService
     {
-        public readonly EFUnitOfWork unitOfWork;
+        public readonly IRepository<User> repository;
+        private IUnitOfWork iow;
 
-        public UserService(EFUnitOfWork unitOfWork)
+        public UserService(IRepository<User> repository, IUnitOfWork iow)
         {
-            this.unitOfWork = unitOfWork;
+            this.repository = repository;
+            this.iow = iow;
         }
 
         public async Task Register(RegisterDTO registerDTO)
@@ -22,8 +27,8 @@ namespace BusinessLayer.Services
                 PrimaryEmail = registerDTO.Email,
             };
 
-            unitOfWork.UserRepository.Insert(user);
-            await unitOfWork.Commit();
+            repository.Insert(user);
+            await iow.Commit();
         }
     }
 }

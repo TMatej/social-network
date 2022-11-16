@@ -1,5 +1,5 @@
 ﻿using Autofac;
-using BusinessLayer.Services;
+using BusinessLayer.Contracts;
 using DalConsoleApp;
 using DataAccessLayer;
 using DataAccessLayer.Entity;
@@ -7,7 +7,7 @@ using Newtonsoft.Json;
 
 using var ioc = new Bootstrapper();
 using var scope = ioc.Container.BeginLifetimeScope();
-var userService = scope.Resolve<UserService>();
+var userService = scope.Resolve<IUserService>();
 using (var db = scope.Resolve<SocialNetworkDBContext>())
 {
     db.Database.EnsureDeleted();

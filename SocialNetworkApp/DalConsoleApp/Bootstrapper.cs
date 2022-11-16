@@ -1,4 +1,5 @@
 ﻿using Autofac;
+using BusinessLayer.Contracts;
 using BusinessLayer.Services;
 using Infrastructure.EFCore;
 
@@ -11,7 +12,7 @@ namespace DalConsoleApp
         {
             var builder = new ContainerBuilder();
             builder.RegisterEFCore();
-            builder.RegisterType<UserService>().InstancePerLifetimeScope();
+            builder.RegisterType<UserService>().InstancePerLifetimeScope().As<IUserService>();
             Container = builder.Build();
         }
 

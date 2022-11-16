@@ -5,6 +5,7 @@ using Infrastructure.EFCore.Repository;
 using Infrastructure.EFCore.UnitOfWork;
 using Infrastructure.Query;
 using Infrastructure.Repository;
+using Infrastructure.UnitOfWork;
 using System.Configuration;
 
 namespace Infrastructure.EFCore
@@ -15,7 +16,10 @@ namespace Infrastructure.EFCore
         {
             var connectionString = ConfigurationManager.AppSettings["ConnectionString"];
             containerBuilder.Register((ctx) => new SocialNetworkDBContext(connectionString));
-            containerBuilder.RegisterType<EFUnitOfWork>().InstancePerLifetimeScope();
+            containerBuilder.RegisterType<EFUnitOfWork>()
+                .As<IUnitOfWork>()
+                .AsSelf()
+                .InstancePerLifetimeScope();
             containerBuilder.RegisterGeneric(typeof(EFGenericRepository<>)).As(typeof(IRepository<>));
             containerBuilder.RegisterGeneric(typeof(EntityFrameworkQuery<>)).As(typeof(IQuery<>));
             return containerBuilder;
