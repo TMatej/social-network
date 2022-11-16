@@ -10,24 +10,12 @@ namespace Infrastructure.EFCore.Query
     public class EntityFrameworkQuery<TEntity> : Query<TEntity> where TEntity : class, IEntity, new()
     {
         protected SocialNetworkDBContext Dbcontext { get; set; }
-        private EFUnitOfWork _unitOfWork;
+        protected EFUnitOfWork UnitOfWork { get; set; }
 
-        protected EFUnitOfWork UnitOfWork
-        {
-            get
-            {
-                if (_unitOfWork != null)
-                {
-                    _unitOfWork = new(Dbcontext);
-                }
-
-                return _unitOfWork;
-            }
-        }
-
-        public EntityFrameworkQuery(SocialNetworkDBContext dbcontext)
+        public EntityFrameworkQuery(SocialNetworkDBContext dbcontext, EFUnitOfWork unitOfWork)
         {
             Dbcontext = dbcontext;
+            UnitOfWork = unitOfWork;
         }
 
         public override IEnumerable<TEntity> Execute()
