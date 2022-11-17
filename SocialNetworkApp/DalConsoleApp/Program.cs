@@ -1,7 +1,6 @@
 ﻿using Autofac;
 using BusinessLayer.Contracts;
 using BusinessLayer.DTOs.Galery;
-using BusinessLayer.Services;
 using DalConsoleApp;
 using DataAccessLayer;
 using DataAccessLayer.Entity;
@@ -77,7 +76,8 @@ using (var db_1 = scope.Resolve<SocialNetworkDBContext>())
     }*/
     Console.WriteLine();
     Console.WriteLine("db_profile:");
-    Console.WriteLine(JsonConvert.SerializeObject(db_profile, Formatting.Indented));
+    var serializerSettings = new JsonSerializerSettings() { ReferenceLoopHandling = ReferenceLoopHandling.Ignore };
+    Console.WriteLine(JsonConvert.SerializeObject(db_profile, Formatting.Indented, serializerSettings));
     /*
      {
       "Name": "JOŽO VAJDA",
@@ -111,7 +111,7 @@ using (var db_1 = scope.Resolve<SocialNetworkDBContext>())
     }*/
     Console.WriteLine();
     Console.WriteLine("db_gallery:");
-    Console.WriteLine(JsonConvert.SerializeObject(db_gallery, Formatting.Indented));
+    Console.WriteLine(JsonConvert.SerializeObject(db_gallery, Formatting.Indented, serializerSettings));
     /*
     {
       "Id": 2,
