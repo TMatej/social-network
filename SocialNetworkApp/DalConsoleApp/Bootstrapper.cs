@@ -1,4 +1,6 @@
 ﻿using Autofac;
+using AutoMapper;
+using BusinessLayer.Config;
 using BusinessLayer.Contracts;
 using BusinessLayer.Services;
 using Infrastructure.EFCore;
@@ -12,7 +14,15 @@ namespace DalConsoleApp
         {
             var builder = new ContainerBuilder();
             builder.RegisterEFCore();
-            builder.RegisterType<UserService>().InstancePerLifetimeScope().As<IUserService>();
+            builder.RegisterType<UserService>()
+                .As<IUserService>()
+                .InstancePerLifetimeScope();
+            builder.RegisterType<GalleryService>()
+                .As<IGalleryService>()
+                .InstancePerLifetimeScope();
+            builder.RegisterInstance(new Mapper(new MapperConfiguration(expression => expression.AddProfile<MappingProfile>())))  // should be registered in BL level
+                .As<IMapper>()
+                .SingleInstance();
             Container = builder.Build();
         }
 
