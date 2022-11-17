@@ -18,7 +18,7 @@ namespace DataAccessLayer.Entity
         public String Url { get; set; }
 
         [ForeignKey(nameof(GaleryId))]
-        public Galery Galery { get; set; }
+        public Gallery Galery { get; set; }
 
         [Required]
         public int GaleryId { get; set; }

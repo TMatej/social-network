@@ -16,7 +16,7 @@ namespace DataAccessLayer
         public DbSet<ConversationParticipant> ConversationParticipants { get; set; }
         public DbSet<Event> Events { get; set; }
         public DbSet<EventParticipant> EventParticipants { get; set; }
-        public DbSet<Galery> Galeries { get; set; }
+        public DbSet<Gallery> Galeries { get; set; }
         public DbSet<Group> Groups { get; set; }
         public DbSet<GroupMember> GroupMembers { get; set; }
         public DbSet<GroupRole> GroupRoles { get; set; }
@@ -64,7 +64,7 @@ namespace DataAccessLayer
             modelBuilder.Entity<Profile>().OwnsOne(p => p.Address);
 
             /* Set One-To-Many relationship */
-            modelBuilder.Entity<Galery>()
+            modelBuilder.Entity<Gallery>()
                 .HasOne(g => g.Profile)
                 .WithMany(p => p.Galeries)
                 .HasForeignKey(a => a.ProfileId);

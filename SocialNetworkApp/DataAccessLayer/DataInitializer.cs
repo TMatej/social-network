@@ -156,7 +156,7 @@ namespace DataAccessLayer.Data
 
         private static void SeedGaleries(ModelBuilder modelBuilder)
         {
-            var galery = new Galery
+            var galery = new Gallery
             {
                 Id = 1,
                 Title = "Example Galery",
@@ -165,7 +165,7 @@ namespace DataAccessLayer.Data
                 ProfileId = 1
             };
 
-            var empty_galery = new Galery
+            var empty_galery = new Gallery
             {
                 Id = 1,
                 Title = "Example Empty Galery",
@@ -174,7 +174,7 @@ namespace DataAccessLayer.Data
                 ProfileId = 1
             };
 
-            modelBuilder.Entity<Galery>().HasData(galery);
+            modelBuilder.Entity<Gallery>().HasData(galery);
         }
 
         private static void SeedProfiles(ModelBuilder modelBuilder)
