@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using Ardalis.GuardClauses;
+using AutoMapper;
 using BusinessLayer.Contracts;
 using Infrastructure.Repository;
 using Infrastructure.UnitOfWork;
@@ -10,46 +11,47 @@ namespace BusinessLayer.Services
         where TEntity : class
     {
         protected readonly IRepository<TEntity> _repository;
-        protected readonly IMapper _mapper;
         protected readonly IUnitOfWork _uow;
 
-        public GenericService(IRepository<TEntity> repository, IMapper mapper, IUnitOfWork uow)
+        public GenericService(IRepository<TEntity> repository, IUnitOfWork uow)
         {
             _repository = repository;
-            _mapper = mapper;
             _uow = uow;
         }
 
         public void Delete(object id)
         {
-            throw new NotImplementedException();
+            Guard.Against.Null(id);
+            _repository.Delete(id);
         }
 
-        public void Delete<TDTO>(TDTO entityToDelete) where TDTO : class
+        public void Delete(TEntity entityToDelete)
         {
-            throw new NotImplementedException();
+            Guard.Against.Null(entityToDelete);
+            _repository.Delete(entityToDelete);
         }
 
-        public IEnumerable<TDTO> GetAll<TDTO>() where TDTO : class
+        public IEnumerable<TEntity> GetAll()
         {
-            throw new NotImplementedException();
+            return _repository.GetAll();
         }
 
-        public TDTO GetByID<TDTO>(object id) where TDTO : class
+        public TEntity GetByID(object id)
         {
-            var myObject = _repository.GetByID(id);
-            // for some reason returns Gallery.Profile = null
-            return _mapper.Map<TDTO>(myObject);
+            Guard.Against.Null(id);
+            return _repository.GetByID(id);
         }
 
-        public void Insert<TDTO>(TDTO entity) where TDTO : class
+        public void Insert(TEntity entity)
         {
-            throw new NotImplementedException();
+            Guard.Against.Null(entity);
+            _repository.Insert(entity);
         }
 
-        public void Update<TDTO>(TDTO entityToUpdate) where TDTO : class
+        public void Update(TEntity entityToUpdate)
         {
-            throw new NotImplementedException();
+            Guard.Against.Null(entityToUpdate);
+            _repository.Update(entityToUpdate);
         }
     }
 }

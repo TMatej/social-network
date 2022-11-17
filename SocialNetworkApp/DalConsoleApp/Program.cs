@@ -1,15 +1,18 @@
 ﻿using Autofac;
+using AutoMapper;
 using BusinessLayer.Contracts;
 using BusinessLayer.DTOs.Galery;
 using DalConsoleApp;
 using DataAccessLayer;
 using DataAccessLayer.Entity;
 using Newtonsoft.Json;
+using Profile = DataAccessLayer.Entity.Profile;
 
 using var ioc = new Bootstrapper();
 using var scope = ioc.Container.BeginLifetimeScope();
 var userService = scope.Resolve<IUserService>();
 var galleryService = scope.Resolve<IGalleryService>();
+var mapper = scope.Resolve<IMapper>();
 
 var user = new User
 {
@@ -51,7 +54,7 @@ using (var db_1 = scope.Resolve<SocialNetworkDBContext>())
             Description = "This is my fav gallery of my christmas experience!",
             CreatedAt = DateTime.Now,
             ProfileId = profile.Id,
-            //Photos = new List<Photo> { photo }
+            Photos = new List<Photo> { photo }
         });
     db_1.SaveChanges();
 
@@ -164,8 +167,8 @@ using (var db_2 = scope.Resolve<SocialNetworkDBContext>())
     db_2.Users.ToList().ForEach(user => Console.WriteLine(user.Username));
 }
 
-var galleryDTO = galleryService.GetByID<GalleryRepresentDTO>(2);
-Console.WriteLine("GaleryDTO:");
+var gallery_DB = galleryService.GetByID(2);
+Console.WriteLine("Galery:");
 // for some reason generic repo for gallery doesnt retrieve Gallery.Profile, therefore it is null and mapper cannot derive other attributes
 /*
     {
@@ -179,5 +182,4 @@ Console.WriteLine("GaleryDTO:");
       "UserId": 0,
       "PhotosCount": 0
     }*/
-Console.WriteLine(JsonConvert.SerializeObject(galleryDTO, Formatting.Indented));
-// rn it cannot be started because of cyclic dependency between entities in db model (Profile <-> Gallery <-> Photo)
+Console.WriteLine(JsonConvert.SerializeObject(gallery_DB, Formatting.Indented));
