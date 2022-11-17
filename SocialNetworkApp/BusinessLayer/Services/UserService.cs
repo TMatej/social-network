@@ -8,12 +8,12 @@ namespace BusinessLayer.Services
 {
     public class UserService : IUserService
     {
-        public readonly IRepository<User> repository;
+        public readonly IRepository<User> userRepository;
         private IUnitOfWork uow;
 
         public UserService(IRepository<User> repository, IUnitOfWork uow)
         {
-            this.repository = repository;
+            this.userRepository = repository;
             this.uow = uow;
         }
 
@@ -22,11 +22,12 @@ namespace BusinessLayer.Services
             User user = new User
             {
                 Username = registerDTO.Username,
+                // TODO: add hashing
                 PasswordHash = registerDTO.Password,
                 PrimaryEmail = registerDTO.Email,
             };
 
-            repository.Insert(user);
+            userRepository.Insert(user);
             uow.Commit(); // always neccessary to call iow.Commit() to persist the data into DB
         }
     }

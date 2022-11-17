@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using BusinessLayer.Config;
 using BusinessLayer.Contracts;
 using BusinessLayer.DTOs.Query;
 using BusinessLayer.DTOs.Query.Filters;
