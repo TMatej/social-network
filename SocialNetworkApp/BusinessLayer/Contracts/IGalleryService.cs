@@ -9,5 +9,6 @@ namespace BusinessLayer.Contracts
 {
     public interface IGalleryService : IGenericService<Gallery>
     {
+        public void AddPhotoToGallery();
     }
 }

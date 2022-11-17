@@ -15,10 +15,16 @@ namespace BusinessLayer.Services
 {
     public class GalleryService : GenericService<Gallery>, IGalleryService
     {
-        public GalleryService(IRepository<Gallery> repository, IMapper mapper, IUnitOfWork uow) : base(repository, mapper, uow)
+        protected readonly IMapper _mapper;
+
+        public GalleryService(IRepository<Gallery> repository, IMapper mapper, IUnitOfWork uow) : base(repository, uow)
         {
+            _mapper = mapper;
         }
 
-
+        public void AddPhotoToGallery()
+        {
+            throw new NotImplementedException();
+        }
     }
 }
