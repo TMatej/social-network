@@ -16,9 +16,9 @@ namespace Infrastructure.EFCore.UnitOfWork
             Context = dbContext;
         }
 
-        public async Task Commit()
+        public void Commit()
         {
-            await Context.SaveChangesAsync();
+            Context.SaveChanges();
         }
 
         public void Dispose()

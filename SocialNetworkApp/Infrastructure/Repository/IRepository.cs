@@ -13,5 +13,7 @@
         void Delete(TEntity entityToDelete);
 
         void Update(TEntity entityToUpdate);
+
+        void SaveChanges();
     }
 }

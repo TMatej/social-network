@@ -23,12 +23,14 @@ namespace BusinessLayer.Services
         {
             Guard.Against.Null(id);
             _repository.Delete(id);
+            _uow.Commit();
         }
 
         public void Delete(TEntity entityToDelete)
         {
             Guard.Against.Null(entityToDelete);
             _repository.Delete(entityToDelete);
+            _uow.Commit();
         }
 
         public IEnumerable<TEntity> GetAll()
@@ -46,12 +48,14 @@ namespace BusinessLayer.Services
         {
             Guard.Against.Null(entity);
             _repository.Insert(entity);
+            _uow.Commit();
         }
 
         public void Update(TEntity entityToUpdate)
         {
             Guard.Against.Null(entityToUpdate);
             _repository.Update(entityToUpdate);
+            _uow.Commit();
         }
     }
 }

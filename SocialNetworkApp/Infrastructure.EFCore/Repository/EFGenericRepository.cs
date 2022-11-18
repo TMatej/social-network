@@ -50,5 +50,10 @@ namespace Infrastructure.EFCore.Repository
             dbSet.Attach(entityToUpdate);
             uow.Context.Entry(entityToUpdate).State = EntityState.Modified;
         }
+
+        public void SaveChanges()
+        {
+            uow.Context.SaveChanges();
+        }
     }
 }

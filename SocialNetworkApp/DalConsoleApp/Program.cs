@@ -5,11 +5,13 @@ using BusinessLayer.DTOs.Galery;
 using DalConsoleApp;
 using DataAccessLayer;
 using DataAccessLayer.Entity;
+using Infrastructure.Query;
 using Newtonsoft.Json;
 using Profile = DataAccessLayer.Entity.Profile;
 
 using var ioc = new Bootstrapper();
 using var scope = ioc.Container.BeginLifetimeScope();
+
 var userService = scope.Resolve<IUserService>();
 var galleryService = scope.Resolve<IGalleryService>();
 var mapper = scope.Resolve<IMapper>();
@@ -61,9 +63,9 @@ using (var db_1 = scope.Resolve<SocialNetworkDBContext>())
     var db_user = db_1.Users.Where(u => u.Username.Equals(user.Username)).FirstOrDefault();
     var db_profile = db_1.Profiles.Where(p => p.UserId == user.Id).FirstOrDefault();
     var db_gallery = db_1.Galeries.Where(g => g.ProfileId == profile.Id).FirstOrDefault();
-
+    var serializerSettings = new JsonSerializerSettings() { ReferenceLoopHandling = ReferenceLoopHandling.Ignore };
     Console.WriteLine("db_user:");
-    Console.WriteLine(JsonConvert.SerializeObject(db_user, Formatting.Indented));
+    Console.WriteLine(JsonConvert.SerializeObject(db_user, Formatting.Indented, serializerSettings));
     /*
     {
       "Id": 3,
@@ -79,7 +81,6 @@ using (var db_1 = scope.Resolve<SocialNetworkDBContext>())
     }*/
     Console.WriteLine();
     Console.WriteLine("db_profile:");
-    var serializerSettings = new JsonSerializerSettings() { ReferenceLoopHandling = ReferenceLoopHandling.Ignore };
     Console.WriteLine(JsonConvert.SerializeObject(db_profile, Formatting.Indented, serializerSettings));
     /*
      {
@@ -162,9 +163,14 @@ await userService.Register(new BusinessLayer.DTOs.RegisterDTO
     Password = "skdfjbe33n2l",
 });
 
+var query = scope.Resolve<IQuery<User>>();
 using (var db_2 = scope.Resolve<SocialNetworkDBContext>())
 {
     db_2.Users.ToList().ForEach(user => Console.WriteLine(user.Username));
+    var query_user = query
+        .Where<string>(a => a == "serviceUser", "Username")
+        .Execute();  
+    Console.WriteLine(JsonConvert.SerializeObject(query_user, Formatting.Indented));
 }
 
 var gallery_DB = galleryService.GetByID(2);

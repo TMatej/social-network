@@ -27,7 +27,7 @@ namespace BusinessLayer.Services
             };
 
             repository.Insert(user);
-            await uow.Commit(); // always neccessary to call iow.Commit() to persist the data into DB
+            uow.Commit(); // always neccessary to call iow.Commit() to persist the data into DB
         }
     }
 }
