@@ -39,7 +39,7 @@ namespace BusinessLayer.Services
 
             var file = fileService.saveFile(avatar);
             var profile = GetByID(profileId);
-            profile.FileId = file.Id;
+            profile.FileEntityId = file.Id;
             Update(profile);
         }
     }

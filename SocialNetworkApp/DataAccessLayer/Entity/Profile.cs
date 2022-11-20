@@ -13,9 +13,9 @@ namespace DataAccessLayer.Entity
 
         public Sex? Sex { get; set; }
 
-        public int FileId { get; set; }
+        public int? FileEntityId { get; set; }
 
-        public File File { get; set; }
+        public FileEntity FileEntity { get; set; }
 
         public List<Gallery> Galeries { get; set; }
 

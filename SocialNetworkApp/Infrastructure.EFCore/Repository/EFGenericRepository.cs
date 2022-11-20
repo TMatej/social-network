@@ -26,9 +26,9 @@ namespace Infrastructure.EFCore.Repository
             return dbSet.Find(id);
         }
 
-        public virtual TEntity Insert(TEntity entity)
+        public virtual void Insert(TEntity entity)
         {
-            return dbSet.Add(entity);
+            dbSet.Add(entity);
         }
 
         public virtual void Delete(object id)

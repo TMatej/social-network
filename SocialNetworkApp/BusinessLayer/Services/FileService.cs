@@ -1,7 +1,7 @@
-﻿using Infrastructure.Repository;
+﻿using DataAccessLayer.Entity;
+using Infrastructure.Repository;
 using Microsoft.AspNetCore.Http;
 using System.Configuration;
-using File = DataAccessLayer.Entity.File;
 
 namespace BusinessLayer.Services
 {
@@ -9,14 +9,14 @@ namespace BusinessLayer.Services
     {
         public static string filesPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, ConfigurationManager.AppSettings["filesPath"] ?? "temp/files");
 
-        public readonly IRepository<File> fileRepo;
+        public readonly IRepository<FileEntity> fileRepo;
 
-        public FileService(IRepository<File> fileRepo)
+        public FileService(IRepository<FileEntity> fileRepo)
         {
             this.fileRepo = fileRepo;
         }
 
-        public File saveFile(IFormFile file)
+        public FileEntity saveFile(IFormFile file)
         {
             long size = file.Length;
 
@@ -25,7 +25,7 @@ namespace BusinessLayer.Services
                 throw new ArgumentException("file is empty");
             }
 
-            var fileEntity = new File()
+            var fileEntity = new FileEntity()
             {
                 Name = file.FileName,
                 Guid = Guid.NewGuid(),
@@ -33,7 +33,7 @@ namespace BusinessLayer.Services
 
             fileRepo.Insert(fileEntity);
 
-            using (var stream = System.IO.File.Create($"{filesPath}/{fileEntity.Guid}"))
+            using (var stream = File.Create($"{filesPath}/{fileEntity.Guid}"))
             {
                 file.CopyTo(stream);
             }
@@ -44,7 +44,7 @@ namespace BusinessLayer.Services
         public byte[] GetFile(int id)
         {
             var file = fileRepo.GetByID(id);
-            return System.IO.File.ReadAllBytes($"{filesPath}/{file.Guid}");
+            return File.ReadAllBytes($"{filesPath}/{file.Guid}");
         }
     }
 }

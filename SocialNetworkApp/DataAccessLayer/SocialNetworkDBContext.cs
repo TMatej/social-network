@@ -157,6 +157,10 @@ namespace DataAccessLayer
                 .WithMany(c => c.Comments)
                 .HasForeignKey(c => c.CommentableId);
 
+            modelBuilder.Entity<FileEntity>()
+                .HasIndex(f => f.Guid)
+                .IsUnique();
+
             modelBuilder.Seed();
 
             base.OnModelCreating(modelBuilder);

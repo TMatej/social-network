@@ -2,12 +2,11 @@
 
 namespace DataAccessLayer.Entity
 {
-    public class File : IEntity
+    public class FileEntity : IEntity
     {
         [Key]
         public int Id { get; set; }
 
-        [Key]
         [Required]
         public Guid Guid { get; set; }
 
