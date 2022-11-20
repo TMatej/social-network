@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
-using BusinessLayer.DTOs.Gallery;
-using BusinessLayer.DTOs.Gallery.Filters;
-using BusinessLayer.DTOs.Gallery.Results;
+using BusinessLayer.DTOs.Query;
+using BusinessLayer.DTOs.Query.Filters;
+using BusinessLayer.DTOs.Query.Results;
 using DataAccessLayer.Entity;
 using Infrastructure.Query;
 using System;
@@ -12,16 +12,15 @@ using System.Threading.Tasks;
 
 namespace BusinessLayer.QueryObjects
 {
-    public class GalleryQueryObject : GenericQueryObject<Gallery>
+    public class GalleryQueryObject
     {
-        public GalleryQueryObject(IMapper mapper, IQuery<Gallery> galleryQuery) : base(mapper, galleryQuery)
-        { }
+        private IMapper _mapper;
+        private IQuery<Gallery> _galleryQuery;
 
-        protected override IQuery<Gallery> ApplyWhere(GenericFilterDTO filter)
+        public GalleryQueryObject(IMapper mapper, IQuery<Gallery> galleryQuery)
         {
-            var query = _entityQuery
-                .Where(filter.FilterWhereExpression, filter.WhereColumnName);
-            return query;
+            _mapper = mapper;
+            _galleryQuery = galleryQuery;
         }
     }
 }

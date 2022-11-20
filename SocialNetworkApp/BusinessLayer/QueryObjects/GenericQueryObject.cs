@@ -1,5 +1,4 @@
-﻿using BusinessLayer.DTOs.Gallery.Results;
-using BusinessLayer.DTOs.Gallery;
+﻿using BusinessLayer.DTOs.Query.Results;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,11 +7,11 @@ using System.Threading.Tasks;
 using AutoMapper;
 using DataAccessLayer.Entity;
 using Infrastructure.Query;
-using BusinessLayer.DTOs.Gallery.Filters;
+using BusinessLayer.DTOs.Query.Filters;
 
 namespace BusinessLayer.QueryObjects
 {
-    public abstract class GenericQueryObject<TEntity> 
+    public class GenericQueryObject<TEntity> 
         where TEntity : class, IEntity, new()
         
     {
@@ -24,16 +23,32 @@ namespace BusinessLayer.QueryObjects
             _mapper = mapper;
             _entityQuery = entityQuery;
         }
-        public QueryResultDto<TEntityDTO> ExecuteQuery<TColumnType, TEntityDTO>(GenericFilterDTO filter) 
-            where TColumnType : IComparable<TColumnType>
-            where TEntityDTO : class, new()
+        public GenericQueryObject<TEntity> ApplyWhereClause<TWhereType>(GenericWhereDTO<TWhereType> filter)
+            where TWhereType : IComparable<TWhereType>
         {
-            var query = ApplyWhere(filter);
+            if (!string.IsNullOrEmpty(filter.WhereColumnName))
+            {
+                _entityQuery = _entityQuery.Where(filter.FilterWhereExpression, filter.WhereColumnName);
+            }
 
+            return this;
+        }
+
+        public GenericQueryObject<TEntity> ApplyOrderByClause<TOrderType>(GenericOrderByDTO<TOrderType> filter)
+            where TOrderType : IComparable<TOrderType>
+        {
             if (!string.IsNullOrEmpty(filter.OrderingColumnName))
             {
-                query = query.OrderBy<TColumnType>(filter.OrderingColumnName, filter.IsAscending);
+                _entityQuery = _entityQuery.OrderBy<TOrderType>(filter.OrderingColumnName, filter.IsAscending);
             }
+
+            return this;
+        }
+
+        public QueryResultDto<TEntityDTO> ExecuteQuery<TEntityDTO>(GenericFilterDTO filter) 
+            where TEntityDTO : class, new()
+        {
+            var query = _entityQuery;
 
             if (filter.RequestedPageNumber.HasValue)    // create paging only if the requested page was specified
             {
@@ -50,7 +65,5 @@ namespace BusinessLayer.QueryObjects
 
             return _mapper.Map<QueryResultDto<TEntityDTO>>(query.Execute());
         }
-
-        protected abstract IQuery<TEntity> ApplyWhere(GenericFilterDTO filter);
     }
 }

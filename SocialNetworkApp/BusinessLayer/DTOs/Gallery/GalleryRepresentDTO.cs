@@ -1,7 +1,7 @@
 ﻿using BusinessLayer.DTOs.Photo;
 using BusinessLayer.DTOs.Profile;
 
-namespace BusinessLayer.DTOs.Gallery
+namespace BusinessLayer.DTOs.Query
 {
     public class GalleryRepresentDTO
     {

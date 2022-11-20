@@ -1,5 +1,5 @@
-﻿using BusinessLayer.DTOs.Gallery;
-using BusinessLayer.DTOs.Gallery.Results;
+﻿using BusinessLayer.DTOs.Query;
+using BusinessLayer.DTOs.Query.Results;
 using BusinessLayer.DTOs.Photo;
 using BusinessLayer.DTOs.Profile;
 using DataAccessLayer.Entity;
