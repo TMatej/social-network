@@ -16,6 +16,7 @@ namespace DataAccessLayer
         public DbSet<Conversation> Conversations { get; set; }
         public DbSet<ConversationParticipant> ConversationParticipants { get; set; }
         public DbSet<Event> Events { get; set; }
+        public DbSet<FileEntity> FileEntities { get; set; }
         public DbSet<EventParticipant> EventParticipants { get; set; }
         public DbSet<Gallery> Galeries { get; set; }
         public DbSet<Group> Groups { get; set; }

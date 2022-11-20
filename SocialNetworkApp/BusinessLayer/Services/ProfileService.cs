@@ -1,5 +1,6 @@
 ﻿using Ardalis.GuardClauses;
 using AutoMapper;
+using BusinessLayer.Contracts;
 using BusinessLayer.DTOs.Post;
 using DataAccessLayer.Entity;
 using Infrastructure.Repository;
@@ -9,26 +10,24 @@ using Profile = DataAccessLayer.Entity.Profile;
 
 namespace BusinessLayer.Services
 {
-    internal class ProfileService : GenericService<Profile>
+    internal class ProfileService : GenericService<Profile>, IProfileService
     {
         private IMapper mapper;
         private PostService postService;
-        private ProfileService profileService;
         private FileService fileService;
 
-        public ProfileService(IRepository<Profile> repository, PostService postService, FileService fileService, ProfileService profileService, IUnitOfWork uow, IMapper mapper) : base(repository, uow)
+        public ProfileService(IRepository<Profile> repository, PostService postService, FileService fileService, IUnitOfWork uow, IMapper mapper) : base(repository, uow)
         {
             this.mapper = mapper;
             this.postService = postService;
             this.fileService = fileService;
-            this.profileService = profileService;
         }
 
-        public void addPost(Profile profile, int userId, PostCreateDTO postDTO)
+        public void addPost(int profileId, int userId, PostCreateDTO postDTO)
         {
             Post post = mapper.Map<Post>(postDTO);
             post.UserId = userId;
-            post.PostableId = profile.Id;
+            post.PostableId = profileId;
 
             postService.Insert(post);
         }
