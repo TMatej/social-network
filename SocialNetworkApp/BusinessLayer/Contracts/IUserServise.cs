@@ -1,14 +1,11 @@
 ﻿using BusinessLayer.DTOs;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using DataAccessLayer.Entity;
 
 namespace BusinessLayer.Contracts
 {
-    public interface IUserService
+    public interface IUserService : IGenericService<User>
     {
         public Task Register(RegisterDTO registerDTO);
+        public void addContacts(int userId, List<int> contactIds);
     }
 }

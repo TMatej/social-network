@@ -25,6 +25,8 @@ namespace DataAccessLayer.Entity
         [Required]
         public DateTime Timestamp { get; set; }
 
+        public int? AttachmentId { get; set; }
+
         public Attachment Attachment { get; set; }
     }
 }

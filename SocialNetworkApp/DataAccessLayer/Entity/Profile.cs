@@ -14,7 +14,11 @@ namespace DataAccessLayer.Entity
 
         public Sex? Sex { get; set; }
 
-        public List<Galery> Galeries { get; set; }
+        public int? FileEntityId { get; set; }
+
+        public FileEntity FileEntity { get; set; }
+
+        public List<Gallery> Galeries { get; set; }
 
         [MaxLength(20)]
         public string PhoneNumber { get; set; }
