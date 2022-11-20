@@ -5,7 +5,7 @@ using Infrastructure.UnitOfWork;
 
 namespace BusinessLayer.Services
 {
-    internal class PostService : GenericService<Post>, IPostService
+    public class PostService : GenericService<Post>, IPostService
     {
         public PostService(IRepository<Post> repository, IUnitOfWork uow) : base(repository, uow)
         {

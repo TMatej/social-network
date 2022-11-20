@@ -1,4 +1,5 @@
 ﻿using Ardalis.GuardClauses;
+using BusinessLayer.Contracts;
 using DataAccessLayer.Entity;
 using DataAccessLayer.Entity.JoinEntity;
 using Infrastructure.Repository;
@@ -6,7 +7,7 @@ using Infrastructure.UnitOfWork;
 
 namespace BusinessLayer.Services
 {
-    internal class ConversationService : GenericService<Conversation>
+    public class ConversationService : GenericService<Conversation>, IConversationService
     {
         private readonly IRepository<Conversation> conversationRepo;
         private readonly IRepository<Message> messageRepo;

@@ -10,7 +10,7 @@ using Profile = DataAccessLayer.Entity.Profile;
 
 namespace BusinessLayer.Services
 {
-    internal class ProfileService : GenericService<Profile>, IProfileService
+    public class ProfileService : GenericService<Profile>, IProfileService
     {
         private IMapper mapper;
         private PostService postService;

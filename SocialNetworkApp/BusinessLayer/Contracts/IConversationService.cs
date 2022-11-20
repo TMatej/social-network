@@ -2,7 +2,7 @@
 
 namespace BusinessLayer.Contracts
 {
-    internal interface IConversationService : IGenericService<Conversation>
+    public interface IConversationService : IGenericService<Conversation>
     {
         public void createConversation(int creatorId, List<int> participants);
         public void addParticipant(int conversationId, int userId);

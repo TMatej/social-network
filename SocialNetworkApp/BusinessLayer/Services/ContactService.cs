@@ -4,7 +4,7 @@ using Infrastructure.UnitOfWork;
 
 namespace BusinessLayer.Services
 {
-    internal class ContactService : GenericService<Contact>
+    public class ContactService : GenericService<Contact>
     {
         public ContactService(IRepository<Contact> repository, IUnitOfWork uow) : base(repository, uow)
         {
