@@ -16,14 +16,10 @@ namespace BusinessLayer.Services
             groupRepository = repository;
             this.uow = uow;
         }
-        public IEnumerable<Group> GetByRole(GroupRole role)
-        {
-            throw new NotImplementedException();
-        }
-
         public IEnumerable<Group> GetByUser(User user)
         {
-            throw new NotImplementedException();
+            var groups = groupRepository.GetAll().Where(g => g.GroupMembers.Select(m => m.UserId).Contains(user.Id));
+            return groups;
         }
     }
 }

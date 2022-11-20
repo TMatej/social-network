@@ -10,7 +10,5 @@ namespace BusinessLayer.Contracts
     public interface IGroupService
     {
         public IEnumerable<Group> GetByUser(User user);
-
-        public IEnumerable<Group> GetByRole(GroupRole role);
     }
 }
