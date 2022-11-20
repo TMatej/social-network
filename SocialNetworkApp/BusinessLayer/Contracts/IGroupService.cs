@@ -10,5 +10,7 @@ namespace BusinessLayer.Contracts
     public interface IGroupService
     {
         public IEnumerable<Group> GetByUser(User user);
+        public void AddToGroup(User user, Group group, GroupRole groupRole);
+        public void RemoveFromGroup(User user, Group group);
     }
 }

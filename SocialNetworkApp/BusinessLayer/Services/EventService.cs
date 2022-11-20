@@ -14,22 +14,19 @@ using System.Threading.Tasks;
 
 namespace BusinessLayer.Services
 {
-    internal class EventService :  IEventService
+    internal class EventService : GenericService<Event>, IEventService
     {
-
-        IRepository<Event> eventRepository;
-        IRepository<User> userRepository;
-        IUnitOfWork uow;
-public EventService(IRepository<Event> eventRepository, IRepository<User> userRepository, IUnitOfWork uow)
+        readonly IRepository<User> userRepository;
+        readonly IRepository<EventParticipant> participantRepository;
+        public EventService(IRepository<User> userRepository, IRepository<Event> repository, IRepository<EventParticipant> participantRepository, IUnitOfWork uow) : base(repository, uow)
         {
-            this.eventRepository = eventRepository;
             this.userRepository = userRepository;
-            this.uow = uow;
+            this.participantRepository = participantRepository;
         }
 
         public IEnumerable<User> FindAllParticipants(Event eventDTO)
         {
-            var _event = eventRepository.GetByID(eventDTO.Id);
+            var _event = _repository.GetByID(eventDTO.Id);
             var participants = _event.EventParticipants.Select(p => p.User);
             return participants;
 
@@ -37,31 +34,58 @@ public EventService(IRepository<Event> eventRepository, IRepository<User> userRe
 
         public IEnumerable<Event> FindByCreator(User creator)
         {
-            var events = eventRepository.GetAll().Where(e => e.UserId == creator.Id);
+            var events = _repository.GetAll().Where(e => e.UserId == creator.Id);
             return events;
         }
 
         public IEnumerable<Event> FindByName(string name)
         {
-            var events = eventRepository.GetAll().Where(e => e.Title.Contains(name, StringComparison.CurrentCultureIgnoreCase));
+            var events = _repository.GetAll().Where(e => e.Title.Contains(name, StringComparison.CurrentCultureIgnoreCase));
             return events;
 
         }
 
         public IEnumerable<Event> FindByParticipant(User participant)
         {
-            var events = eventRepository.GetAll().Where(e => e.EventParticipants.Select(p => p.UserId).Contains(participant.Id));
+            var events = _repository.GetAll().Where(e => e.EventParticipants.Select(p => p.UserId).Contains(participant.Id));
             return events;
         }
 
         public IEnumerable<User> FindParticipatingFriends(User participant, Event _event)
         {
-;
             var user = userRepository.GetByID(participant.Id);
             var participants = _event.EventParticipants.Select(p => p.User);
             var contactsID = user.Contacts.Select(c => c.User2Id);
-            var friends = participants.Where(p=>contactsID.Contains(p.Id));
+            var friends = participants.Where(p => contactsID.Contains(p.Id));
             return friends;
+        }
+        public IEnumerable<Event> FindByGroup(Group group)
+        {
+            var events = _repository.GetAll().Where(e => e.GroupId == group.Id);
+            return events;
+        }
+        public void AddParticipant(User user, Event _event, ParticipationType participationType)
+        {
+            {
+                var participant = new EventParticipant()
+                {
+                    EventId = _event.Id,
+                    UserId = user.Id,
+                    ParticipationTypeId = participationType.Id
+                };
+
+                participantRepository.Insert(participant);
+            }
+            _uow.Commit();
+        }
+        public void RemoveParticipant(User user, Event _event)
+        {
+            var participant = participantRepository.GetAll().Where(p => p.EventId == _event.Id && p.UserId == user.Id).FirstOrDefault();
+            if (participant != null)
+            {
+                participantRepository.Delete(participant);
+            }
+            _uow.Commit();
         }
     }
 }

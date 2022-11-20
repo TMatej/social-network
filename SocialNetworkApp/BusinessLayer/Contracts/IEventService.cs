@@ -10,6 +10,10 @@ namespace BusinessLayer.Contracts
         public IEnumerable<Event> FindByCreator(User creator);
         public IEnumerable<User> FindAllParticipants(Event _event);
         public IEnumerable<User> FindParticipatingFriends(User participant, Event _event);
+        public IEnumerable<Event> FindByGroup(Group group);
+        public void AddParticipant(User user, Event _event, ParticipationType participationType);
+        public void RemoveParticipant(User user, Event _event);
+
 
     }
 }
