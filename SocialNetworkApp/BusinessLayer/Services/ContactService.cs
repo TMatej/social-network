@@ -1,10 +1,11 @@
-﻿using DataAccessLayer.Entity.JoinEntity;
+﻿using BusinessLayer.Contracts;
+using DataAccessLayer.Entity.JoinEntity;
 using Infrastructure.Repository;
 using Infrastructure.UnitOfWork;
 
 namespace BusinessLayer.Services
 {
-    public class ContactService : GenericService<Contact>
+    public class ContactService : GenericService<Contact>, IContactService
     {
         public ContactService(IRepository<Contact> repository, IUnitOfWork uow) : base(repository, uow)
         {

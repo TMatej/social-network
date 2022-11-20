@@ -13,10 +13,10 @@ namespace BusinessLayer.Services
     public class ProfileService : GenericService<Profile>, IProfileService
     {
         private IMapper mapper;
-        private PostService postService;
-        private FileService fileService;
+        private IPostService postService;
+        private IFileService fileService;
 
-        public ProfileService(IRepository<Profile> repository, PostService postService, FileService fileService, IUnitOfWork uow, IMapper mapper) : base(repository, uow)
+        public ProfileService(IRepository<Profile> repository, IPostService postService, IFileService fileService, IUnitOfWork uow, IMapper mapper) : base(repository, uow)
         {
             this.mapper = mapper;
             this.postService = postService;

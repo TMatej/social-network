@@ -1,11 +1,12 @@
-﻿using DataAccessLayer.Entity;
+﻿using BusinessLayer.Contracts;
+using DataAccessLayer.Entity;
 using Infrastructure.Repository;
 using Microsoft.AspNetCore.Http;
 using System.Configuration;
 
 namespace BusinessLayer.Services
 {
-    public class FileService
+    public class FileService : IFileService
     {
         public static string filesPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, ConfigurationManager.AppSettings["filesPath"] ?? "temp/files");
 

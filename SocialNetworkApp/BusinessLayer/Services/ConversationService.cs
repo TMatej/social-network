@@ -9,17 +9,13 @@ namespace BusinessLayer.Services
 {
     public class ConversationService : GenericService<Conversation>, IConversationService
     {
-        private readonly IRepository<Conversation> conversationRepo;
         private readonly IRepository<Message> messageRepo;
         private readonly IRepository<ConversationParticipant> conversationParticipantRepo;
-        private readonly FileService fileService;
 
-        public ConversationService(IRepository<Conversation> conversationRepo, IRepository<ConversationParticipant> conversationParticipantRepo, IRepository<Message> messageRepo, FileService fileService, IUnitOfWork uow) : base(conversationRepo, uow)
+        public ConversationService(IRepository<Conversation> conversationRepo, IRepository<ConversationParticipant> conversationParticipantRepo, IRepository<Message> messageRepo, IUnitOfWork uow) : base(conversationRepo, uow)
         {
-            this.conversationRepo = conversationRepo;
             this.conversationParticipantRepo = conversationParticipantRepo;
             this.messageRepo = messageRepo;
-            this.fileService = fileService;
         }
 
         public void createConversation(int creatorId, List<int> participants)

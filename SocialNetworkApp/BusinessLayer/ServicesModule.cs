@@ -15,6 +15,26 @@ namespace BusinessLayer
                 .As<IUserService>()
                 .InstancePerLifetimeScope()
                 .OnActivated(e => Console.WriteLine($"Build {e.Instance.GetType().Name}"));
+            containerBuilder.RegisterType<ContactService>()
+                .As<IContactService>()
+                .InstancePerLifetimeScope()
+                .OnActivated(e => Console.WriteLine($"Build {e.Instance.GetType().Name}"));
+            containerBuilder.RegisterType<ConversationService>()
+                .As<IConversationService>()
+                .InstancePerLifetimeScope()
+                .OnActivated(e => Console.WriteLine($"Build {e.Instance.GetType().Name}"));
+            containerBuilder.RegisterType<FileService>()
+                .As<IFileService>()
+                .InstancePerLifetimeScope()
+                .OnActivated(e => Console.WriteLine($"Build {e.Instance.GetType().Name}"));
+            containerBuilder.RegisterType<PostService>()
+                .As<IPostService>()
+                .InstancePerLifetimeScope()
+                .OnActivated(e => Console.WriteLine($"Build {e.Instance.GetType().Name}"));
+            containerBuilder.RegisterType<ProfileService>()
+                .As<IProfileService>()
+                .InstancePerLifetimeScope()
+                .OnActivated(e => Console.WriteLine($"Build {e.Instance.GetType().Name}"));
             containerBuilder.RegisterType<GalleryQueryObject>()
                 .AsSelf()
                 .InstancePerLifetimeScope()

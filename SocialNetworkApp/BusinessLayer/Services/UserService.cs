@@ -20,6 +20,7 @@ namespace BusinessLayer.Services
             this.uow = uow;
         }
 
+        // Real auth implementation after shown to us on lectures
         public async Task Register(RegisterDTO registerDTO)
         {
             User user = new User
