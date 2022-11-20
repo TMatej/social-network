@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 
 namespace BusinessLayer.DTOs.Photo
 {
+    /* NOT FINAL CLASS */
     public class PhotoInsertDTO
     {
         public string Title { get; set; }

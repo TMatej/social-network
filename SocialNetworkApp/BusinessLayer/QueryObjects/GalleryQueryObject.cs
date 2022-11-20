@@ -22,5 +22,7 @@ namespace BusinessLayer.QueryObjects
             _mapper = mapper;
             _galleryQuery = galleryQuery;
         }
+
+        /* MIGHT BE USED FOR CUSTOM IMPLEMENTATION OF SPECIFIC FUNCTIONALITY */
     }
 }

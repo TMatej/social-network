@@ -7,6 +7,7 @@ using Infrastructure.UnitOfWork;
 
 namespace BusinessLayer.Services
 {
+    /* CLASS SUITABLE ONLY FOR FACADE CALLS AND LATER REMAPPING INTO DTOs */
     public abstract class GenericService<TEntity> : IGenericService<TEntity> 
         where TEntity : class
     {
