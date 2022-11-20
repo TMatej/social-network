@@ -13,6 +13,10 @@ namespace DataAccessLayer.Entity
 
         public Sex? Sex { get; set; }
 
+        public int FileId { get; set; }
+
+        public File File { get; set; }
+
         public List<Gallery> Galeries { get; set; }
 
         [MaxLength(20)]
