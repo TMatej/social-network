@@ -1,18 +1,17 @@
 ﻿using Autofac;
-using DataAccessLayer;
 using Infrastructure.EFCore.Query;
 using Infrastructure.EFCore.Repository;
 using Infrastructure.EFCore.UnitOfWork;
 using Infrastructure.Query;
 using Infrastructure.Repository;
 using Infrastructure.UnitOfWork;
-using System.Configuration;
 
 namespace Infrastructure.EFCore
 {
-    public static class EFCoreModule
+    public class EFCoreModule : Module
     {
-        public static ContainerBuilder RegisterEFCore(this ContainerBuilder containerBuilder)
+
+        protected override void Load(ContainerBuilder containerBuilder)
         {
             var connectionString = ConfigurationManager.AppSettings["ConnectionString"];
             containerBuilder.Register((ctx) => new SocialNetworkDBContext(connectionString))

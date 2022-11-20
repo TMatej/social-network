@@ -1,5 +1,9 @@
 ﻿using Autofac;
+using Autofac.Core;
 using BusinessLayer;
+using BusinessLayer.Contracts;
+using BusinessLayer.Services;
+using DataAccessLayer;
 using Infrastructure.EFCore;
 
 namespace DalConsoleApp
@@ -10,8 +14,9 @@ namespace DalConsoleApp
         public Bootstrapper()
         {
             var builder = new ContainerBuilder();
-            builder.RegisterEFCore();
-            builder.RegisterBusinessLayer();
+            builder.RegisterModule(new EFCoreModule());
+            builder.RegisterModule(new DALModule());
+            builder.RegisterModule(new ServicesModule());
             Container = builder.Build();
         }
 
