@@ -1,11 +1,12 @@
 ﻿using Autofac;
 using AutoMapper;
 using BusinessLayer.Contracts;
-using BusinessLayer.DTOs.Galery;
+using BusinessLayer.DTOs.Photo;
 using DalConsoleApp;
 using DataAccessLayer;
 using DataAccessLayer.Entity;
 using Infrastructure.Query;
+using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using Profile = DataAccessLayer.Entity.Profile;
 
@@ -15,6 +16,7 @@ using var scope = ioc.Container.BeginLifetimeScope();
 var userService = scope.Resolve<IUserService>();
 var galleryService = scope.Resolve<IGalleryService>();
 var mapper = scope.Resolve<IMapper>();
+var serializerSettings = new JsonSerializerSettings() { ReferenceLoopHandling = ReferenceLoopHandling.Ignore };
 
 var user = new User
 {
@@ -55,7 +57,7 @@ using (var db_1 = scope.Resolve<SocialNetworkDBContext>())
             Title = "My christmas gallery",
             Description = "This is my fav gallery of my christmas experience!",
             CreatedAt = DateTime.Now,
-            ProfileId = profile.Id,
+            ProfileId = 1,
             Photos = new List<Photo> { photo }
         });
     db_1.SaveChanges();
@@ -63,7 +65,6 @@ using (var db_1 = scope.Resolve<SocialNetworkDBContext>())
     var db_user = db_1.Users.Where(u => u.Username.Equals(user.Username)).FirstOrDefault();
     var db_profile = db_1.Profiles.Where(p => p.UserId == user.Id).FirstOrDefault();
     var db_gallery = db_1.Galeries.Where(g => g.ProfileId == profile.Id).FirstOrDefault();
-    var serializerSettings = new JsonSerializerSettings() { ReferenceLoopHandling = ReferenceLoopHandling.Ignore };
     Console.WriteLine("db_user:");
     Console.WriteLine(JsonConvert.SerializeObject(db_user, Formatting.Indented, serializerSettings));
     /*
@@ -173,9 +174,8 @@ using (var db_2 = scope.Resolve<SocialNetworkDBContext>())
     Console.WriteLine(JsonConvert.SerializeObject(query_user, Formatting.Indented));
 }
 
-var gallery_DB = galleryService.GetByID(2);
+var galleryDB = galleryService.GetByID(1);
 Console.WriteLine("Galery:");
-// for some reason generic repo for gallery doesnt retrieve Gallery.Profile, therefore it is null and mapper cannot derive other attributes
 /*
     {
       "Title": "My christmas gallery",
@@ -188,4 +188,26 @@ Console.WriteLine("Galery:");
       "UserId": 0,
       "PhotosCount": 0
     }*/
-Console.WriteLine(JsonConvert.SerializeObject(gallery_DB, Formatting.Indented));
+Console.WriteLine(JsonConvert.SerializeObject(galleryDB, Formatting.Indented));
+
+var profilePhoto = new PhotoInsertDTO
+{
+    Title = "My profile photo",
+    Description = "This is my first profile photo!",
+    CreatedAt = DateTime.Now,
+    Url = "somewhere on the internet"
+};
+
+galleryService.UploadPhotoToGallery(profilePhoto, galleryDB.Id);
+
+using (var db_3 = scope.Resolve<SocialNetworkDBContext>())
+{
+    var advancedGallery = db_3.Galeries
+        .Include("Profile")
+        .Where(g => g.Id == 1);
+    Console.WriteLine(JsonConvert.SerializeObject(advancedGallery, Formatting.Indented, serializerSettings));
+}
+
+Console.WriteLine("Gallery service: Get By id with list of photos:");
+var galleryWithPhotos = galleryService.GetByIdWithListOfPhotos(1);
+Console.WriteLine(JsonConvert.SerializeObject(galleryWithPhotos, Formatting.Indented, serializerSettings));

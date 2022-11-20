@@ -2,6 +2,7 @@
 using DataAccessLayer.Entity;
 using DataAccessLayer.Entity.JoinEntity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 
 namespace DataAccessLayer
 {
@@ -36,8 +37,18 @@ namespace DataAccessLayer
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer(connectionString);
-            optionsBuilder.EnableSensitiveDataLogging();
+            optionsBuilder
+                .UseSqlServer(connectionString)  
+                // logging of SQL commands into console
+                /*
+                .UseLoggerFactory(LoggerFactory.Create(
+                    builder =>
+                    {
+                        builder.AddFilter((category, level) => category == DbLoggerCategory.Database.Command.Name
+                        && level == LogLevel.Information).AddConsole();
+                    }))
+                */
+                .EnableSensitiveDataLogging();
             base.OnConfiguring(optionsBuilder);
         }
 

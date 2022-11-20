@@ -11,6 +11,8 @@ namespace Infrastructure.Query
 
         IQuery<TEntity> Page(int pageToFetch, int pageSize = 10);
 
-        IEnumerable<TEntity> Execute();
+        IQuery<TEntity> Include(string columnname);
+
+        QueryResult<TEntity> Execute();
     }
 }

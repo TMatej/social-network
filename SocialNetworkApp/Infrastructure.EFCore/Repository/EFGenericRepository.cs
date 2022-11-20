@@ -1,10 +1,11 @@
-﻿using Infrastructure.EFCore.UnitOfWork;
+﻿using DataAccessLayer.Entity;
+using Infrastructure.EFCore.UnitOfWork;
 using Infrastructure.Repository;
 using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.EFCore.Repository
 {
-    public class EFGenericRepository<TEntity> : IRepository<TEntity> where TEntity : class
+    public class EFGenericRepository<TEntity> : IRepository<TEntity> where TEntity : class, IEntity
     {
         internal EFUnitOfWork uow;
         internal DbSet<TEntity> dbSet;
