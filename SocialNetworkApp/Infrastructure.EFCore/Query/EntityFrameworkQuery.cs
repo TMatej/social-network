@@ -3,6 +3,7 @@ using DataAccessLayer.Entity;
 using Infrastructure.EFCore.ExpressionHelpers;
 using Infrastructure.EFCore.UnitOfWork;
 using Infrastructure.Query;
+using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 
 namespace Infrastructure.EFCore.Query
@@ -18,11 +19,16 @@ namespace Infrastructure.EFCore.Query
             UnitOfWork = unitOfWork;
         }
 
-        public override IEnumerable<TEntity> Execute()
+        public override QueryResult<TEntity> Execute()
         {
             IQueryable<TEntity> query = Dbcontext.Set<TEntity>();
 
-            if (WherePredicate.Capacity != 0)
+            if (IncludeParameters.Count != 0)
+            {
+                query = ApplyInclude(query);
+            }
+
+            if (WherePredicate.Count != 0)
             {
                 query = ApplyWhere(query);
             }
@@ -36,9 +42,19 @@ namespace Infrastructure.EFCore.Query
             {
                 query = Pagination(query);
             }
+            var result = query.ToList();
 
-            return query.ToList();
+            return new QueryResult<TEntity>(result.Count, PaginationContainer?.PageToFetch, PaginationContainer?.PageSize, result);
+        }
 
+        private IQueryable<TEntity> ApplyInclude(IQueryable<TEntity> query)
+        {
+            foreach (var include in IncludeParameters)
+            {
+                query = query.Include(include);
+            }
+
+            return query;
         }
 
         private IQueryable<TEntity> ApplyWhere(IQueryable<TEntity> query)
@@ -88,7 +104,7 @@ namespace Infrastructure.EFCore.Query
 
         private IQueryable<TEntity> OrderBy(IQueryable<TEntity> query)
         {
-            var orderByColumn = OrderByContainer.Value.tableName;
+            var orderByColumn = OrderByContainer.Value.columnName;
             var isAscending = OrderByContainer.Value.isAscending;
             var argumentType = OrderByContainer.Value.argumentType;
 

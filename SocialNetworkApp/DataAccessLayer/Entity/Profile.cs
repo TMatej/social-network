@@ -13,7 +13,7 @@ namespace DataAccessLayer.Entity
 
         public Sex? Sex { get; set; }
 
-        public List<Galery> Galeries { get; set; }
+        public List<Gallery> Galeries { get; set; }
 
         [MaxLength(20)]
         public string PhoneNumber { get; set; }

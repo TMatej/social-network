@@ -2,6 +2,7 @@
 using DataAccessLayer.Entity;
 using DataAccessLayer.Entity.JoinEntity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 
 namespace DataAccessLayer
 {
@@ -16,7 +17,7 @@ namespace DataAccessLayer
         public DbSet<ConversationParticipant> ConversationParticipants { get; set; }
         public DbSet<Event> Events { get; set; }
         public DbSet<EventParticipant> EventParticipants { get; set; }
-        public DbSet<Galery> Galeries { get; set; }
+        public DbSet<Gallery> Galeries { get; set; }
         public DbSet<Group> Groups { get; set; }
         public DbSet<GroupMember> GroupMembers { get; set; }
         public DbSet<GroupRole> GroupRoles { get; set; }
@@ -36,8 +37,18 @@ namespace DataAccessLayer
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer(connectionString);
-            optionsBuilder.EnableSensitiveDataLogging();
+            optionsBuilder
+                .UseSqlServer(connectionString)  
+                // logging of SQL commands into console
+                /*
+                .UseLoggerFactory(LoggerFactory.Create(
+                    builder =>
+                    {
+                        builder.AddFilter((category, level) => category == DbLoggerCategory.Database.Command.Name
+                        && level == LogLevel.Information).AddConsole();
+                    }))
+                */
+                .EnableSensitiveDataLogging();
             base.OnConfiguring(optionsBuilder);
         }
 
@@ -64,7 +75,7 @@ namespace DataAccessLayer
             modelBuilder.Entity<Profile>().OwnsOne(p => p.Address);
 
             /* Set One-To-Many relationship */
-            modelBuilder.Entity<Galery>()
+            modelBuilder.Entity<Gallery>()
                 .HasOne(g => g.Profile)
                 .WithMany(p => p.Galeries)
                 .HasForeignKey(a => a.ProfileId);

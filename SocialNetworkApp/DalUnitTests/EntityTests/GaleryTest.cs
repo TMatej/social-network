@@ -38,7 +38,7 @@ namespace DalUnitTests.EntityTests
         {
             using (var db = new SocialNetworkDBContext(connectionString))
             {
-                db.Galeries.Add(new Galery
+                db.Galeries.Add(new Gallery
                 {
                     Title = "Example Galery",
                     Description = "This is an example galery",
@@ -58,7 +58,7 @@ namespace DalUnitTests.EntityTests
         {
             using (var db = new SocialNetworkDBContext(connectionString))
             {
-                db.Galeries.Add(new Galery
+                db.Galeries.Add(new Gallery
                 {
                     Description = "This is an example galery",
                     CreatedAt = DateTime.Now,
@@ -71,7 +71,7 @@ namespace DalUnitTests.EntityTests
         {
             using (var db = new SocialNetworkDBContext(connectionString))
             {
-                db.Galeries.Add(new Galery
+                db.Galeries.Add(new Gallery
                 {
                     Title = new String('l', 500),
                     Description = new String('l', 5000),
