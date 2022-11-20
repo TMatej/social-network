@@ -1,4 +1,4 @@
-﻿using BusinessLayer.DTOs.Query;
+using BusinessLayer.DTOs.Query;
 using BusinessLayer.DTOs.Photo;
 using DataAccessLayer.Entity;
 using System;

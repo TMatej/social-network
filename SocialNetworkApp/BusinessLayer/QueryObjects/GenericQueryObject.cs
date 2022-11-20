@@ -1,19 +1,14 @@
-﻿using BusinessLayer.DTOs.Query.Results;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using AutoMapper;
+﻿using AutoMapper;
+using BusinessLayer.DTOs.Query.Filters;
+using BusinessLayer.DTOs.Query.Results;
 using DataAccessLayer.Entity;
 using Infrastructure.Query;
-using BusinessLayer.DTOs.Query.Filters;
 
 namespace BusinessLayer.QueryObjects
 {
-    public class GenericQueryObject<TEntity> 
+    public class GenericQueryObject<TEntity>
         where TEntity : class, IEntity, new()
-        
+
     {
         protected IMapper _mapper;
         protected IQuery<TEntity> _entityQuery;
@@ -45,7 +40,7 @@ namespace BusinessLayer.QueryObjects
             return this;
         }
 
-        public QueryResultDto<TEntityDTO> ExecuteQuery<TEntityDTO>(GenericFilterDTO filter) 
+        public QueryResultDto<TEntityDTO> ExecuteQuery<TEntityDTO>(GenericFilterDTO filter)
             where TEntityDTO : class, new()
         {
             var query = _entityQuery;
