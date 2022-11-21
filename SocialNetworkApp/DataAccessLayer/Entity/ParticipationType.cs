@@ -5,7 +5,7 @@ namespace DataAccessLayer.Entity
     public class ParticipationType : IEntity
     {
         [Key]
-        public int Id { get; set; }
+        public virtual int Id { get; set; }
 
         [Required]
         [MinLength(4)]
