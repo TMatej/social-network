@@ -43,6 +43,14 @@ namespace BusinessLayer
                 .As<IGalleryService>()
                 .InstancePerLifetimeScope()
                 .OnActivated(e => Console.WriteLine($"Build {e.Instance.GetType().Name}"));
+            containerBuilder.RegisterType<GroupService>()
+                .As<IGroupService>()
+                .InstancePerLifetimeScope()
+                .OnActivated(e => Console.WriteLine($"Build {e.Instance.GetType().Name}"));
+            containerBuilder.RegisterType<EventService>()
+                .As<IEventService>()
+                .InstancePerLifetimeScope()
+                .OnActivated(e => Console.WriteLine($"Build {e.Instance.GetType().Name}"));
             containerBuilder.RegisterGeneric(typeof(GenericQueryObject<>))
                 .AsSelf()
                 .OnActivated(e => Console.WriteLine($"Build {e.Instance.GetType().Name}"));
