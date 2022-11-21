@@ -16,6 +16,7 @@ namespace DataAccessLayer
         public DbSet<Conversation> Conversations { get; set; }
         public DbSet<ConversationParticipant> ConversationParticipants { get; set; }
         public DbSet<Event> Events { get; set; }
+        public DbSet<FileEntity> FileEntities { get; set; }
         public DbSet<EventParticipant> EventParticipants { get; set; }
         public DbSet<Gallery> Galeries { get; set; }
         public DbSet<Group> Groups { get; set; }
@@ -156,6 +157,10 @@ namespace DataAccessLayer
                 .HasOne(c => c.Commentable)
                 .WithMany(c => c.Comments)
                 .HasForeignKey(c => c.CommentableId);
+
+            modelBuilder.Entity<FileEntity>()
+                .HasIndex(f => f.Guid)
+                .IsUnique();
 
             modelBuilder.Seed();
 

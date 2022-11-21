@@ -1,5 +1,4 @@
 ﻿using Ardalis.GuardClauses;
-using AutoMapper;
 using BusinessLayer.Contracts;
 using Infrastructure.Repository;
 using Infrastructure.UnitOfWork;

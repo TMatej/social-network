@@ -1,7 +1,8 @@
-﻿using BusinessLayer.DTOs.Query;
+using BusinessLayer.DTOs.Query;
 using BusinessLayer.DTOs.Query.Results;
 using BusinessLayer.DTOs.Photo;
 using BusinessLayer.DTOs.Profile;
+using BusinessLayer.DTOs.Post;
 using DataAccessLayer.Entity;
 using Infrastructure.Query;
 using Profile = AutoMapper.Profile;
@@ -28,6 +29,7 @@ namespace BusinessLayer.Config
                 .ForMember(dest => dest.Profile,
                     opt => opt.MapFrom(src => src.Profile));
             CreateMap<QueryResult<Gallery>, QueryResultDto<GalleryRepresentDTO>>().ReverseMap();
+            CreateMap<PostCreateDTO, Post>().ReverseMap();
         }
     }
 }

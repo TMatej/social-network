@@ -6,12 +6,17 @@ namespace DataAccessLayer.Entity
 {
     public class Profile : Postable
     {
+
         [MaxLength(64)]
         public string Name { get; set; }
 
         public Address Address { get; set; }
 
         public Sex? Sex { get; set; }
+
+        public int? FileEntityId { get; set; }
+
+        public FileEntity FileEntity { get; set; }
 
         public List<Gallery> Galeries { get; set; }
 
