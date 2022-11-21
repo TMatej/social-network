@@ -34,5 +34,6 @@ namespace DataAccessLayer.Entity
 
         public IList<Contact> Contacts { get; set; }
         public IList<Contact> ContactsOf { get; set; }
+        public string FirstName { get; set; }
     }
 }

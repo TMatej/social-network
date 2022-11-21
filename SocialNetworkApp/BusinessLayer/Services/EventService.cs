@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 
 namespace BusinessLayer.Services
 {
-    internal class EventService : GenericService<Event>, IEventService
+    public class EventService : GenericService<Event>, IEventService
     {
         readonly IRepository<User> userRepository;
         readonly IRepository<EventParticipant> participantRepository;
@@ -23,15 +23,7 @@ namespace BusinessLayer.Services
             this.userRepository = userRepository;
             this.participantRepository = participantRepository;
         }
-
-        public IEnumerable<User> FindAllParticipants(Event eventDTO)
-        {
-            var _event = _repository.GetByID(eventDTO.Id);
-            var participants = _event.EventParticipants.Select(p => p.User);
-            return participants;
-
-        }
-
+        
         public IEnumerable<Event> FindByCreator(User creator)
         {
             var events = _repository.GetAll().Where(e => e.UserId == creator.Id);

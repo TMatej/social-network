@@ -18,7 +18,7 @@ namespace BusinessLayer.Services
             this.messageRepo = messageRepo;
         }
 
-        public void createConversation(int creatorId, List<int> participants)
+        public void createConversation(int creatorId, IEnumerable<int> participants)
         {
             Guard.Against.Null(creatorId);
 
@@ -45,6 +45,7 @@ namespace BusinessLayer.Services
             };
 
             conversationParticipantRepo.Insert(participant);
+            _uow.Commit();
         }
 
         public void postMessage(int userId, int conversationId, string content, Attachment attachment)
@@ -64,8 +65,8 @@ namespace BusinessLayer.Services
             {
                 message.Attachment = attachment;
             }
-
             messageRepo.Insert(message);
+            _uow.Commit();
         }
     }
 }
