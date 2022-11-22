@@ -1,4 +1,6 @@
 ﻿using AutoMapper;
+using DataAccessLayer.Entity;
+using Infrastructure.Query;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,5 +13,17 @@ namespace ServiceTests
     {
         IMapper mapper;
         IQuery<Gallery> galleryQuery;
+
+        [SetUp]
+        public void SetUp()
+        {
+
+        }
+
+        [Test]
+        public void ExecuteQuerryTest()
+        {
+
+        }
     }
 }
