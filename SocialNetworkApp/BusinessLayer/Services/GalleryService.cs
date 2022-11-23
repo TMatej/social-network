@@ -1,10 +1,8 @@
 ﻿using AutoMapper;
 using BusinessLayer.Contracts;
-using BusinessLayer.DTOs.Query;
-using BusinessLayer.DTOs.Query.Filters;
 using BusinessLayer.DTOs.Photo;
-using BusinessLayer.QueryObjects;
 using DataAccessLayer.Entity;
+using Infrastructure.Query;
 using Infrastructure.Repository;
 using Infrastructure.UnitOfWork;
 
@@ -14,35 +12,26 @@ namespace BusinessLayer.Services
     {
         protected readonly IMapper _mapper;
         protected readonly IRepository<Photo> _photoRepository;
-        protected GenericQueryObject<Gallery> _queryObject;
+        protected readonly IQuery<Gallery> _galleryQuery;
 
-        public GalleryService(IRepository<Gallery> repository, 
+        public GalleryService(IRepository<Gallery> repository,
             IRepository<Photo> photoRepository,
+            IQuery<Gallery> galleryQuery,
             IMapper mapper,
-            GenericQueryObject<Gallery> queryObject,
             IUnitOfWork uow) : base(repository, uow)
         {
             _mapper = mapper;
             _photoRepository = photoRepository;
-            _queryObject = queryObject;
+            _galleryQuery = galleryQuery;
         }
 
-        public GalleryRepresentDTO GetByIdWithListOfPhotos(int id)
+        public Gallery GetByIdWithListOfPhotos(int id)
         {
-            var gallery = _queryObject
-                .ApplyWhereClause(
-                new GenericWhereDTO<int>
-                {
-                    WhereColumnName = "Id",
-                    FilterWhereExpression = (x => x == id),
-                })
-                .ExecuteQuery<GalleryRepresentDTO>(
-                new GenericFilterDTO
-                { 
-                    IncludeParameters = new List<string>() { "Photos" },
-                    RequestedPageNumber = 1,
-                    RequestedPageSize = 10
-                });
+            var gallery = _galleryQuery
+                .Where<int>(x => x == id, "Id")
+                .Page(1, 10)
+                .Include("Photos")
+                .Execute();
 
             return gallery.Items.First();
         }

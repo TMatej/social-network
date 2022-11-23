@@ -1,6 +1,7 @@
 using DataAccessLayer;
 using DataAccessLayer.Entity;
 using Infrastructure.EFCore.Query;
+using Infrastructure.EFCore.UnitOfWork;
 
 namespace Infrastructure.EFCore.Test
 {
@@ -8,11 +9,13 @@ namespace Infrastructure.EFCore.Test
     {
         private SocialNetworkDBContext dbContext;
         private const string ConnectionString = @"Data Source=(localdb)\MSSQLLocalDB; Initial Catalog=PV179-SocialNetworkDB";
+        private EFUnitOfWork unitOfWork;
 
         [SetUp]
         public void Setup()
         {
             dbContext = new SocialNetworkDBContext(ConnectionString);
+            unitOfWork = new EFUnitOfWork(dbContext);
 
             dbContext.Database.EnsureDeleted();
             dbContext.Database.EnsureCreated();
@@ -67,42 +70,43 @@ namespace Infrastructure.EFCore.Test
         [Test]
         public void UserWithUsernameThomasExists_QueryWhere_Test()
         {
-            var query = new EntityFrameworkQuery<User>(dbContext);
+            var query = new EntityFrameworkQuery<User>(dbContext, unitOfWork);
             var username = "thomas";
 
             query.Where<string>(u => u == username, "Username");
             var result = query.Execute();
 
-            Assert.True(result.Count() == 1);
-            Assert.True(result.First().Username == username);
+            Assert.True(result.Items.Count() == 1);
+            Assert.True(result.Items.First().Username == username);
         }
 
         [Test]
         public void UsersWithEmailThatStartsWithBExist_QueryWhere_Test()
         {
-            var query = new EntityFrameworkQuery<User>(dbContext);
+            var query = new EntityFrameworkQuery<User>(dbContext, unitOfWork);
             query.Where<string>(a => a.StartsWith("b"), "PrimaryEmail");
             var result = query.Execute();
 
-            Assert.True(result.Count() == 3);
+            Assert.True(result.Items.Count() == 3);
         }
 
         [Test]
         public void UsersWithIdLessThan3_QueryWhere_Test()
         {
-            var query = new EntityFrameworkQuery<User>(dbContext);
+            var query = new EntityFrameworkQuery<User>(dbContext, unitOfWork);
             query.Where<int>(a => a < 3, "Id");
             var result = query.Execute();
 
-            Assert.True(result.Count() == 2);
+            Assert.True(result.Items.Count() == 2);
         }
 
         [Test]
         public void UsersOrderedAscending_QueryOrderBy_Test()
         {
-            var query = new EntityFrameworkQuery<User>(dbContext);
+            var query = new EntityFrameworkQuery<User>(dbContext, unitOfWork);
             query.OrderBy<int>("Id", true);
             var result = query.Execute()
+                .Items
                 .Select(a => a.Id)
                 .ToList();
 
@@ -117,10 +121,11 @@ namespace Infrastructure.EFCore.Test
         [Test]
         public void UsersOrderedDescending_QueryOrderBy_Test()
         {
-            var query = new EntityFrameworkQuery<User>(dbContext);
+            var query = new EntityFrameworkQuery<User>(dbContext, unitOfWork);
             var result = query
                 .OrderBy<int>("Id", false)
                 .Execute()
+                .Items
                 .Select(a => a.Id)
                 .ToList();
 
@@ -135,12 +140,13 @@ namespace Infrastructure.EFCore.Test
         [Test]
         public void UsersPagination_QueryPagination_Test()
         {
-            var query = new EntityFrameworkQuery<User>(dbContext);
+            var query = new EntityFrameworkQuery<User>(dbContext, unitOfWork);
 
             var result = query
                 .OrderBy<int>("Id")
                 .Page(2, 2)
                 .Execute()
+                .Items
                 .Select(a => a.Id)
                 .ToList();
 
@@ -157,12 +163,13 @@ namespace Infrastructure.EFCore.Test
         [Test]
         public void AdvancedUsersQueryTest()
         {
-            var query = new EntityFrameworkQuery<User>(dbContext);
+            var query = new EntityFrameworkQuery<User>(dbContext, unitOfWork);
             var result = query
                 .Where<string>(u => u.StartsWith("b"), "PrimaryEmail")
                 .OrderBy<int>("Id", false)
                 .Page(1, 2)
                 .Execute()
+                .Items
                 .ToList();
 
             var expected = dbContext.Users
@@ -177,7 +184,7 @@ namespace Infrastructure.EFCore.Test
         [Test]
         public void UnknownColumnNameThrowsTest()
         {
-            var query = new EntityFrameworkQuery<User>(dbContext);
+            var query = new EntityFrameworkQuery<User>(dbContext, unitOfWork);
             var result = query
                 .Where<string>(u => u.StartsWith("b"), "SomeRandomColumnNameThatDoesntExist");
 
