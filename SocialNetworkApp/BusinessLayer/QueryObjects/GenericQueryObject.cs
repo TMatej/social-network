@@ -60,5 +60,11 @@ namespace BusinessLayer.QueryObjects
 
             return _mapper.Map<QueryResultDto<TEntityDTO>>(query.Execute());
         }
+
+        public QueryResultDto<TEntityDTO> ExecuteQuery<TEntityDTO>()
+            where TEntityDTO : class, new()
+        {
+            return ExecuteQuery<TEntityDTO>(new GenericFilterDTO());
+        }
     }
 }
