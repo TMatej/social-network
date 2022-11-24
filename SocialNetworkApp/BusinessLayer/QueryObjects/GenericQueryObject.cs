@@ -1,4 +1,4 @@
-﻿using AutoMapper;
+using AutoMapper;
 using BusinessLayer.DTOs.Query.Filters;
 using BusinessLayer.DTOs.Query.Results;
 using DataAccessLayer.Entity;
