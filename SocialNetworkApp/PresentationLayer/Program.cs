@@ -2,6 +2,7 @@
 using AutoMapper;
 using BusinessLayer.Contracts;
 using BusinessLayer.DTOs.Photo;
+using BusinessLayer.DTOs.User;
 using DalConsoleApp;
 using DataAccessLayer;
 using DataAccessLayer.Entity;
@@ -157,7 +158,7 @@ using (var db_1 = scope.Resolve<SocialNetworkDBContext>())
     }*/
 }
 
-await userService.Register(new BusinessLayer.DTOs.RegisterDTO
+await userService.Register(new RegisterDTO
 {
     Username = "serviceUser",
     Email = "service@gmail.com",
@@ -170,7 +171,7 @@ using (var db_2 = scope.Resolve<SocialNetworkDBContext>())
     db_2.Users.ToList().ForEach(user => Console.WriteLine(user.Username));
     var query_user = query
         .Where<string>(a => a == "serviceUser", "Username")
-        .Execute();  
+        .Execute();
     Console.WriteLine(JsonConvert.SerializeObject(query_user, Formatting.Indented));
 }
 

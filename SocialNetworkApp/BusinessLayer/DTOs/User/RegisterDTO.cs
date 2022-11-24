@@ -1,4 +1,4 @@
-﻿namespace BusinessLayer.DTOs
+﻿namespace BusinessLayer.DTOs.User
 {
     public class RegisterDTO
     {

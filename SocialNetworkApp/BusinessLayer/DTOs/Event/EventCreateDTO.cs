@@ -1,10 +1,5 @@
 ﻿using BusinessLayer.DTOs.Group;
-using DataAccessLayer.Entity;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using BusinessLayer.DTOs.User;
 
 namespace BusinessLayer.DTOs.Event
 {
