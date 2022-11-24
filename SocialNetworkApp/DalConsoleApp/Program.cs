@@ -209,5 +209,5 @@ using (var db_3 = scope.Resolve<SocialNetworkDBContext>())
 }
 
 Console.WriteLine("Gallery service: Get By id with list of photos:");
-var galleryWithPhotos = galleryService.GetByIdWithListOfPhotos(1);
+var galleryWithPhotos = galleryService.GetByIdDetailed(1); 
 Console.WriteLine(JsonConvert.SerializeObject(galleryWithPhotos, Formatting.Indented, serializerSettings));

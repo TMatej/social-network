@@ -6,6 +6,7 @@ using BusinessLayer.DTOs.Post;
 using DataAccessLayer.Entity;
 using Infrastructure.Query;
 using Profile = AutoMapper.Profile;
+using BusinessLayer.DTOs.Gallery;
 
 namespace BusinessLayer.Config
 {
@@ -21,6 +22,10 @@ namespace BusinessLayer.Config
             CreateMap<QueryResult<Gallery>, QueryResultDto<GalleryBasicRepresentDTO>>().ReverseMap();
             CreateMap<DataAccessLayer.Entity.Profile, ProfileBasicRepresentDTO>().ReverseMap();
             CreateMap<Gallery, GalleryRepresentDTO>()
+                .ForMember(dest => dest.Profile,
+                    opt => opt.MapFrom(src => src.Profile));
+            CreateMap<Gallery, GalleryWithPhotosRepresentDTO>().ReverseMap();
+            CreateMap<Gallery, GalleryWithProfileRepresentDTO>()
                 .ForMember(dest => dest.Profile,
                     opt => opt.MapFrom(src => src.Profile));
             CreateMap<QueryResult<Gallery>, QueryResultDto<GalleryRepresentDTO>>().ReverseMap();

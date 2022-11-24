@@ -7,6 +7,8 @@ using BusinessLayer.QueryObjects;
 using DataAccessLayer.Entity;
 using Infrastructure.Repository;
 using Infrastructure.UnitOfWork;
+using BusinessLayer.DTOs.Gallery;
+using Ardalis.GuardClauses;
 
 namespace BusinessLayer.Services
 {
@@ -27,7 +29,7 @@ namespace BusinessLayer.Services
             _queryObject = queryObject;
         }
 
-        public GalleryRepresentDTO GetByIdWithListOfPhotos(int id)
+        public GalleryWithPhotosRepresentDTO GetByIdWithPhotos(int id)
         {
             var gallery = _queryObject
                 .ApplyWhereClause(
@@ -36,7 +38,7 @@ namespace BusinessLayer.Services
                     WhereColumnName = "Id",
                     FilterWhereExpression = (x => x == id),
                 })
-                .ExecuteQuery<GalleryRepresentDTO>(
+                .ExecuteQuery<GalleryWithPhotosRepresentDTO>(
                 new GenericFilterDTO
                 { 
                     IncludeParameters = new List<string>() { "Photos" },
@@ -47,8 +49,50 @@ namespace BusinessLayer.Services
             return gallery.Items.First();
         }
 
+        public GalleryWithProfileRepresentDTO GetByIdWithProfile(int id)
+        {
+            var gallery = _queryObject
+                .ApplyWhereClause(
+                new GenericWhereDTO<int>
+                {
+                    WhereColumnName = "Id",
+                    FilterWhereExpression = (x => x == id),
+                })
+                .ExecuteQuery<GalleryWithProfileRepresentDTO>(
+                new GenericFilterDTO
+                {
+                    IncludeParameters = new List<string>() { "Profile" },
+                    RequestedPageNumber = 1,
+                    RequestedPageSize = 10
+                });
+
+            return gallery.Items.First();
+        }
+
+        public GalleryRepresentDTO GetByIdDetailed(int id)
+        {
+            var gallery = _queryObject
+                .ApplyWhereClause(
+                new GenericWhereDTO<int>
+                {
+                    WhereColumnName = "Id",
+                    FilterWhereExpression = (x => x == id),
+                })
+                .ExecuteQuery<GalleryRepresentDTO>(
+                new GenericFilterDTO
+                {
+                    IncludeParameters = new List<string>() { "Photos", "Profile" },
+                    RequestedPageNumber = 1,
+                    RequestedPageSize = 10
+                });
+
+            return gallery.Items.First();
+        }
+
         public void UploadPhotoToGallery(PhotoInsertDTO photoDTO, int galleryId)
         {
+            Guard.Against.Null(photoDTO);
+
             var mapped = _mapper.Map<Photo>(photoDTO);
             mapped.GaleryId = galleryId;
             _photoRepository.Insert(mapped);

@@ -1,4 +1,4 @@
-﻿using AutoMapper;
+using AutoMapper;
 using BusinessLayer.DTOs.Query.Filters;
 using BusinessLayer.DTOs.Query.Results;
 using DataAccessLayer.Entity;
@@ -59,6 +59,12 @@ namespace BusinessLayer.QueryObjects
             }
 
             return _mapper.Map<QueryResultDto<TEntityDTO>>(query.Execute());
+        }
+
+        public QueryResultDto<TEntityDTO> ExecuteQuery<TEntityDTO>()
+            where TEntityDTO : class, new()
+        {
+            return ExecuteQuery<TEntityDTO>(new GenericFilterDTO());
         }
     }
 }
