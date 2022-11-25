@@ -8,7 +8,7 @@ namespace BusinessLayer.Services
 {
     public class GroupService : GenericService<Group>, IGroupService
     {
-       
+
         public readonly IRepository<GroupMember> groupMemberRepository;
 
         public GroupService(IRepository<Group> repository, IRepository<GroupMember> groupMemberRepository, IUnitOfWork uow) : base(repository, uow)
