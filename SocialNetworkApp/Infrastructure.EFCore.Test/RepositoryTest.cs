@@ -1,12 +1,14 @@
 ﻿using DataAccessLayer;
 using DataAccessLayer.Entity;
 using Infrastructure.EFCore.Repository;
+using Infrastructure.EFCore.UnitOfWork;
 
 namespace Infrastructure.EFCore.Test
 {
     public class RepositoryTest
     {
         private SocialNetworkDBContext dbContext;
+        private EFUnitOfWork unitOfWork;
         private EFGenericRepository<User> repository;
         private const string ConnectionString = @"Data Source=(localdb)\MSSQLLocalDB; Initial Catalog=PV179-SocialNetworkDB";
 
@@ -14,7 +16,8 @@ namespace Infrastructure.EFCore.Test
         public void Setup()
         {
             dbContext = new SocialNetworkDBContext(ConnectionString);
-            repository = new EFGenericRepository<User>(dbContext);
+            unitOfWork = new EFUnitOfWork(dbContext);
+            repository = new EFGenericRepository<User>(unitOfWork);
 
             dbContext.Database.EnsureDeleted();
             dbContext.Database.EnsureCreated();

@@ -28,6 +28,6 @@ namespace DataAccessLayer.Entity
         public string Content { get; set; }
 
         [Required]
-        public DateTime CreatedDate { get; set; }
+        public DateTime CreatedAt { get; set; }
     }
 }

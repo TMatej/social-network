@@ -1,12 +1,5 @@
-﻿using DataAccessLayer.Entity.Enum;
-using DataAccessLayer.Entity;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using DataAccessLayer.Entity;
+using DataAccessLayer.Entity.Enum;
 
 namespace BusinessLayer.DTOs.Profile
 {

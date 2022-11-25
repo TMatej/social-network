@@ -1,6 +1,5 @@
-﻿using DataAccessLayer.Entity.JoinEntity;
-using DataAccessLayer.Entity;
-using BusinessLayer.DTOs.Group;
+﻿using BusinessLayer.DTOs.Group;
+using BusinessLayer.DTOs.User;
 
 namespace BusinessLayer.DTOs.Event
 {

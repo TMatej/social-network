@@ -20,6 +20,7 @@ namespace ServiceTests
         EventParticipant mockEventParticipant1;
         EventParticipant mockEventParticipant2;
         ParticipationType participationType;
+
         [SetUp]
         public void Setup()
         {
@@ -32,7 +33,7 @@ namespace ServiceTests
             {
                 Id = 1,
                 Username = "Participant1",
-                Contacts = new List<Contact>() { new Contact() { User1Id = 1,User2Id = 3} }
+                Contacts = new List<Contact>() { new Contact() { User1Id = 1, User2Id = 3 } }
             };
             mockParticipant2 = new User()
             {
@@ -74,7 +75,8 @@ namespace ServiceTests
                 Group = group,
                 EventParticipants = new List<EventParticipant>()
                 {
-                    mockEventParticipant1
+                    mockEventParticipant1,
+                    mockEventParticipant2
                 }
             };
             userRepository.GetByID(1).Returns(mockParticipant1);
@@ -85,10 +87,12 @@ namespace ServiceTests
             });
             participantRepository.GetAll().Returns(new List<EventParticipant>()
             {
-                mockEventParticipant1
+                mockEventParticipant1,
+                mockEventParticipant2,
             });
             participationType.Id.Returns(1);
         }
+
         [Test]
         public void FindByCreator()
         {
@@ -97,6 +101,7 @@ namespace ServiceTests
             Assert.That(events, Has.Exactly(1).Items);
             Assert.That(events, Has.Exactly(1).EqualTo(mockEvent));
         }
+
         [Test]
         public void FindByParticipant()
         {
@@ -105,6 +110,7 @@ namespace ServiceTests
             Assert.That(events, Has.Exactly(1).Items);
             Assert.That(events, Has.Exactly(1).EqualTo(mockEvent));
         }
+
         [Test]
         public void FindByTitle()
         {
@@ -113,6 +119,7 @@ namespace ServiceTests
             Assert.That(events, Has.Exactly(1).Items);
             Assert.That(events, Has.Exactly(1).EqualTo(mockEvent));
         }
+
         [Test]
         public void FindByPartialTitle()
         {
@@ -121,6 +128,7 @@ namespace ServiceTests
             Assert.That(events, Has.Exactly(1).Items);
             Assert.That(events, Has.Exactly(1).EqualTo(mockEvent));
         }
+
         [Test]
         public void FindByGroup()
         {
@@ -129,6 +137,7 @@ namespace ServiceTests
             Assert.That(events, Has.Exactly(1).Items);
             Assert.That(events, Has.Exactly(1).EqualTo(mockEvent));
         }
+
         [Test]
         public void FindParticipatingFriends()
         {
@@ -137,14 +146,16 @@ namespace ServiceTests
             Assert.That(friends, Has.Exactly(1).Items);
             Assert.That(friends, Has.Exactly(1).EqualTo(mockParticipant2));
         }
+
         [Test]
         public void AddParticipant()
         {
-                var eventService = new EventService(userRepository, eventRepository, participantRepository, uow);
-                eventService.AddParticipant(mockParticipant2, mockEvent, participationType);
+            var eventService = new EventService(userRepository, eventRepository, participantRepository, uow);
+            eventService.AddParticipant(mockParticipant2, mockEvent, participationType);
             participantRepository.Received().Insert(Arg.Is<EventParticipant>(x => x.EventId == mockEvent.Id && x.UserId == mockParticipant2.Id && x.ParticipationTypeId == participationType.Id));
             uow.Received().Commit();
         }
+
         [Test]
         public void RemoveParticipant()
         {
@@ -154,4 +165,4 @@ namespace ServiceTests
             uow.Received().Commit();
         }
     }
-}        
+}

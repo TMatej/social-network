@@ -1,5 +1,5 @@
 ﻿using BusinessLayer.Contracts;
-using BusinessLayer.DTOs;
+using BusinessLayer.DTOs.User;
 using DataAccessLayer.Entity;
 using DataAccessLayer.Entity.JoinEntity;
 using Infrastructure.Repository;

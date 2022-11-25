@@ -1,11 +1,6 @@
 ﻿using DataAccessLayer;
 using DataAccessLayer.Entity;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DalUnitTests.EntityTests
 {
@@ -52,7 +47,7 @@ namespace DalUnitTests.EntityTests
                 db.Attachments.Add(new Attachment
                 {
                     Url = "https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png",
-                    MessageId = 2
+                    MessageId = 3
                 });
                 db.SaveChanges();
 
