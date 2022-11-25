@@ -14,15 +14,13 @@ namespace BusinessLayer.Services
             this.postQuery = postQuery;
         }
 
-        public List<Post> getPostsForEntity(int entityId, int page = 1, int pageSize = 10)
+        public QueryResult<Post> getPostsForEntity(int entityId, int page = 1, int pageSize = 10)
         {
             return postQuery
                 .Where<int>(id => id == entityId, "PostableId")
                 .Page(page, pageSize)
                 .OrderBy<DateTime>("CreatedAt")
-                .Execute()
-                .Items
-                .ToList();
+                .Execute();
         }
     }
 }
