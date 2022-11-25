@@ -19,6 +19,7 @@ namespace BusinessLayer.Services
             return postQuery
                 .Where<int>(id => id == entityId, "PostableId")
                 .Page(page, pageSize)
+                .OrderBy<DateTime>("CreatedAt")
                 .Execute()
                 .Items
                 .ToList();

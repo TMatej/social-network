@@ -4,21 +4,16 @@ using BusinessLayer.DTOs.Post;
 using DataAccessLayer.Entity;
 using Infrastructure.Repository;
 using Infrastructure.UnitOfWork;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ServiceTests
 {
     class PostServiceTest
     {
-         IMapper mapper;
-         IRepository<DataAccessLayer.Entity.Profile> profileRepository;
-         IPostService postService;
-         IFileService fileService;
-         IUnitOfWork uow;
+        IMapper mapper;
+        IRepository<DataAccessLayer.Entity.Profile> profileRepository;
+        IPostService postService;
+        IFileService fileService;
+        IUnitOfWork uow;
 
         [SetUp]
         public void Setup()
