@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using BusinessLayer.Contracts;
 using BusinessLayer.DTOs.Photo;
+using BusinessLayer.DTOs.Query;
 using DataAccessLayer.Entity;
 using Infrastructure.Query;
 using Infrastructure.Repository;
@@ -25,15 +26,34 @@ namespace BusinessLayer.Services
             _galleryQuery = galleryQuery;
         }
 
-        public Gallery GetByIdWithListOfPhotos(int id)
+        public Gallery GetByIdWithPhotos(int id)
         {
             var gallery = _galleryQuery
                 .Where<int>(x => x == id, "Id")
-                .Page(1, 10)
                 .Include("Photos")
                 .Execute();
 
-            return gallery.Items.First();
+            return gallery.Items.FirstOrDefault();
+        }
+
+        public Gallery GetByIdWithProfile(int id)
+        {
+            var gallery = _galleryQuery
+                .Where<int>(x => x == id, "Id")
+                .Include("Profile")
+                .Execute();
+
+            return gallery.Items.FirstOrDefault();
+        }
+
+        public Gallery GetByIdDetailed(int id)
+        {
+            var gallery = _galleryQuery
+                .Where<int>(x => x == id, "Id")
+                .Include("Profile", "Photos")
+                .Execute();
+
+            return gallery.Items.FirstOrDefault();
         }
 
         public void UploadPhotoToGallery(PhotoInsertDTO photoDTO, int galleryId)
