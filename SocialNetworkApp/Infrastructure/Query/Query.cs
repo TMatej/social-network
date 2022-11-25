@@ -34,9 +34,12 @@ namespace Infrastructure.Query
             return this;
         }
 
-        public IQuery<TEntity> Include(List<string> parameters)
+        public IQuery<TEntity> Include(params string[] parameters)
         {
-            parameters.ForEach(p => IncludeParameters.Add(p));
+            for (int i = 0; i < parameters.Length; i++)
+            {
+                IncludeParameters.Add(parameters[i]);
+            }
             return this;
         }
 
