@@ -1,11 +1,6 @@
-﻿using DataAccessLayer.Entity;
-using DataAccessLayer;
+﻿using DataAccessLayer;
+using DataAccessLayer.Entity;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DalUnitTests.EntityTests
 {
@@ -43,7 +38,7 @@ namespace DalUnitTests.EntityTests
                     PostableId = 1,
                     Title = "Hello World!",
                     Content = "This is my first post!",
-                    CreatedDate = DateTime.Now
+                    CreatedAt = DateTime.Now
                 });
                 db.SaveChanges();
 
@@ -63,7 +58,7 @@ namespace DalUnitTests.EntityTests
                     UserId = 1,
                     Title = "Hello World!",
                     Content = "This is my first post!",
-                    CreatedDate = DateTime.Now
+                    CreatedAt = DateTime.Now
                 });
                 Assert.Throws<DbUpdateException>(() => db.SaveChanges());
             }
@@ -78,12 +73,12 @@ namespace DalUnitTests.EntityTests
                     UserId = 1,
                     Title = new String('l', 500),
                     Content = new String('l', 500),
-                    CreatedDate = DateTime.Now
+                    CreatedAt = DateTime.Now
                 });
 
                 Assert.Throws<DbUpdateException>(() => db.SaveChanges());
             }
         }
     }
-    
+
 }

@@ -32,11 +32,6 @@ namespace BusinessLayer.Services
             postService.Insert(post);
         }
 
-        /*public List<Post> getPosts(int profileId, int? page = 1, int? pageSize = 10)
-        {
-
-        }*/
-
         public void changeAvatar(int profileId, IFormFile avatar)
         {
             Guard.Against.Null(profileId);

@@ -1,10 +1,6 @@
 ﻿using BusinessLayer.DTOs.Comment;
 using DataAccessLayer.Entity;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Infrastructure.Query;
 
 namespace BusinessLayer.Contracts
 {
@@ -14,5 +10,6 @@ namespace BusinessLayer.Contracts
         void EditComment(CommentEditDTO commentDTO);
         CommentRepresentDTO GetDetailedCommentById(int id);
         CommentBasicRepresentDTO GetPlainCommentById(int id);
+        public QueryResult<Comment> getCommentsForEntity(int entityId, int page = 1, int pageSize = 10);
     }
 }

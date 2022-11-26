@@ -1,8 +1,6 @@
 ﻿using DataAccessLayer.Entity;
 using DataAccessLayer.Entity.JoinEntity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.VisualBasic;
-using System.Reflection.Emit;
 
 namespace DataAccessLayer.Data
 {
@@ -376,7 +374,7 @@ namespace DataAccessLayer.Data
                 PostableId = 1,
                 Title = "Hello World!",
                 Content = "This is my first post!",
-                CreatedDate = DateTime.Now
+                CreatedAt = DateTime.Now
             };
 
             var post2 = new Post
@@ -386,7 +384,7 @@ namespace DataAccessLayer.Data
                 PostableId = 1,
                 Title = "Hello World!",
                 Content = "This is my second post!",
-                CreatedDate = DateTime.Now
+                CreatedAt = DateTime.Now
             };
 
             modelBuilder.Entity<Post>().HasData(post1);
@@ -402,7 +400,7 @@ namespace DataAccessLayer.Data
                 PasswordHash = "0123456789abcde0",
                 PrimaryEmail = "JozoJeSuper@gmail.com",
                 SecondaryEmail = "NajlepsieZaklinadlo@gmail.com"
-            }; 
+            };
 
             var namelessUser = new User
             {

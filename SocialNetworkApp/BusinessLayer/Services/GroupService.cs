@@ -1,6 +1,7 @@
 ﻿using BusinessLayer.Contracts;
 using DataAccessLayer.Entity;
 using DataAccessLayer.Entity.JoinEntity;
+using Infrastructure.Query;
 using Infrastructure.Repository;
 using Infrastructure.UnitOfWork;
 
@@ -8,18 +9,14 @@ namespace BusinessLayer.Services
 {
     public class GroupService : GenericService<Group>, IGroupService
     {
-       
-        public readonly IRepository<GroupMember> groupMemberRepository;
 
-        public GroupService(IRepository<Group> repository, IRepository<GroupMember> groupMemberRepository, IUnitOfWork uow) : base(repository, uow)
+        readonly IRepository<GroupMember> groupMemberRepository;
+        readonly IQuery<GroupMember> groupMemberQuery;
+
+        public GroupService(IQuery<GroupMember> groupMemberQuery, IRepository<Group> repository, IRepository<GroupMember> groupMemberRepository, IUnitOfWork uow) : base(repository, uow)
         {
             this.groupMemberRepository = groupMemberRepository;
-        }
-
-        public IEnumerable<Group> GetByUser(User user)
-        {
-            var groups = _repository.GetAll().Where(g => g.GroupMembers.Select(m => m.UserId).Contains(user.Id));
-            return groups;
+            this.groupMemberQuery = groupMemberQuery;
         }
         public void AddToGroup(User user, Group group, GroupRole groupRole)
         {
@@ -34,7 +31,7 @@ namespace BusinessLayer.Services
         }
         public void RemoveFromGroup(User user, Group group)
         {
-            var groupMember = groupMemberRepository.GetAll().Where(m => m.GroupId == group.Id && m.UserId == user.Id).FirstOrDefault();
+            var groupMember = groupMemberQuery.Where<int>(groupId => groupId == group.Id, "GroupId").Where<int>(userId => userId == user.Id, "UserId").Execute().Items.FirstOrDefault();
             if (groupMember != null)
             {
                 groupMemberRepository.Delete(groupMember);
