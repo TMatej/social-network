@@ -24,7 +24,7 @@ namespace DataAccessLayer.Entity
         [MaxLength(255)]
         public string SecondaryEmail { get; set; }
 
-        //public Profile Profile { get; set; }
+        public Profile Profile { get; set; }
 
         public IList<EventParticipant> EventParticipants { get; set; }
 
