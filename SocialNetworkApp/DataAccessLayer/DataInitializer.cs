@@ -316,7 +316,7 @@ namespace DataAccessLayer.Data
                 Description = "This is my first photo",
                 CreatedAt = DateTime.Now,
                 Url = "https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png",
-                GaleryId = 1
+                GalleryId = 1
             };
 
             var photo2 = new Photo
@@ -326,7 +326,7 @@ namespace DataAccessLayer.Data
                 Description = "This is my last photo... No I didn't die",
                 CreatedAt = DateTime.Now,
                 Url = "https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png",
-                GaleryId = 1
+                GalleryId = 1
             };
 
             modelBuilder.Entity<Photo>().HasData(photo1);

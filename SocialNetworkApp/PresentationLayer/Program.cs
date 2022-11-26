@@ -16,6 +16,7 @@ using var scope = ioc.Container.BeginLifetimeScope();
 
 var userService = scope.Resolve<IUserService>();
 var galleryService = scope.Resolve<IGalleryService>();
+var photoService = scope.Resolve<IPhotoService>();
 var mapper = scope.Resolve<IMapper>();
 var serializerSettings = new JsonSerializerSettings() { ReferenceLoopHandling = ReferenceLoopHandling.Ignore };
 
@@ -52,7 +53,7 @@ using (var db_1 = scope.Resolve<SocialNetworkDBContext>())
     db_1.SaveChanges();
 
     var photo = db_1.Photos.Find(3);
-    db_1.Galeries.Add(
+    db_1.Galleries.Add(
         new Gallery
         {
             Title = "My christmas gallery",
@@ -65,7 +66,7 @@ using (var db_1 = scope.Resolve<SocialNetworkDBContext>())
 
     var db_user = db_1.Users.Where(u => u.Username.Equals(user.Username)).FirstOrDefault();
     var db_profile = db_1.Profiles.Where(p => p.UserId == user.Id).FirstOrDefault();
-    var db_gallery = db_1.Galeries.Where(g => g.ProfileId == profile.Id).FirstOrDefault();
+    var db_gallery = db_1.Galleries.Where(g => g.ProfileId == profile.Id).FirstOrDefault();
     Console.WriteLine("db_user:");
     Console.WriteLine(JsonConvert.SerializeObject(db_user, Formatting.Indented, serializerSettings));
     /*
@@ -196,19 +197,20 @@ var profilePhoto = new PhotoInsertDTO
     Title = "My profile photo",
     Description = "This is my first profile photo!",
     CreatedAt = DateTime.Now,
-    Url = "somewhere on the internet"
+    Url = "somewhere on the internet",
+    GalleryId = galleryDB.Id
 };
 
-galleryService.UploadPhotoToGallery(profilePhoto, galleryDB.Id);
+photoService.UploadPhotoToGallery(profilePhoto);
 
 using (var db_3 = scope.Resolve<SocialNetworkDBContext>())
 {
-    var advancedGallery = db_3.Galeries
+    var advancedGallery = db_3.Galleries
         .Include("Profile")
         .Where(g => g.Id == 1);
     Console.WriteLine(JsonConvert.SerializeObject(advancedGallery, Formatting.Indented, serializerSettings));
 }
 
 Console.WriteLine("Gallery service: Get By id with list of photos:");
-var galleryWithPhotos = galleryService.GetByIdWithListOfPhotos(1);
+var galleryWithPhotos = galleryService.GetByIdWithPhotos(1);
 Console.WriteLine(JsonConvert.SerializeObject(galleryWithPhotos, Formatting.Indented, serializerSettings));

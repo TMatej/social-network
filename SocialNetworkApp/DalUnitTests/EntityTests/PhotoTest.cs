@@ -44,7 +44,7 @@ namespace DalUnitTests.EntityTests
                     Description = "This is my first photo",
                     CreatedAt = DateTime.Now,
                     Url = "https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png",
-                    GaleryId = 1
+                    GalleryId = 1
                 });
                 db.SaveChanges();
 
@@ -64,7 +64,7 @@ namespace DalUnitTests.EntityTests
                     Title = "My first photo",
                     Description = "This is my first photo",
                     CreatedAt = DateTime.Now,
-                    GaleryId = 1
+                    GalleryId = 1
                 });
                 Assert.Throws<DbUpdateException>(() => db.SaveChanges());
             }
@@ -79,7 +79,7 @@ namespace DalUnitTests.EntityTests
                     Title = new String('l', 500),
                     Description = new String('l', 500),
                     CreatedAt = DateTime.Now,
-                    GaleryId = 1
+                    GalleryId = 1
                 });
                 Assert.Throws<DbUpdateException>(() => db.SaveChanges());
             }
