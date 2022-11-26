@@ -7,15 +7,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BusinessLayer.DTOs.Photo
+namespace BusinessLayer.DTOs.Comment
 {
-    /* NOT FINAL A CLASS */
-    public class PhotoInsertDTO
+    public class CommentRepresentDTO
     {
-        public string Title { get; set; }
-        public string Description { get; set; }
+        public int Id { get; set; }
+        public IList<CommentBasicRepresentDTO> Comments { get; set; }
+        public int CommentableId { get; set; }
+        public int UserId { get; set; }
         public DateTime CreatedAt { get; set; }
-        public string Url { get; set; }
-        public int GalleryId { get; set; }
+        public string Content { get; set; }
     }
 }

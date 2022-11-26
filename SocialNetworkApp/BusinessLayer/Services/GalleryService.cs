@@ -55,13 +55,5 @@ namespace BusinessLayer.Services
 
             return gallery.Items.FirstOrDefault();
         }
-
-        public void UploadPhotoToGallery(PhotoInsertDTO photoDTO, int galleryId)
-        {
-            var mapped = _mapper.Map<Photo>(photoDTO);
-            mapped.GaleryId = galleryId;
-            _photoRepository.Insert(mapped);
-            _uow.Commit();
-        }
     }
 }
