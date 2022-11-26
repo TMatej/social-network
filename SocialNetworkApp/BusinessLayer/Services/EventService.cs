@@ -3,6 +3,7 @@ using BusinessLayer.Contracts;
 using BusinessLayer.DTOs;
 using DataAccessLayer.Entity;
 using DataAccessLayer.Entity.JoinEntity;
+using Infrastructure.Query;
 using Infrastructure.Repository;
 using Infrastructure.UnitOfWork;
 using Microsoft.Extensions.Logging;
@@ -16,45 +17,32 @@ namespace BusinessLayer.Services
 {
     public class EventService : GenericService<Event>, IEventService
     {
-        readonly IRepository<User> userRepository;
         readonly IRepository<EventParticipant> participantRepository;
-        public EventService(IRepository<User> userRepository, IRepository<Event> repository, IRepository<EventParticipant> participantRepository, IUnitOfWork uow) : base(repository, uow)
+        readonly IQuery<EventParticipant> participantQuery;
+        readonly IQuery<Event> eventQuery;
+        public EventService(IQuery<Event> eventQuery,IQuery<EventParticipant> participantQuery, IRepository<Event> repository, IRepository<EventParticipant> participantRepository, IUnitOfWork uow) : base(repository, uow)
         {
-            this.userRepository = userRepository;
+            this.eventQuery = eventQuery;
             this.participantRepository = participantRepository;
+            this.participantQuery = participantQuery;
         }
         
         public IEnumerable<Event> FindByCreator(User creator)
         {
-            var events = _repository.GetAll().Where(e => e.UserId == creator.Id);
-            return events;
+            var query = eventQuery.Where<int>(id => id == creator.Id, "UserId");
+            var executed = query.Execute();
+            var items = executed.Items;
+            return items;
         }
 
         public IEnumerable<Event> FindByName(string name)
         {
-            var events = _repository.GetAll().Where(e => e.Title.Contains(name, StringComparison.CurrentCultureIgnoreCase));
-            return events;
-
+            return eventQuery.Where<string>(name => name.Contains(name, StringComparison.CurrentCultureIgnoreCase), "Title").Execute().Items;
         }
 
-        public IEnumerable<Event> FindByParticipant(User participant)
-        {
-            var events = _repository.GetAll().Where(e => e.EventParticipants.Select(p => p.UserId).Contains(participant.Id));
-            return events;
-        }
-
-        public IEnumerable<User> FindParticipatingFriends(User participant, Event _event)
-        {
-            var user = userRepository.GetByID(participant.Id);
-            var participants = _event.EventParticipants.Select(p => p.User);
-            var contactsID = user.Contacts.Select(c => c.User2Id);
-            var friends = participants.Where(p => contactsID.Contains(p.Id));
-            return friends;
-        }
         public IEnumerable<Event> FindByGroup(Group group)
         {
-            var events = _repository.GetAll().Where(e => e.GroupId == group.Id);
-            return events;
+            return eventQuery.Where<int>(id => id == group.Id, "GroupId").Execute().Items;
         }
         public void AddParticipant(User user, Event _event, ParticipationType participationType)
         {
@@ -72,7 +60,7 @@ namespace BusinessLayer.Services
         }
         public void RemoveParticipant(User user, Event _event)
         {
-            var participant = participantRepository.GetAll().Where(p => p.EventId == _event.Id && p.UserId == user.Id).FirstOrDefault();
+            var participant = participantQuery.Where<int>(eventId => eventId == _event.Id, "EventId").Where<int>(userId=>userId == user.Id,"UserId").Execute().Items.FirstOrDefault();
             if (participant != null)
             {
                 participantRepository.Delete(participant);

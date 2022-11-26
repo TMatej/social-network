@@ -1,15 +1,18 @@
 ﻿using DataAccessLayer.Entity;
 using DataAccessLayer.Entity.JoinEntity;
+using Infrastructure.Query;
 using Infrastructure.Repository;
 using Infrastructure.UnitOfWork;
-
+using System.Linq.Expressions;
+using Event = DataAccessLayer.Entity.Event;
 
 namespace ServiceTests
 {
     public class EventServiceTest
     {
         IRepository<Event> eventRepository;
-        IRepository<User> userRepository;
+        IQuery<Event> eventQuery;
+        IQuery<EventParticipant> participantQuery;
         IRepository<EventParticipant> participantRepository;
         IUnitOfWork uow;
         Event mockEvent;
@@ -25,8 +28,9 @@ namespace ServiceTests
         public void Setup()
         {
             eventRepository = Substitute.For<IRepository<Event>>();
-            userRepository = Substitute.For<IRepository<User>>();
+            eventQuery = MockQuery.CreateMockQuery<Event>();
             participantRepository = Substitute.For<IRepository<EventParticipant>>();
+            participantQuery = MockQuery.CreateMockQuery<EventParticipant>();
             uow = Substitute.For<IUnitOfWork>();
             participationType = Substitute.For<ParticipationType>();
             mockParticipant1 = new User()
@@ -79,90 +83,56 @@ namespace ServiceTests
                     mockEventParticipant2
                 }
             };
-            userRepository.GetByID(1).Returns(mockParticipant1);
-            userRepository.GetByID(3).Returns(mockParticipant2);
-            eventRepository.GetAll().Returns(new List<Event>()
-            {
-                mockEvent
-            });
-            participantRepository.GetAll().Returns(new List<EventParticipant>()
-            {
-                mockEventParticipant1,
-                mockEventParticipant2,
-            });
+
+
             participationType.Id.Returns(1);
+            
         }
 
         [Test]
         public void FindByCreator()
         {
-            var eventService = new EventService(userRepository, eventRepository, participantRepository, uow);
-            var events = eventService.FindByCreator(mockCreator);
-            Assert.That(events, Has.Exactly(1).Items);
-            Assert.That(events, Has.Exactly(1).EqualTo(mockEvent));
-        }
-
-        [Test]
-        public void FindByParticipant()
-        {
-            var eventService = new EventService(userRepository, eventRepository, participantRepository, uow);
-            var events = eventService.FindByParticipant(mockParticipant1);
-            Assert.That(events, Has.Exactly(1).Items);
-            Assert.That(events, Has.Exactly(1).EqualTo(mockEvent));
+            var eventService = new EventService(eventQuery, participantQuery, eventRepository, participantRepository, uow);
+            eventService.FindByCreator(mockCreator);
+            eventQuery.Received().Where(Arg.Any<Expression<Func<int, bool>>>(), "UserId");
+            eventQuery.Received().Execute();
         }
 
         [Test]
         public void FindByTitle()
         {
-            var eventService = new EventService(userRepository, eventRepository, participantRepository, uow);
-            var events = eventService.FindByName("Test");
-            Assert.That(events, Has.Exactly(1).Items);
-            Assert.That(events, Has.Exactly(1).EqualTo(mockEvent));
-        }
-
-        [Test]
-        public void FindByPartialTitle()
-        {
-            var eventService = new EventService(userRepository, eventRepository, participantRepository, uow);
-            var events = eventService.FindByName("es");
-            Assert.That(events, Has.Exactly(1).Items);
-            Assert.That(events, Has.Exactly(1).EqualTo(mockEvent));
+            var eventService = new EventService(eventQuery, participantQuery, eventRepository, participantRepository, uow);
+            eventService.FindByName("Test");
+            eventQuery.Received().Where(Arg.Any<Expression<Func<string, bool>>>(), "Title");
+            eventQuery.Received().Execute();
         }
 
         [Test]
         public void FindByGroup()
         {
-            var eventService = new EventService(userRepository, eventRepository, participantRepository, uow);
-            var events = eventService.FindByGroup(group);
-            Assert.That(events, Has.Exactly(1).Items);
-            Assert.That(events, Has.Exactly(1).EqualTo(mockEvent));
-        }
-
-        [Test]
-        public void FindParticipatingFriends()
-        {
-            var eventService = new EventService(userRepository, eventRepository, participantRepository, uow);
-            var friends = eventService.FindParticipatingFriends(mockParticipant1, mockEvent);
-            Assert.That(friends, Has.Exactly(1).Items);
-            Assert.That(friends, Has.Exactly(1).EqualTo(mockParticipant2));
+            var eventService = new EventService(eventQuery, participantQuery, eventRepository, participantRepository, uow);
+            eventService.FindByGroup(group);
+            eventQuery.Received().Where(Arg.Any<Expression<Func<int, bool>>>(), "GroupId");
+            eventQuery.Received().Execute();
         }
 
         [Test]
         public void AddParticipant()
         {
-            var eventService = new EventService(userRepository, eventRepository, participantRepository, uow);
+            var eventService = new EventService(eventQuery, participantQuery, eventRepository, participantRepository, uow);
             eventService.AddParticipant(mockParticipant2, mockEvent, participationType);
             participantRepository.Received().Insert(Arg.Is<EventParticipant>(x => x.EventId == mockEvent.Id && x.UserId == mockParticipant2.Id && x.ParticipationTypeId == participationType.Id));
             uow.Received().Commit();
         }
-
         [Test]
-        public void RemoveParticipant()
-        {
-            var eventService = new EventService(userRepository, eventRepository, participantRepository, uow);
+        public void RemoveParticipant() {
+            var result = new QueryResult<EventParticipant>(1, 1, 1, new List<EventParticipant> { mockEventParticipant1 });
+            var queryWithResult = MockQuery.CreateMockQueryWithResult(result);
+            var eventService = new EventService(eventQuery, queryWithResult, eventRepository, participantRepository, uow);
             eventService.RemoveParticipant(mockParticipant1, mockEvent);
             participantRepository.Received().Delete(Arg.Is<EventParticipant>(x => x.EventId == mockEvent.Id && x.UserId == mockParticipant1.Id));
             uow.Received().Commit();
+
         }
     }
 }
