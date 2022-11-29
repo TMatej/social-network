@@ -37,7 +37,6 @@ using (var db = scope.Resolve<SocialNetworkDBContext>())
 
 var profile = new Profile
 {
-    CreatedAt = DateTime.Now,
     UserId = user.Id,
     Name = "JOŽO VAJDA",
     Address = new Address
@@ -57,7 +56,6 @@ using (var db_1 = scope.Resolve<SocialNetworkDBContext>())
         {
             Title = "My christmas gallery",
             Description = "This is my fav gallery of my christmas experience!",
-            CreatedAt = DateTime.Now,
             ProfileId = 1,
             Photos = new List<Photo> { photo }
         });
@@ -98,7 +96,6 @@ using (var db_1 = scope.Resolve<SocialNetworkDBContext>())
       "Sex": null,
       "PhoneNumber": null,
       "DateOfBirth": null,
-      "CreatedAt": "2022-11-17T03:04:24.2354258+01:00",
       "UserId": 3,
       "User": {
         "Id": 3,
@@ -123,7 +120,6 @@ using (var db_1 = scope.Resolve<SocialNetworkDBContext>())
       "Id": 2,
       "Title": "My christmas gallery",
       "Description": "This is my fav gallery of my christmas experience!",
-      "CreatedAt": "2022-11-17T03:04:25.1602373+01:00",
       "Profile": {
         "Name": "JOŽO VAJDA",
         "Address": {
@@ -137,7 +133,6 @@ using (var db_1 = scope.Resolve<SocialNetworkDBContext>())
         "Sex": null,
         "PhoneNumber": null,
         "DateOfBirth": null,
-        "CreatedAt": "2022-11-17T03:04:24.2354258+01:00",
         "UserId": 3,
         "User": {
           "Id": 3,
@@ -181,7 +176,6 @@ Console.WriteLine("Galery:");
     {
       "Title": "My christmas gallery",
       "Description": "This is my fav gallery of my christmas experience!",
-      "CreatedAt": "2022-11-17T03:04:25.1602373",
       "ProfileId": 5,
       "Profile": null,
       "ProfileName": null,
@@ -195,7 +189,6 @@ var profilePhoto = new PhotoInsertDTO
 {
     Title = "My profile photo",
     Description = "This is my first profile photo!",
-    CreatedAt = DateTime.Now,
     Url = "somewhere on the internet"
 };
 
