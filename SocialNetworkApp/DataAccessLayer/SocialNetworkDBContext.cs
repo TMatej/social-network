@@ -29,7 +29,10 @@ namespace DataAccessLayer
         public DbSet<Profile> Profiles { get; set; }
         public DbSet<User> Users { get; set; }
 
-        public SocialNetworkDBContext() { }
+        public SocialNetworkDBContext()
+        {
+          this.connectionString = "Host=localhost;Port=5432;Database=SocialNetworkDB;Username=postgres;Password=postgres";
+        }
 
         public SocialNetworkDBContext(string connectionString)
         {
@@ -39,7 +42,7 @@ namespace DataAccessLayer
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder
-                .UseSqlServer(connectionString)  
+                .UseNpgsql(connectionString)  
                 // logging of SQL commands into console
                 /*
                 .UseLoggerFactory(LoggerFactory.Create(
@@ -50,6 +53,7 @@ namespace DataAccessLayer
                     }))
                 */
                 .EnableSensitiveDataLogging();
+
             base.OnConfiguring(optionsBuilder);
         }
 
@@ -161,6 +165,75 @@ namespace DataAccessLayer
             modelBuilder.Entity<FileEntity>()
                 .HasIndex(f => f.Guid)
                 .IsUnique();
+
+            // Set default values for timestamps
+            modelBuilder.Entity<Comment>()
+                .Property(u => u.CreatedAt)
+                .HasDefaultValueSql("now()");
+
+            modelBuilder.Entity<Contact>()
+                .Property(u => u.CreatedAt)
+                .HasDefaultValueSql("now()");
+
+            modelBuilder.Entity<Conversation>()
+                .Property(u => u.CreatedAt)
+                .HasDefaultValueSql("now()");
+
+            modelBuilder.Entity<ConversationParticipant>()
+                .Property(u => u.CreatedAt)
+                .HasDefaultValueSql("now()");
+
+            modelBuilder.Entity<Event>()
+                .Property(u => u.CreatedAt)
+                .HasDefaultValueSql("now()");
+
+            modelBuilder.Entity<FileEntity>()
+                .Property(u => u.CreatedAt)
+                .HasDefaultValueSql("now()");
+
+            modelBuilder.Entity<EventParticipant>()
+                .Property(u => u.CreatedAt)
+                .HasDefaultValueSql("now()");
+
+            modelBuilder.Entity<Gallery>()
+                .Property(u => u.CreatedAt)
+                .HasDefaultValueSql("now()");
+
+            modelBuilder.Entity<Group>()
+                .Property(u => u.CreatedAt)
+                .HasDefaultValueSql("now()");
+
+            modelBuilder.Entity<GroupMember>()
+                .Property(u => u.CreatedAt)
+                .HasDefaultValueSql("now()");
+
+            modelBuilder.Entity<GroupRole>()
+                .Property(u => u.CreatedAt)
+                .HasDefaultValueSql("now()");
+
+            modelBuilder.Entity<Message>()
+                .Property(u => u.CreatedAt)
+                .HasDefaultValueSql("now()");
+
+            modelBuilder.Entity<ParticipationType>()
+                .Property(u => u.CreatedAt)
+                .HasDefaultValueSql("now()");
+
+            modelBuilder.Entity<Photo>()
+                .Property(u => u.CreatedAt)
+                .HasDefaultValueSql("now()");
+
+            modelBuilder.Entity<Post>()
+                .Property(u => u.CreatedAt)
+                .HasDefaultValueSql("now()");
+
+            modelBuilder.Entity<Profile>()
+                .Property(u => u.CreatedAt)
+                .HasDefaultValueSql("now()");
+
+            modelBuilder.Entity<User>()
+                .Property(u => u.CreatedAt)
+                .HasDefaultValueSql("now()");
 
             modelBuilder.Seed();
 

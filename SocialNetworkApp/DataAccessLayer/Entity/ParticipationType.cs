@@ -11,5 +11,8 @@ namespace DataAccessLayer.Entity
         [MinLength(4)]
         [MaxLength(64)]
         public string Name { get; set; }
+
+        [Required]
+        public DateTime CreatedAt { get; set; }
     }
 }

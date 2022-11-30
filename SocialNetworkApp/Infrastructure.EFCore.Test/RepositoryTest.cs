@@ -10,12 +10,11 @@ namespace Infrastructure.EFCore.Test
         private SocialNetworkDBContext dbContext;
         private EFUnitOfWork unitOfWork;
         private EFGenericRepository<User> repository;
-        private const string ConnectionString = @"Data Source=(localdb)\MSSQLLocalDB; Initial Catalog=PV179-SocialNetworkDB";
 
         [SetUp]
         public void Setup()
         {
-            dbContext = new SocialNetworkDBContext(ConnectionString);
+            dbContext = new SocialNetworkDBContext();
             unitOfWork = new EFUnitOfWork(dbContext);
             repository = new EFGenericRepository<User>(unitOfWork);
 
