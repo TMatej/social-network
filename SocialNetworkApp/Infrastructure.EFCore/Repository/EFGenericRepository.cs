@@ -1,5 +1,4 @@
 ﻿using DataAccessLayer.Entity;
-using DataAccessLayer.Entity.JoinEntity;
 using Infrastructure.EFCore.UnitOfWork;
 using Infrastructure.Repository;
 using Microsoft.EntityFrameworkCore;
@@ -43,12 +42,6 @@ namespace Infrastructure.EFCore.Repository
             if (uow.Context.Entry(entityToDelete).State == EntityState.Detached)
             {
                 dbSet.Attach(entityToDelete);
-            }
-
-            if (entityToDelete.GetType() == typeof(EventParticipant))
-            {
-                var entity = entityToDelete as EventParticipant;
-                /* TODO */
             }
 
             dbSet.Remove(entityToDelete);
