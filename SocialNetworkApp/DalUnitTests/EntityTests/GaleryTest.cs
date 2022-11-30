@@ -11,12 +11,10 @@ namespace DalUnitTests.EntityTests
 {
     public class GaleryTest
     {
-        private const string connectionString = @"Data Source=(localdb)\MSSQLLocalDB; Initial Catalog=PV179-SocialNetworkDB";
-
         [SetUp]
         public void Setup()
         {
-            using (var db = new SocialNetworkDBContext(connectionString))
+            using (var db = new SocialNetworkDBContext())
             {
                 db.Database.EnsureDeleted();
                 db.Database.EnsureCreated();
@@ -27,7 +25,7 @@ namespace DalUnitTests.EntityTests
         [TearDown]
         public void TearDown()
         {
-            using (var db = new SocialNetworkDBContext(connectionString))
+            using (var db = new SocialNetworkDBContext())
             {
                 db.Database.EnsureDeleted();
                 db.Dispose();
@@ -36,13 +34,12 @@ namespace DalUnitTests.EntityTests
         [Test]
         public void Test_Add()
         {
-            using (var db = new SocialNetworkDBContext(connectionString))
+            using (var db = new SocialNetworkDBContext())
             {
                 db.Galeries.Add(new Gallery
                 {
                     Title = "Example Galery",
                     Description = "This is an example galery",
-                    CreatedAt = DateTime.Now,
                     ProfileId = 1
                 });
                 db.SaveChanges();
@@ -56,12 +53,11 @@ namespace DalUnitTests.EntityTests
         [Test]
         public void Test_Add_Incomplete()
         {
-            using (var db = new SocialNetworkDBContext(connectionString))
+            using (var db = new SocialNetworkDBContext())
             {
                 db.Galeries.Add(new Gallery
                 {
                     Description = "This is an example galery",
-                    CreatedAt = DateTime.Now,
                 });
                 Assert.Throws<DbUpdateException>(() => db.SaveChanges());
             }
@@ -69,13 +65,12 @@ namespace DalUnitTests.EntityTests
         [Test]
         public void Test_Add_Long()
         {
-            using (var db = new SocialNetworkDBContext(connectionString))
+            using (var db = new SocialNetworkDBContext())
             {
                 db.Galeries.Add(new Gallery
                 {
                     Title = new String('l', 500),
                     Description = new String('l', 5000),
-                    CreatedAt = DateTime.Now,
                     ProfileId = 1
                 });
                 Assert.Throws<DbUpdateException>(() => db.SaveChanges());

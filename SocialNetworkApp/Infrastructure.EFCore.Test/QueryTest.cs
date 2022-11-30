@@ -8,13 +8,12 @@ namespace Infrastructure.EFCore.Test
     public class QueryTest
     {
         private SocialNetworkDBContext dbContext;
-        private const string ConnectionString = @"Data Source=(localdb)\MSSQLLocalDB; Initial Catalog=PV179-SocialNetworkDB";
         private EFUnitOfWork unitOfWork;
 
         [SetUp]
         public void Setup()
         {
-            dbContext = new SocialNetworkDBContext(ConnectionString);
+            dbContext = new SocialNetworkDBContext();
             unitOfWork = new EFUnitOfWork(dbContext);
 
             dbContext.Database.EnsureDeleted();

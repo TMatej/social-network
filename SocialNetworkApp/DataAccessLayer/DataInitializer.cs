@@ -54,7 +54,6 @@ namespace DataAccessLayer.Data
                 Id = 1,
                 User1Id = 1,
                 User2Id = 2,
-                CreatedAt = DateTime.Now
             };
 
             modelBuilder.Entity<Contact>().HasData(friendship);
@@ -66,13 +65,11 @@ namespace DataAccessLayer.Data
             {
                 Id = 1,
                 UserId = 1,
-                CreatedAt = DateTime.Now
             };
             var empty_conversation = new Conversation
             {
                 Id = 2,
                 UserId = 1,
-                CreatedAt = DateTime.Now
             };
 
             modelBuilder.Entity<Conversation>().HasData(conversation);
@@ -86,7 +83,6 @@ namespace DataAccessLayer.Data
                 Id = 1,
                 UserId = 1,
                 ConversationId = 1,
-                CreatedAt = DateTime.Now
             };
 
             var second_conversation_participant = new ConversationParticipant
@@ -94,7 +90,6 @@ namespace DataAccessLayer.Data
                 Id = 2,
                 UserId = 2,
                 ConversationId = 1,
-                CreatedAt = DateTime.Now
             };
 
             modelBuilder.Entity<ConversationParticipant>().HasData(first_conversation_participant);
@@ -111,7 +106,6 @@ namespace DataAccessLayer.Data
                 GroupId = groupId,
                 Title = "Example Event",
                 Description = $"This is an example event for Group {groupId}",
-                CreatedAt = DateTime.Now
             };
 
             var eventWithNoParticipants = new Event
@@ -121,7 +115,6 @@ namespace DataAccessLayer.Data
                 GroupId = groupId,
                 Title = "Example Userless Event",
                 Description = $"This is an example event without participants for Group {groupId}",
-                CreatedAt = DateTime.Now
             };
 
             modelBuilder.Entity<Event>().HasData(event1);
@@ -136,7 +129,6 @@ namespace DataAccessLayer.Data
                 EventId = 1,
                 UserId = 1,
                 ParticipationTypeId = 1,
-                CreatedAt = DateTime.Now
             };
 
             var eventParticipant2 = new EventParticipant
@@ -145,7 +137,6 @@ namespace DataAccessLayer.Data
                 EventId = 1,
                 UserId = 2,
                 ParticipationTypeId = 1,
-                CreatedAt = DateTime.Now
             };
 
             modelBuilder.Entity<EventParticipant>().HasData(eventParticipant);
@@ -159,7 +150,6 @@ namespace DataAccessLayer.Data
                 Id = 1,
                 Title = "Example Galery",
                 Description = "This is an example galery",
-                CreatedAt = DateTime.Now,
                 ProfileId = 1
             };
 
@@ -168,7 +158,6 @@ namespace DataAccessLayer.Data
                 Id = 2,
                 Title = "Example Empty Galery",
                 Description = "This is an example galery without content",
-                CreatedAt = DateTime.Now,
                 ProfileId = 1
             };
 
@@ -182,14 +171,12 @@ namespace DataAccessLayer.Data
             {
                 Id = 1,
                 UserId = 1,
-                CreatedAt = DateTime.Now,
             };
 
             var profile2 = new Profile
             {
                 Id = 2,
                 UserId = 2,
-                CreatedAt = DateTime.Now,
             };
 
             var fullAddress = new
@@ -230,7 +217,6 @@ namespace DataAccessLayer.Data
                 Id = 3,
                 Name = "Example Group one",
                 Description = "This is an example group",
-                CreatedAt = DateTime.Now
             };
 
             var group2 = new Group
@@ -238,7 +224,6 @@ namespace DataAccessLayer.Data
                 Id = 4,
                 Name = "Example Group two",
                 Description = "This is an example group",
-                CreatedAt = DateTime.Now
             };
 
             modelBuilder.Entity<Group>().HasData(group1);
@@ -254,7 +239,6 @@ namespace DataAccessLayer.Data
                    GroupId = 3,
                    UserId = 1,
                    GroupRoleId = 1,
-                   CreatedAt = DateTime.Now
                }
                );
         }
@@ -278,7 +262,6 @@ namespace DataAccessLayer.Data
                 Content = "I have two attchments!",
                 ConversationId = 1,
                 AuthorId = 1,
-                Timestamp = DateTime.Now
             };
 
             var message_without_attachment = new Message
@@ -287,7 +270,6 @@ namespace DataAccessLayer.Data
                 Content = "I am just plain text",
                 ConversationId = 1,
                 AuthorId = 2,
-                Timestamp = DateTime.Now
             };
 
             modelBuilder.Entity<Message>().HasData(message);
@@ -312,7 +294,6 @@ namespace DataAccessLayer.Data
                 Id = 3,
                 Title = "My first photo",
                 Description = "This is my first photo",
-                CreatedAt = DateTime.Now,
                 Url = "https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png",
                 GaleryId = 1
             };
@@ -322,7 +303,6 @@ namespace DataAccessLayer.Data
                 Id = 4,
                 Title = "My last photo",
                 Description = "This is my last photo... No I didn't die",
-                CreatedAt = DateTime.Now,
                 Url = "https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png",
                 GaleryId = 1
             };
@@ -338,7 +318,6 @@ namespace DataAccessLayer.Data
                 Id = 5,
                 CommentableId = 1,
                 UserId = 1,
-                CreatedAt = DateTime.Now,
                 Content = "Some content here!"
             };
 
@@ -347,7 +326,6 @@ namespace DataAccessLayer.Data
                 Id = 6,
                 CommentableId = 3,
                 UserId = 1,
-                CreatedAt = DateTime.Now,
                 Content = "This photo is awful!"
             };
 
@@ -356,7 +334,6 @@ namespace DataAccessLayer.Data
                 Id = 7,
                 CommentableId = 5,
                 UserId = 2,
-                CreatedAt = DateTime.Now,
                 Content = "This photo is beautifull you little prick!!!"
             };
 
@@ -374,7 +351,6 @@ namespace DataAccessLayer.Data
                 PostableId = 1,
                 Title = "Hello World!",
                 Content = "This is my first post!",
-                CreatedAt = DateTime.Now
             };
 
             var post2 = new Post
@@ -384,7 +360,6 @@ namespace DataAccessLayer.Data
                 PostableId = 1,
                 Title = "Hello World!",
                 Content = "This is my second post!",
-                CreatedAt = DateTime.Now
             };
 
             modelBuilder.Entity<Post>().HasData(post1);

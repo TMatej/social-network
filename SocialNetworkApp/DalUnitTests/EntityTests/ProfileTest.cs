@@ -11,12 +11,10 @@ namespace DalUnitTests.EntityTests
 {
     public class ProfileTest
     {
-        private const string connectionString = @"Data Source=(localdb)\MSSQLLocalDB; Initial Catalog=PV179-SocialNetworkDB";
-
         [SetUp]
         public void Setup()
         {
-            using (var db = new SocialNetworkDBContext(connectionString))
+            using (var db = new SocialNetworkDBContext())
             {
                 db.Database.EnsureDeleted();
                 db.Database.EnsureCreated();
@@ -41,7 +39,7 @@ namespace DalUnitTests.EntityTests
         [TearDown]
         public void TearDown()
         {
-            using (var db = new SocialNetworkDBContext(connectionString))
+            using (var db = new SocialNetworkDBContext())
             {
                 db.Database.EnsureDeleted();
                 db.Dispose();
@@ -50,11 +48,10 @@ namespace DalUnitTests.EntityTests
         [Test]
         public void Test_Add()
         {
-            using (var db = new SocialNetworkDBContext(connectionString))
+            using (var db = new SocialNetworkDBContext())
             {
                 db.Profiles.Add(new Profile
                 {
-                    CreatedAt = DateTime.Now,
                     UserId = 2,
                 });
                 db.SaveChanges();
@@ -68,16 +65,14 @@ namespace DalUnitTests.EntityTests
         [Test]
         public void Test_Add_Duplicate()
         {
-            using (var db = new SocialNetworkDBContext(connectionString))
+            using (var db = new SocialNetworkDBContext())
             {
                 db.Profiles.Add(new Profile
                 {
-                    CreatedAt = DateTime.Now,
                     UserId = 3,
                 });
                 db.Profiles.Add(new Profile
                 {
-                    CreatedAt = DateTime.Now,
                     UserId = 3,
                 });
 
@@ -87,24 +82,20 @@ namespace DalUnitTests.EntityTests
         [Test]
         public void Test_Add_Incomplete()
         {
-            using (var db = new SocialNetworkDBContext(connectionString))
+            using (var db = new SocialNetworkDBContext())
             {
-                db.Profiles.Add(new Profile
-                {
-                    CreatedAt = DateTime.Now,
-                });
+                db.Profiles.Add(new Profile {});
                 Assert.Throws<DbUpdateException>(() => db.SaveChanges());
             }
         }
         [Test]
         public void Test_Add_Long()
         {
-            using (var db = new SocialNetworkDBContext(connectionString))
+            using (var db = new SocialNetworkDBContext())
             {
                 db.Profiles.Add(new Profile
                 {
                     Name = new String('l', 100),
-                    CreatedAt = DateTime.Now,
                     UserId = 1,
                 });
 

@@ -6,12 +6,10 @@ namespace DalUnitTests.EntityTests
 {
     public class AttachmentTest
     {
-        private const string connectionString = @"Data Source=(localdb)\MSSQLLocalDB; Initial Catalog=PV179-SocialNetworkDB";
-
         [SetUp]
         public void Setup()
         {
-            using (var db = new SocialNetworkDBContext(connectionString))
+            using (var db = new SocialNetworkDBContext())
             {
                 db.Database.EnsureDeleted();
                 db.Database.EnsureCreated();
@@ -21,10 +19,7 @@ namespace DalUnitTests.EntityTests
                     Content = "Hello World!",
                     ConversationId = 1,
                     AuthorId = 1,
-                    Timestamp = DateTime.Now
                 });
-
-
 
                 db.SaveChanges();
             }
@@ -33,7 +28,7 @@ namespace DalUnitTests.EntityTests
         [TearDown]
         public void TearDown()
         {
-            using (var db = new SocialNetworkDBContext(connectionString))
+            using (var db = new SocialNetworkDBContext())
             {
                 db.Database.EnsureDeleted();
                 db.Dispose();
@@ -42,7 +37,7 @@ namespace DalUnitTests.EntityTests
         [Test]
         public void Test_Add()
         {
-            using (var db = new SocialNetworkDBContext(connectionString))
+            using (var db = new SocialNetworkDBContext())
             {
                 db.Attachments.Add(new Attachment
                 {
@@ -60,7 +55,7 @@ namespace DalUnitTests.EntityTests
         [Test]
         public void Test_Add_Incomplete()
         {
-            using (var db = new SocialNetworkDBContext(connectionString))
+            using (var db = new SocialNetworkDBContext())
             {
                 db.Attachments.Add(new Attachment
                 {
