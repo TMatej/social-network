@@ -7,6 +7,6 @@ namespace BusinessLayer.Contracts
     {
         public void Register(UserRegisterDTO registerDTO);
         public void AddContacts(int userId, List<int> contactIds);
-        public UserDTO Authorize(UserLoginDTO userLoginDTO);
+        public UserDTO AuthenticateUser(UserLoginDTO userLoginDTO);
     }
 }

@@ -17,7 +17,7 @@ namespace BusinessLayer.Facades
 
         public UserDTO Login(UserLoginDTO userLoginDTO)
         {
-            var userDto = userService.Authorize(userLoginDTO);
+            var userDto = userService.AuthenticateUser(userLoginDTO);
             if (userDto == null)
             {
                 throw new UnauthorizedAccessException();

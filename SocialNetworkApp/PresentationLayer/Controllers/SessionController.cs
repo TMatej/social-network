@@ -20,7 +20,7 @@ public class SessionController : Controller
     }
 
     [HttpPost]
-    public async Task Login(UserLoginDTO userLoginDTO)
+    public async Task<IActionResult> Login(UserLoginDTO userLoginDTO)
     {
 
         var userDto = userFacade.Login(userLoginDTO);
@@ -37,6 +37,8 @@ public class SessionController : Controller
         var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
 
         await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(identity));
+
+        return Ok(userDto);
     }
 
     [HttpDelete]

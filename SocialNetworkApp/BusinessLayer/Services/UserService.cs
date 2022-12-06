@@ -36,7 +36,7 @@ namespace BusinessLayer.Services
             {
                 Username = registerDTO.Username,
                 PasswordHash = passwordHash,
-                PrimaryEmail = registerDTO.Email,
+                Email = registerDTO.Email,
             };
 
             userRepo.Insert(user);
@@ -50,7 +50,7 @@ namespace BusinessLayer.Services
             }
         }
 
-        public UserDTO Authorize(UserLoginDTO userLoginDTO)
+        public UserDTO AuthenticateUser(UserLoginDTO userLoginDTO)
         {
             var user = userQuery.Where<string>(e => e == userLoginDTO.Email, "Email")
               .Include("UserRoles")

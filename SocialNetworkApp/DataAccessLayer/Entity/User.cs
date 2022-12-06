@@ -18,10 +18,7 @@ namespace DataAccessLayer.Entity
 
         [Required]
         [MaxLength(255)]
-        public string PrimaryEmail { get; set; }
-
-        [MaxLength(255)]
-        public string SecondaryEmail { get; set; }
+        public string Email { get; set; }
 
         [Required]
         public DateTime CreatedAt { get; set; }
