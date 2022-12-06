@@ -1,6 +1,6 @@
 ﻿namespace BusinessLayer.DTOs.User
 {
-    public class RegisterDTO
+    public class UserRegisterDTO
     {
         public string Username { get; set; }
         public string Email { get; set; }

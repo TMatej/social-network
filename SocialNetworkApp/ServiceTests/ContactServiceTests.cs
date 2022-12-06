@@ -28,7 +28,7 @@ namespace ServiceTests
         {
             var contactService = new ContactService(repo, uow);
             contactService.Insert(contact);
-            
+
             repo.Received(1).Insert(contact);
             uow.Received(1).Commit();
         }

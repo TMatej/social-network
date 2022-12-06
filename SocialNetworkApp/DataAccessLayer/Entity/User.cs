@@ -1,6 +1,5 @@
 ﻿using DataAccessLayer.Entity.JoinEntity;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DataAccessLayer.Entity
 {
@@ -14,7 +13,7 @@ namespace DataAccessLayer.Entity
         public string Username { get; set; }
 
         [Required]
-        [MaxLength(64)]
+        [MaxLength(1024)]
         public string PasswordHash { get; set; }
 
         [Required]
@@ -30,6 +29,8 @@ namespace DataAccessLayer.Entity
         //public Profile Profile { get; set; }
 
         public IList<EventParticipant> EventParticipants { get; set; }
+
+        public IList<UserRole> UserRoles { get; set; }
 
         public IList<ConversationParticipant> ConversationParticipants { get; set; }
 

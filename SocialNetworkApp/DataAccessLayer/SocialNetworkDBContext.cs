@@ -28,10 +28,12 @@ namespace DataAccessLayer
         public DbSet<Post> Posts { get; set; }
         public DbSet<Profile> Profiles { get; set; }
         public DbSet<User> Users { get; set; }
+        public DbSet<Role> Roles { get; set; }
+        public DbSet<UserRole> UserRoles { get; set; }
 
         public SocialNetworkDBContext()
         {
-          this.connectionString = "Host=localhost;Port=5432;Database=SocialNetworkDB;Username=postgres;Password=postgres";
+            this.connectionString = "Host=localhost;Port=5432;Database=SocialNetworkDB;Username=postgres;Password=postgres";
         }
 
         public SocialNetworkDBContext(string connectionString)
@@ -42,7 +44,7 @@ namespace DataAccessLayer
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder
-                .UseNpgsql(connectionString)  
+                .UseNpgsql(connectionString)
                 // logging of SQL commands into console
                 /*
                 .UseLoggerFactory(LoggerFactory.Create(
@@ -132,6 +134,16 @@ namespace DataAccessLayer
                 .HasForeignKey(c => c.User1Id)
                 .OnDelete(DeleteBehavior.Restrict);
 
+            modelBuilder.Entity<UserRole>()
+                .HasOne(ur => ur.User)
+                .WithMany(u => u.UserRoles)
+                .HasForeignKey(ur => ur.UserId);
+
+            modelBuilder.Entity<UserRole>()
+                .HasOne(ur => ur.Role)
+                .WithMany(r => r.UserRoles)
+                .HasForeignKey(ur => ur.RoleId);
+
             /* Note that in both cases you have to turn the delete cascade off 
              * for at least one of the relationships and manually delete the
              * related join entities before deleting the main entity, because 
@@ -164,6 +176,10 @@ namespace DataAccessLayer
 
             modelBuilder.Entity<FileEntity>()
                 .HasIndex(f => f.Guid)
+                .IsUnique();
+
+            modelBuilder.Entity<Role>()
+                .HasIndex(r => r.Name)
                 .IsUnique();
 
             // Set default values for timestamps

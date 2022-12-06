@@ -53,7 +53,7 @@ namespace DalUnitTests.EntityTests
         {
             using (var db = new SocialNetworkDBContext())
             {
-                db.Conversations.Add(new Conversation {} );
+                db.Conversations.Add(new Conversation { });
                 Assert.Throws<DbUpdateException>(() => db.SaveChanges());
             }
         }

@@ -73,7 +73,7 @@ namespace DalUnitTests.EntityTests
                 {
                     UserId = 1,
                     GroupId = 2,
-                    Title = new String('l',1000),
+                    Title = new String('l', 1000),
                     Description = new String('l', 1000),
                 });
                 Assert.Throws<DbUpdateException>(() => db.SaveChanges());

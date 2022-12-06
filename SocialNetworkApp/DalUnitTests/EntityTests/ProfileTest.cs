@@ -84,7 +84,7 @@ namespace DalUnitTests.EntityTests
         {
             using (var db = new SocialNetworkDBContext())
             {
-                db.Profiles.Add(new Profile {});
+                db.Profiles.Add(new Profile { });
                 Assert.Throws<DbUpdateException>(() => db.SaveChanges());
             }
         }

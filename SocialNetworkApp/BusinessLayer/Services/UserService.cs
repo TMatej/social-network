@@ -1,9 +1,12 @@
-﻿using BusinessLayer.Contracts;
+﻿using AutoMapper;
+using BusinessLayer.Contracts;
 using BusinessLayer.DTOs.User;
 using DataAccessLayer.Entity;
 using DataAccessLayer.Entity.JoinEntity;
+using Infrastructure.Query;
 using Infrastructure.Repository;
 using Infrastructure.UnitOfWork;
+using Isopoh.Cryptography.Argon2;
 
 namespace BusinessLayer.Services
 {
@@ -11,36 +14,62 @@ namespace BusinessLayer.Services
     {
         public readonly IRepository<User> userRepo;
         public readonly IRepository<Contact> contactRepo;
+        public readonly IQuery<User> userQuery;
         private IUnitOfWork uow;
+        public IMapper mapper;
 
-        public UserService(IRepository<User> userRepo, IRepository<Contact> contactRepo, IUnitOfWork uow) : base(userRepo, uow)
+        public UserService(IMapper mapper, IQuery<User> userQuery, IRepository<User> userRepo, IRepository<Contact> contactRepo, IUnitOfWork uow) : base(userRepo, uow)
         {
             this.userRepo = userRepo;
             this.contactRepo = contactRepo;
             this.uow = uow;
+            this.userQuery = userQuery;
+            this.mapper = mapper;
         }
 
         // Real auth implementation after shown to us on lectures
-        public async Task Register(RegisterDTO registerDTO)
+        public void Register(UserRegisterDTO registerDTO)
         {
+            var passwordHash = Argon2.Hash(registerDTO.Password);
+
             User user = new User
             {
                 Username = registerDTO.Username,
-                // TODO: add hashing
-                PasswordHash = registerDTO.Password,
+                PasswordHash = passwordHash,
                 PrimaryEmail = registerDTO.Email,
             };
 
             userRepo.Insert(user);
-            uow.Commit(); // always neccessary to call iow.Commit() to persist the data into DB
         }
 
-        public void addContacts(int userId, List<int> contactIds)
+        public void AddContacts(int userId, List<int> contactIds)
         {
             foreach (var contactId in contactIds)
             {
                 contactRepo.Insert(new Contact() { User1Id = userId, User2Id = contactId });
             }
+        }
+
+        public UserDTO Authorize(UserLoginDTO userLoginDTO)
+        {
+            var user = userQuery.Where<string>(e => e == userLoginDTO.Email, "Email")
+              .Include("UserRoles")
+              .Execute()
+              .Items
+              .FirstOrDefault();
+
+            if (user == null)
+            {
+                return null;
+            }
+
+            var valid = Argon2.Verify(user.PasswordHash, userLoginDTO.Password);
+            if (!valid)
+            {
+                return null;
+            }
+
+            return mapper.Map<UserDTO>(user);
         }
     }
 }
