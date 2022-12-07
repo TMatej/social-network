@@ -82,7 +82,7 @@ jobs:
         
     - name: Create PostgreSQL db
       run: dotnet ef database update
-      working-directory: SocialNetworkApp
+      working-directory: SocialNetworkApp/DataAccessLayer
       
     - name: Run tests
       run: dotnet test --verbosity normal
