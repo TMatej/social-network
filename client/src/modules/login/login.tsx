@@ -2,30 +2,37 @@ import { useMutation } from "@tanstack/react-query";
 import { Form, Formik } from "formik";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSignIn } from "@fortawesome/free-solid-svg-icons";
-
-import { TextField } from "components/input/text-field";
+import { NavLink, useNavigate } from "react-router-dom";
+import { FormTextField } from "components/input/text-field";
 import { Button } from "components/button";
 import { Paper } from "components/paper";
-import { NavLink } from "react-router-dom";
+import { axios } from "api/axios";
+import { User, useStore } from "store";
 
 type LoginFormData = {
   email: string;
   password: string;
 };
 
-const login = async (data: LoginFormData) => {};
-
 export const Login = () => {
-  const { mutate } = useMutation(login, {
-    onSuccess: () => {},
-    onError: () => {},
-  });
+  const setUser = useStore((state) => state.setUser);
+  const navigate = useNavigate();
+  const { mutate } = useMutation(
+    (data: LoginFormData) => axios.post<User>("/sessions", data),
+    {
+      onSuccess: ({ data }) => {
+        setUser(data);
+        navigate("/");
+      },
+      onError: () => {},
+    }
+  );
 
   return (
     <Formik<LoginFormData>
       initialValues={{
-        email: "",
-        password: "",
+        email: "ciza@gmail.com",
+        password: "ciza",
       }}
       onSubmit={(data) => mutate(data)}
     >
@@ -33,17 +40,23 @@ export const Login = () => {
         <div className="h-full flex flex-col justify-center items-center">
           <Paper className="md:min-w-[350px]">
             <h1 className="text-xl font-bold mb-6">Login</h1>
-            <TextField
+            <FormTextField
+              name="email"
               className="mb-4"
               label="Email"
               placeholder="john@gmail.com"
             />
-            <TextField
+            <FormTextField
+              name="password"
               className="mb-6"
               label="Password"
+              type="password"
               placeholder="*******"
             />
-            <Button leftIcon={<FontAwesomeIcon icon={faSignIn} />}>
+            <Button
+              type="submit"
+              leftIcon={<FontAwesomeIcon icon={faSignIn} />}
+            >
               login
             </Button>
           </Paper>
