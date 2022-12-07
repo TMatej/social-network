@@ -7,6 +7,8 @@ import { Signup } from "./signup/signup";
 export const Router = () => {
   const user = useStore((state) => state.user);
 
+  console.log({ user });
+
   return (
     <BrowserRouter>
       <Routes>
