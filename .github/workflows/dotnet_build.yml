@@ -24,8 +24,10 @@ jobs:
       with:
         dotnet-version: 6.0.x
     - name: Restore dependencies
-      run: SocialNetworkApp/dotnet restore
+      run: dotnet restore
+      working-directory: SocialNetworkApp
     - name: Build
-      run: SocialNetworkApp/dotnet build --no-restore
+      run: dotnet build --no-restore
+      working-directory: SocialNetworkApp
     #- name: Test
       #run: dotnet test --no-build --verbosity normal
