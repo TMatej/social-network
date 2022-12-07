@@ -373,15 +373,14 @@ namespace DataAccessLayer.Data
                 Id = 1,
                 Username = "jozkoVajda123",
                 PasswordHash = "0123456789abcde0",
-                PrimaryEmail = "JozoJeSuper@gmail.com",
-                SecondaryEmail = "NajlepsieZaklinadlo@gmail.com"
+                Email = "JozoJeSuper@gmail.com",
             };
 
             var namelessUser = new User
             {
                 Id = 2,
                 Username = "lokomotivatomas123",
-                PrimaryEmail = "cokoloko@gmail.com",
+                Email = "cokoloko@gmail.com",
                 PasswordHash = "0123456789abcde0"
             };
 

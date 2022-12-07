@@ -22,14 +22,14 @@ namespace DalUnitTests.EntityTests
                 db.Users.Add(new User
                 {
                     Username = "ben",
-                    PrimaryEmail = "ben@gmail.com",
+                    Email = "ben@gmail.com",
                     PasswordHash = "aaafht3x"
                 });
 
                 db.Users.Add(new User
                 {
                     Username = "john",
-                    PrimaryEmail = "john@gmail.com",
+                    Email = "john@gmail.com",
                     PasswordHash = "51df6545ecvd"
                 });
                 db.SaveChanges();
@@ -84,7 +84,7 @@ namespace DalUnitTests.EntityTests
         {
             using (var db = new SocialNetworkDBContext())
             {
-                db.Profiles.Add(new Profile {});
+                db.Profiles.Add(new Profile { });
                 Assert.Throws<DbUpdateException>(() => db.SaveChanges());
             }
         }

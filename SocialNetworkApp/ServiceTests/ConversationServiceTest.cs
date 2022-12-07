@@ -13,7 +13,7 @@ namespace ServiceTests
         IRepository<Message> messageRepo;
         IRepository<ConversationParticipant> conversationParticipantRepo;
         IUnitOfWork uow;
-       
+
         [SetUp]
         public void Setup()
         {
@@ -54,8 +54,8 @@ namespace ServiceTests
         [Test]
         public void PostMessageNull()
         {
-                var conversationService = new ConversationService(conversationRepo, conversationParticipantRepo, messageRepo, uow);
-                Assert.Throws<ArgumentNullException>(() => conversationService.postMessage(1, 2, null, null));
+            var conversationService = new ConversationService(conversationRepo, conversationParticipantRepo, messageRepo, uow);
+            Assert.Throws<ArgumentNullException>(() => conversationService.postMessage(1, 2, null, null));
         }
     }
 }

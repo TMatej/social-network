@@ -86,7 +86,7 @@ namespace ServiceTests
 
 
             participationType.Id.Returns(1);
-            
+
         }
 
         [Test]
@@ -125,7 +125,8 @@ namespace ServiceTests
             uow.Received().Commit();
         }
         [Test]
-        public void RemoveParticipant() {
+        public void RemoveParticipant()
+        {
             var result = new QueryResult<EventParticipant>(1, 1, 1, new List<EventParticipant> { mockEventParticipant1 });
             var queryWithResult = MockQuery.CreateMockQueryWithResult(result);
             var eventService = new EventService(eventQuery, queryWithResult, eventRepository, participantRepository, uow);

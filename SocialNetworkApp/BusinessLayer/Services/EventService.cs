@@ -20,13 +20,13 @@ namespace BusinessLayer.Services
         readonly IRepository<EventParticipant> participantRepository;
         readonly IQuery<EventParticipant> participantQuery;
         readonly IQuery<Event> eventQuery;
-        public EventService(IQuery<Event> eventQuery,IQuery<EventParticipant> participantQuery, IRepository<Event> repository, IRepository<EventParticipant> participantRepository, IUnitOfWork uow) : base(repository, uow)
+        public EventService(IQuery<Event> eventQuery, IQuery<EventParticipant> participantQuery, IRepository<Event> repository, IRepository<EventParticipant> participantRepository, IUnitOfWork uow) : base(repository, uow)
         {
             this.eventQuery = eventQuery;
             this.participantRepository = participantRepository;
             this.participantQuery = participantQuery;
         }
-        
+
         public IEnumerable<Event> FindByCreator(User creator)
         {
             var query = eventQuery.Where<int>(id => id == creator.Id, "UserId");
@@ -60,7 +60,7 @@ namespace BusinessLayer.Services
         }
         public void RemoveParticipant(User user, Event _event)
         {
-            var participant = participantQuery.Where<int>(eventId => eventId == _event.Id, "EventId").Where<int>(userId=>userId == user.Id,"UserId").Execute().Items.FirstOrDefault();
+            var participant = participantQuery.Where<int>(eventId => eventId == _event.Id, "EventId").Where<int>(userId => userId == user.Id, "UserId").Execute().Items.FirstOrDefault();
             if (participant != null)
             {
                 participantRepository.Delete(participant);

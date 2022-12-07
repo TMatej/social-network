@@ -2,6 +2,7 @@ using BusinessLayer.DTOs.Photo;
 using BusinessLayer.DTOs.Post;
 using BusinessLayer.DTOs.Profile;
 using BusinessLayer.DTOs.Query;
+using BusinessLayer.DTOs.User;
 using DataAccessLayer.Entity;
 using Profile = AutoMapper.Profile;
 
@@ -21,6 +22,9 @@ namespace BusinessLayer.Config
                 .ForMember(dest => dest.Profile,
                     opt => opt.MapFrom(src => src.Profile));
             CreateMap<PostCreateDTO, Post>().ReverseMap();
+            CreateMap<User, UserDTO>()
+              .ForMember(x => x.Roles, opt => opt.MapFrom(x => x.UserRoles.Select(r => r.Role.Name)))
+              .ReverseMap();
         }
     }
 }
