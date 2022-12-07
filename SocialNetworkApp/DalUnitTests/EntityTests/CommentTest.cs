@@ -39,9 +39,9 @@ namespace DalUnitTests.EntityTests
                 });
                 db.SaveChanges();
 
-                var comment = db.Comments.FirstOrDefault();
+                var comment = db.Comments.OrderBy(x => x.Id).LastOrDefault();
                 Assert.That(comment, Is.Not.Null);
-                Assert.That(comment.Id, Is.EqualTo(3));
+                Assert.That(comment.Id, Is.EqualTo(8)); /*id's 5,6,7 are already used in initialization */
             }
         }
 

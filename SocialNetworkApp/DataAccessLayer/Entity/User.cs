@@ -23,7 +23,7 @@ namespace DataAccessLayer.Entity
         [Required]
         public DateTime CreatedAt { get; set; }
 
-        //public Profile Profile { get; set; }
+        public Profile Profile { get; set; }
 
         public IList<EventParticipant> EventParticipants { get; set; }
 

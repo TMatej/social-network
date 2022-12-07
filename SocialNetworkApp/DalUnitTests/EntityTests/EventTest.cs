@@ -39,7 +39,7 @@ namespace DalUnitTests.EntityTests
                 db.Events.Add(new Event
                 {
                     UserId = 1,
-                    GroupId = 2,
+                    GroupId = 3,
                     Title = "Example Event",
                     Description = "This is an example event",
                 });
