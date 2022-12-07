@@ -84,7 +84,11 @@ jobs:
       run: dotnet ef database update
       working-directory: SocialNetworkApp/DataAccessLayer
       
+    - name: Build
+      run: dotnet build --no-restore
+      working-directory: SocialNetworkApp
+      
     - name: Run tests
-      run: dotnet test --verbosity normal
+      run: dotnet test --no-build --verbosity normal
       working-directory: SocialNetworkApp
     
