@@ -73,6 +73,14 @@ jobs:
       run: dotnet restore
       working-directory: SocialNetworkApp
       
+    - name: Install EF Core tools
+      run: |
+        dotnet tool install --global dotnet-ef
+        dotnet tool update --global dotnet-ef
+        dotnet add package Microsoft.EntityFrameworkCore.Design
+        dotnet ef
+      working-directory: SocialNetworkApp
+        
     - name: Create PostgreSQL db
       run: dotnet ef database update
       working-directory: SocialNetworkApp
