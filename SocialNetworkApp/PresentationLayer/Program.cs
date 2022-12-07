@@ -6,6 +6,7 @@ using BusinessLayer;
 using DataAccessLayer;
 using Infrastructure.EFCore;
 
+
 var builder = WebApplication.CreateBuilder(args);
 builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory())
   .ConfigureContainer<ContainerBuilder>(builder =>
@@ -15,12 +16,13 @@ builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory())
       builder.RegisterModule(new ServicesModule());
       builder.RegisterModule(new FacadesModule());
   });
+builder.Services.AddCors();
 builder.Services.AddControllers();
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
   .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme,
     options => builder.Configuration.Bind("JwtSettings", options))
   .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme,
-    options => builder.Configuration.Bind("CookieSettings", options));
+    options => { options.Cookie.Name = "auth"; builder.Configuration.Bind("CookieSettings", options); });
 
 var app = builder.Build();
 
@@ -29,11 +31,16 @@ if (app.Environment.IsDevelopment())
     app.UseDeveloperExceptionPage();
 }
 
-app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseRouting();
+app.UseCors(builder => {
+  builder.WithOrigins("http://localhost:5173")
+    .AllowCredentials()
+    .AllowAnyHeader()
+    .AllowAnyMethod();
+  });
 app.UseAuthentication();
 app.UseAuthorization();
-app.UseEndpoints(endpoints => endpoints.MapControllers());
+app.MapControllers();
 
 app.Run();

@@ -30,6 +30,11 @@ namespace BusinessLayer.Services
         // Real auth implementation after shown to us on lectures
         public void Register(UserRegisterDTO registerDTO)
         {
+            if (registerDTO.Password != registerDTO.RepeatPassword)
+            {
+                throw new Exception("Passwords do not match");
+            }
+
             var passwordHash = Argon2.Hash(registerDTO.Password);
 
             User user = new User
