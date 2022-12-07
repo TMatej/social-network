@@ -1,0 +1,83 @@
+# This workflow will build a .NET project
+# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-net
+
+name: CI-build-test
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    
+    runs-on: ubuntu-latest
+    #runs-on: ${{matrix.os}}
+    #strategy:
+    #  matrix:
+    #    os: [ubuntu-latest, windows-latest, macOS-latest]
+      
+    steps:
+    - name: Check out code
+      uses: actions/checkout@v3
+      
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: 6.0.x
+        
+    - name: Restore dependencies
+      run: dotnet restore
+      working-directory: SocialNetworkApp
+      
+    - name: Build
+      run: dotnet build --no-restore
+      working-directory: SocialNetworkApp
+   # - name: Test
+   #   run: dotnet test --no-build --verbosity normal
+   #   working-directory: SocialNetworkApp
+   # needs to set up a docker postgres before testing.
+  
+  test:
+ 
+    needs: build
+  
+    runs-on: ubuntu-latest
+    
+    services:
+      postgres:
+        image: postgres:latest
+        env:
+          POSTGRES_DB: ${{ secrets.POSTGRES_DB }}
+          POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
+          POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432:5432
+
+    steps:
+    - name: Check out code
+      uses: actions/checkout@v3
+      
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: 6.0.x
+        
+    - name: Restore dependencies
+      run: dotnet restore
+      working-directory: SocialNetworkApp
+      
+    - name: Create PostgreSQL db
+      run: dotnet ef database update
+      working-directory: SocialNetworkApp
+      
+    - name: Run tests
+      run: dotnet test --verbosity normal
+      working-directory: SocialNetworkApp
+    
