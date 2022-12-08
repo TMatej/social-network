@@ -33,7 +33,7 @@ namespace DataAccessLayer
 
         public SocialNetworkDBContext()
         {
-            this.connectionString = "Host=localhost;Port=5432;Database=SocialNetworkDB;Username=postgres;Password=postgres";
+            this.connectionString = "Host=localhost;Port=5432;Database=social-network-db;Username=postgres;Password=postgres";
         }
 
         public SocialNetworkDBContext(string connectionString)
