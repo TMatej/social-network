@@ -33,7 +33,14 @@ namespace DataAccessLayer
 
         public SocialNetworkDBContext()
         {
-            this.connectionString = "Host=localhost;Port=5432;Database=social-network-db;Username=postgres;Password=postgres";
+            /* NOT VERY SECURE WAY - concrete values should be later deleted */
+            var host = Environment.GetEnvironmentVariable("POSTGRES_HOST") ?? "localhost";
+            var userName = Environment.GetEnvironmentVariable("POSTGRES_USER") ?? "postgres";
+            var password = Environment.GetEnvironmentVariable("POSTGRES_PASSWORD") ?? "postgres";
+            var port = Environment.GetEnvironmentVariable("POSTGRES_PORT") ?? "5432";
+            var database = Environment.GetEnvironmentVariable("POSTGRES_DB") ?? "social-network-db";
+
+            connectionString = $"Host={host};Username={userName};Password={password};Port={port};Database={database};";
         }
 
         public SocialNetworkDBContext(string connectionString)
