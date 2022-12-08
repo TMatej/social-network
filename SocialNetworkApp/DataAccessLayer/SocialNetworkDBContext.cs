@@ -168,6 +168,11 @@ namespace DataAccessLayer
                 .WithOne(c => c.User)
                 .OnDelete(DeleteBehavior.Restrict);
 
+            modelBuilder.Entity<User>()
+                .HasOne(u => u.Avatar)
+                .WithOne()
+                .HasForeignKey<User>(u => u.AvatarId); 
+
             modelBuilder.Entity<Message>()
                 .HasOne(m => m.Author)
                 .WithMany()

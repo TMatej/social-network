@@ -3,6 +3,7 @@ import { library } from "@fortawesome/fontawesome-svg-core";
 import { fas } from "@fortawesome/free-solid-svg-icons";
 
 import { Router } from "modules/router";
+import { Notifications } from "components/notification/notification";
 
 const queryClient = new QueryClient();
 
@@ -11,7 +12,9 @@ library.add(fas);
 export const App = () => {
   return (
     <QueryClientProvider client={queryClient}>
-      <Router />
+      <Notifications>
+        <Router />
+      </Notifications>
     </QueryClientProvider>
   );
 };

@@ -1,11 +1,10 @@
-﻿using Ardalis.GuardClauses;
-using AutoMapper;
+﻿using AutoMapper;
 using BusinessLayer.Contracts;
 using BusinessLayer.DTOs.Post;
 using DataAccessLayer.Entity;
+using Infrastructure.Query;
 using Infrastructure.Repository;
 using Infrastructure.UnitOfWork;
-using Microsoft.AspNetCore.Http;
 using Profile = DataAccessLayer.Entity.Profile;
 
 namespace BusinessLayer.Services
@@ -15,12 +14,14 @@ namespace BusinessLayer.Services
         private IMapper mapper;
         private IPostService postService;
         private IFileService fileService;
+        private IQuery<Profile> profileQuery;
 
-        public ProfileService(IRepository<Profile> repository, IPostService postService, IFileService fileService, IUnitOfWork uow, IMapper mapper) : base(repository, uow)
+        public ProfileService(IQuery<Profile> profileQuery, IRepository<Profile> repository, IPostService postService, IFileService fileService, IUnitOfWork uow, IMapper mapper) : base(repository, uow)
         {
             this.mapper = mapper;
             this.postService = postService;
             this.fileService = fileService;
+            this.profileQuery = profileQuery;
         }
 
         public void addPost(int profileId, int userId, PostCreateDTO postDTO)
@@ -32,14 +33,16 @@ namespace BusinessLayer.Services
             postService.Insert(post);
         }
 
-        public void changeAvatar(int profileId, IFormFile avatar)
+        public Profile getByUserId(int userId)
         {
-            Guard.Against.Null(profileId);
+            var profile = profileQuery.Where<int>(id => id == userId, "UserId").Include("User").Execute().Items.FirstOrDefault();
 
-            var file = fileService.saveFile(avatar);
-            var profile = GetByID(profileId);
-            profile.FileEntityId = file.Id;
-            Update(profile);
+            if (profile == null)
+            {
+              throw new Exception("Profile not found");
+            }
+
+            return profile;
         }
     }
 }

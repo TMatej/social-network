@@ -1,16 +1,15 @@
 using BusinessLayer.DTOs.Comment;
+using BusinessLayer.DTOs.Gallery;
 using BusinessLayer.DTOs.Photo;
 using BusinessLayer.DTOs.Post;
 using BusinessLayer.DTOs.Profile;
 using BusinessLayer.DTOs.Query;
 using BusinessLayer.DTOs.User;
 using DataAccessLayer.Entity;
-using Profile = AutoMapper.Profile;
-using BusinessLayer.DTOs.Gallery;
 
 namespace BusinessLayer.Config
 {
-    public class MappingProfile : Profile
+    public class MappingProfile : AutoMapper.Profile
     {
 
         public MappingProfile()
@@ -18,6 +17,9 @@ namespace BusinessLayer.Config
             /* Gallery */
             CreateMap<Gallery, GalleryBasicRepresentDTO>();
             CreateMap<GalleryCreateDTO, Gallery>();
+            CreateMap<Photo, PhotoInsertDTO>().ReverseMap();
+            CreateMap<Photo, PhotoRepresentDTO>().ReverseMap();
+            CreateMap<Profile, ProfileBasicRepresentDTO>().ReverseMap();
             CreateMap<Gallery, GalleryRepresentDTO>()
                 .ForMember(dest => dest.Profile,
                     opt => opt.MapFrom(src => src.Profile));

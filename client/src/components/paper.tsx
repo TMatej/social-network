@@ -9,7 +9,7 @@ export const Paper = ({
   className?: string;
 }) => {
   return (
-    <div className={clsx("bg-white bg-opacity-5 rounded p-4", className)}>
+    <div className={clsx("bg-white bg-opacity-5 rounded", className)}>
       {children}
     </div>
   );
