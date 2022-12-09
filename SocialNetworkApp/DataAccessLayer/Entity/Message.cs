@@ -23,7 +23,7 @@ namespace DataAccessLayer.Entity
         public string Content { get; set; }
 
         [Required]
-        public DateTime Timestamp { get; set; }
+        public DateTime CreatedAt { get; set; }
 
         public int? AttachmentId { get; set; }
 

@@ -8,13 +8,12 @@ namespace Infrastructure.EFCore.Test
     public class QueryTest
     {
         private SocialNetworkDBContext dbContext;
-        private const string ConnectionString = @"Data Source=(localdb)\MSSQLLocalDB; Initial Catalog=PV179-SocialNetworkDB";
         private EFUnitOfWork unitOfWork;
 
         [SetUp]
         public void Setup()
         {
-            dbContext = new SocialNetworkDBContext(ConnectionString);
+            dbContext = new SocialNetworkDBContext();
             unitOfWork = new EFUnitOfWork(dbContext);
 
             dbContext.Database.EnsureDeleted();
@@ -23,37 +22,37 @@ namespace Infrastructure.EFCore.Test
             dbContext.Users.Add(new User
             {
                 Username = "ben",
-                PrimaryEmail = "ben@gmail.com",
+                Email = "ben@gmail.com",
                 PasswordHash = "aaafht3x"
             });
             dbContext.Users.Add(new User
             {
                 Username = "thomas",
-                PrimaryEmail = "thomas@gmail.com",
+                Email = "thomas@gmail.com",
                 PasswordHash = "541dremnb4"
             });
             dbContext.Users.Add(new User
             {
                 Username = "bob",
-                PrimaryEmail = "bob@gmail.com",
+                Email = "bob@gmail.com",
                 PasswordHash = "6sdf198ve2"
             });
             dbContext.Users.Add(new User
             {
                 Username = "john",
-                PrimaryEmail = "john@gmail.com",
+                Email = "john@gmail.com",
                 PasswordHash = "51df6545ecvd"
             });
             dbContext.Users.Add(new User
             {
                 Username = "peter",
-                PrimaryEmail = "peter@gmail.com",
+                Email = "peter@gmail.com",
                 PasswordHash = "5e21e65ver"
             });
             dbContext.Users.Add(new User
             {
                 Username = "bradley",
-                PrimaryEmail = "bradley@gmail.com",
+                Email = "bradley@gmail.com",
                 PasswordHash = "21ef5evc7"
             });
 
@@ -84,7 +83,7 @@ namespace Infrastructure.EFCore.Test
         public void UsersWithEmailThatStartsWithBExist_QueryWhere_Test()
         {
             var query = new EntityFrameworkQuery<User>(dbContext, unitOfWork);
-            query.Where<string>(a => a.StartsWith("b"), "PrimaryEmail");
+            query.Where<string>(a => a.StartsWith("b"), "Email");
             var result = query.Execute();
 
             Assert.True(result.Items.Count() == 3);
@@ -165,7 +164,7 @@ namespace Infrastructure.EFCore.Test
         {
             var query = new EntityFrameworkQuery<User>(dbContext, unitOfWork);
             var result = query
-                .Where<string>(u => u.StartsWith("b"), "PrimaryEmail")
+                .Where<string>(u => u.StartsWith("b"), "Email")
                 .OrderBy<int>("Id", false)
                 .Page(1, 2)
                 .Execute()
@@ -173,7 +172,7 @@ namespace Infrastructure.EFCore.Test
                 .ToList();
 
             var expected = dbContext.Users
-                .Where(a => a.PrimaryEmail.StartsWith("b"))
+                .Where(a => a.Email.StartsWith("b"))
                 .OrderByDescending(a => a.Id)
                 .Take(2)
                 .ToList();

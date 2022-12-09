@@ -6,12 +6,10 @@ namespace DalUnitTests.EntityTests
 {
     public class UserTest
     {
-        private const string connectionString = @"Data Source=(localdb)\MSSQLLocalDB; Initial Catalog=PV179-SocialNetworkDB";
-
         [SetUp]
         public void Setup()
         {
-            using (var db = new SocialNetworkDBContext(connectionString))
+            using (var db = new SocialNetworkDBContext())
             {
                 db.Database.EnsureDeleted();
                 db.Database.EnsureCreated();
@@ -21,7 +19,7 @@ namespace DalUnitTests.EntityTests
         [TearDown]
         public void TearDown()
         {
-            using (var db = new SocialNetworkDBContext(connectionString))
+            using (var db = new SocialNetworkDBContext())
             {
                 db.Database.EnsureDeleted();
                 db.Dispose();
@@ -30,9 +28,9 @@ namespace DalUnitTests.EntityTests
         [Test]
         public void Test_Add()
         {
-            using (var db = new SocialNetworkDBContext(connectionString))
+            using (var db = new SocialNetworkDBContext())
             {
-                db.Users.Add(new User { Username = "lokomotiva123", PrimaryEmail = "cokoloko@gmail.com", PasswordHash = "0123456789abcde0" });
+                db.Users.Add(new User { Username = "lokomotiva123", Email = "cokoloko@gmail.com", PasswordHash = "0123456789abcde0" });
                 db.SaveChanges();
 
                 var user = db.Users.FirstOrDefault();
@@ -43,7 +41,7 @@ namespace DalUnitTests.EntityTests
         [Test]
         public void Test_Add_Incomplete()
         {
-            using (var db = new SocialNetworkDBContext(connectionString))
+            using (var db = new SocialNetworkDBContext())
             {
                 db.Users.Add(new User { Username = "lokomotiva123" });
 
@@ -53,11 +51,11 @@ namespace DalUnitTests.EntityTests
         [Test]
         public void Test_Add_Duplicate()
         {
-            using (var db = new SocialNetworkDBContext(connectionString))
+            using (var db = new SocialNetworkDBContext())
             {
-                db.Users.Add(new User { Username = "lokomotiva123", PrimaryEmail = "cokoloko@gmail.com", PasswordHash = "0123456789abcde0" });
+                db.Users.Add(new User { Username = "lokomotiva123", Email = "cokoloko@gmail.com", PasswordHash = "0123456789abcde0" });
 
-                db.Users.Add(new User { Username = "lokomotiva123", PrimaryEmail = "cokolokojine@gmail.com", PasswordHash = "ffffffffffff" });
+                db.Users.Add(new User { Username = "lokomotiva123", Email = "cokolokojine@gmail.com", PasswordHash = "ffffffffffff" });
 
                 Assert.Throws<DbUpdateException>(() => db.SaveChanges());
             }
@@ -65,9 +63,9 @@ namespace DalUnitTests.EntityTests
         [Test]
         public void Test_Add_Long()
         {
-            using (var db = new SocialNetworkDBContext(connectionString))
+            using (var db = new SocialNetworkDBContext())
             {
-                db.Users.Add(new User { Username = new String('l', 100), PrimaryEmail = new String('l', 500), PasswordHash = "0" });
+                db.Users.Add(new User { Username = new String('l', 100), Email = new String('l', 500), PasswordHash = "0" });
 
 
                 Assert.Throws<DbUpdateException>(() => db.SaveChanges());

@@ -6,31 +6,45 @@ namespace DalUnitTests.EntityTests
 {
     public class PostTest
     {
-        private const string connectionString = @"Data Source=(localdb)\MSSQLLocalDB; Initial Catalog=PV179-SocialNetworkDB";
-
         [SetUp]
         public void Setup()
         {
-            using (var db = new SocialNetworkDBContext(connectionString))
+            using (var db = new SocialNetworkDBContext())
             {
                 db.Database.EnsureDeleted();
                 db.Database.EnsureCreated();
+
+                db.Users.Add(new User
+                {
+                    Username = "ben",
+                    Email = "ben@gmail.com",
+                    PasswordHash = "aaafht3x"
+                });
+
+                db.Groups.Add(new Group
+                {
+                    Name = "Test Group",
+                    Description = "This is a test group."
+                });
+
+                db.SaveChanges();
             }
         }
 
         [TearDown]
         public void TearDown()
         {
-            using (var db = new SocialNetworkDBContext(connectionString))
+            using (var db = new SocialNetworkDBContext())
             {
                 db.Database.EnsureDeleted();
                 db.Dispose();
             }
         }
+
         [Test]
         public void Test_Add()
         {
-            using (var db = new SocialNetworkDBContext(connectionString))
+            using (var db = new SocialNetworkDBContext())
             {
                 db.Posts.Add(new Post
                 {
@@ -38,7 +52,6 @@ namespace DalUnitTests.EntityTests
                     PostableId = 1,
                     Title = "Hello World!",
                     Content = "This is my first post!",
-                    CreatedAt = DateTime.Now
                 });
                 db.SaveChanges();
 
@@ -51,14 +64,13 @@ namespace DalUnitTests.EntityTests
         [Test]
         public void Test_Add_Incomplete()
         {
-            using (var db = new SocialNetworkDBContext(connectionString))
+            using (var db = new SocialNetworkDBContext())
             {
                 db.Posts.Add(new Post
                 {
                     UserId = 1,
                     Title = "Hello World!",
                     Content = "This is my first post!",
-                    CreatedAt = DateTime.Now
                 });
                 Assert.Throws<DbUpdateException>(() => db.SaveChanges());
             }
@@ -66,14 +78,13 @@ namespace DalUnitTests.EntityTests
         [Test]
         public void Test_Add_Long()
         {
-            using (var db = new SocialNetworkDBContext(connectionString))
+            using (var db = new SocialNetworkDBContext())
             {
                 db.Posts.Add(new Post
                 {
                     UserId = 1,
                     Title = new String('l', 500),
                     Content = new String('l', 500),
-                    CreatedAt = DateTime.Now
                 });
 
                 Assert.Throws<DbUpdateException>(() => db.SaveChanges());

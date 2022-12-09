@@ -9,6 +9,7 @@ namespace DataAccessLayer
     public class SocialNetworkDBContext : DbContext
     {
         private string connectionString { get; set; }
+        private bool seedData { get; }
 
         public DbSet<Attachment> Attachments { get; set; }
         public DbSet<Comment> Comments { get; set; }
@@ -28,18 +29,32 @@ namespace DataAccessLayer
         public DbSet<Post> Posts { get; set; }
         public DbSet<Profile> Profiles { get; set; }
         public DbSet<User> Users { get; set; }
+        public DbSet<Role> Roles { get; set; }
+        public DbSet<UserRole> UserRoles { get; set; }
 
-        public SocialNetworkDBContext() { }
+        public SocialNetworkDBContext(bool seedData = false)
+        {
+            /* NOT VERY SECURE WAY - concrete values should be later deleted */
+            var host = Environment.GetEnvironmentVariable("POSTGRES_HOST") ?? "localhost";
+            var userName = Environment.GetEnvironmentVariable("POSTGRES_USER") ?? "postgres";
+            var password = Environment.GetEnvironmentVariable("POSTGRES_PASSWORD") ?? "postgres";
+            var port = Environment.GetEnvironmentVariable("POSTGRES_PORT") ?? "5432";
+            var database = Environment.GetEnvironmentVariable("POSTGRES_DB") ?? "social-network-db";
 
-        public SocialNetworkDBContext(string connectionString)
+            connectionString = $"Host={host};Username={userName};Password={password};Port={port};Database={database};";
+            this.seedData = seedData;
+        }
+
+        public SocialNetworkDBContext(string connectionString, bool seedData = false)
         {
             this.connectionString = connectionString;
+            this.seedData = seedData;
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder
-                .UseSqlServer(connectionString)  
+                .UseNpgsql(connectionString)
                 // logging of SQL commands into console
                 /*
                 .UseLoggerFactory(LoggerFactory.Create(
@@ -50,6 +65,7 @@ namespace DataAccessLayer
                     }))
                 */
                 .EnableSensitiveDataLogging();
+
             base.OnConfiguring(optionsBuilder);
         }
 
@@ -128,6 +144,16 @@ namespace DataAccessLayer
                 .HasForeignKey(c => c.User1Id)
                 .OnDelete(DeleteBehavior.Restrict);
 
+            modelBuilder.Entity<UserRole>()
+                .HasOne(ur => ur.User)
+                .WithMany(u => u.UserRoles)
+                .HasForeignKey(ur => ur.UserId);
+
+            modelBuilder.Entity<UserRole>()
+                .HasOne(ur => ur.Role)
+                .WithMany(r => r.UserRoles)
+                .HasForeignKey(ur => ur.RoleId);
+
             /* Note that in both cases you have to turn the delete cascade off 
              * for at least one of the relationships and manually delete the
              * related join entities before deleting the main entity, because 
@@ -162,7 +188,80 @@ namespace DataAccessLayer
                 .HasIndex(f => f.Guid)
                 .IsUnique();
 
-            modelBuilder.Seed();
+            modelBuilder.Entity<Role>()
+                .HasIndex(r => r.Name)
+                .IsUnique();
+
+            // Set default values for timestamps
+            modelBuilder.Entity<Comment>()
+                .Property(u => u.CreatedAt)
+                .HasDefaultValueSql("now()");
+
+            modelBuilder.Entity<Contact>()
+                .Property(u => u.CreatedAt)
+                .HasDefaultValueSql("now()");
+
+            modelBuilder.Entity<Conversation>()
+                .Property(u => u.CreatedAt)
+                .HasDefaultValueSql("now()");
+
+            modelBuilder.Entity<ConversationParticipant>()
+                .Property(u => u.CreatedAt)
+                .HasDefaultValueSql("now()");
+
+            modelBuilder.Entity<Event>()
+                .Property(u => u.CreatedAt)
+                .HasDefaultValueSql("now()");
+
+            modelBuilder.Entity<FileEntity>()
+                .Property(u => u.CreatedAt)
+                .HasDefaultValueSql("now()");
+
+            modelBuilder.Entity<EventParticipant>()
+                .Property(u => u.CreatedAt)
+                .HasDefaultValueSql("now()");
+
+            modelBuilder.Entity<Gallery>()
+                .Property(u => u.CreatedAt)
+                .HasDefaultValueSql("now()");
+
+            modelBuilder.Entity<Group>()
+                .Property(u => u.CreatedAt)
+                .HasDefaultValueSql("now()");
+
+            modelBuilder.Entity<GroupMember>()
+                .Property(u => u.CreatedAt)
+                .HasDefaultValueSql("now()");
+
+            modelBuilder.Entity<GroupRole>()
+                .Property(u => u.CreatedAt)
+                .HasDefaultValueSql("now()");
+
+            modelBuilder.Entity<Message>()
+                .Property(u => u.CreatedAt)
+                .HasDefaultValueSql("now()");
+
+            modelBuilder.Entity<ParticipationType>()
+                .Property(u => u.CreatedAt)
+                .HasDefaultValueSql("now()");
+
+            modelBuilder.Entity<Photo>()
+                .Property(u => u.CreatedAt)
+                .HasDefaultValueSql("now()");
+
+            modelBuilder.Entity<Post>()
+                .Property(u => u.CreatedAt)
+                .HasDefaultValueSql("now()");
+
+            modelBuilder.Entity<Profile>()
+                .Property(u => u.CreatedAt)
+                .HasDefaultValueSql("now()");
+
+            modelBuilder.Entity<User>()
+                .Property(u => u.CreatedAt)
+                .HasDefaultValueSql("now()");
+
+            if (seedData) modelBuilder.Seed();
 
             base.OnModelCreating(modelBuilder);
         }

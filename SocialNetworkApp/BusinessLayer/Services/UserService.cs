@@ -1,4 +1,5 @@
 ﻿using Ardalis.GuardClauses;
+using AutoMapper;
 using BusinessLayer.Contracts;
 using BusinessLayer.DTOs.User;
 using DataAccessLayer.Entity;
@@ -6,6 +7,7 @@ using DataAccessLayer.Entity.JoinEntity;
 using Infrastructure.Query;
 using Infrastructure.Repository;
 using Infrastructure.UnitOfWork;
+using Isopoh.Cryptography.Argon2;
 
 namespace BusinessLayer.Services
 {
@@ -15,12 +17,15 @@ namespace BusinessLayer.Services
         private readonly IQuery<EventParticipant> eventParticipantQuery;
         private readonly IQuery<ConversationParticipant> conversationParticipantQuery;
         private readonly IQuery<Contact> contactQuery;
+        private readonly IQuery<User> userQuery;
         private readonly IRepository<Contact> contactRepo;
+        public IMapper mapper;
 
         public UserService(IRepository<User> userRepo,
             IQuery<EventParticipant> eventParticipantQuery,
             IQuery<ConversationParticipant> conversationParticipantQuery,
             IQuery<Contact> contactQuery,
+            IQuery<User> userQuery,
             IRepository<Contact> contactRepo,
             IUnitOfWork uow) : base(userRepo, uow)
         {
@@ -29,17 +34,24 @@ namespace BusinessLayer.Services
             this.conversationParticipantQuery = conversationParticipantQuery;
             this.contactQuery = contactQuery;
             this.contactRepo = contactRepo;
+            this.userQuery = userQuery;
         }
 
         // Real auth implementation after shown to us on lectures
-        public async Task Register(RegisterDTO registerDTO)
+        public void Register(UserRegisterDTO registerDTO)
         {
+            if (registerDTO.Password != registerDTO.RepeatPassword)
+            {
+                throw new Exception("Passwords do not match");
+            }
+
+            var passwordHash = Argon2.Hash(registerDTO.Password);
+
             User user = new User
             {
                 Username = registerDTO.Username,
-                // TODO: add hashing
-                PasswordHash = registerDTO.Password,
-                PrimaryEmail = registerDTO.Email,
+                PasswordHash = passwordHash,
+                Email = registerDTO.Email,
             };
 
             userRepo.Insert(user);
@@ -68,12 +80,34 @@ namespace BusinessLayer.Services
             _uow.Commit();
         }
 
-        public void addContacts(int userId, List<int> contactIds)
+        public void AddContacts(int userId, List<int> contactIds)
         {
             foreach (var contactId in contactIds)
             {
                 contactRepo.Insert(new Contact() { User1Id = userId, User2Id = contactId });
             }
+        }
+
+        public UserDTO AuthenticateUser(UserLoginDTO userLoginDTO)
+        {
+            var user = userQuery.Where<string>(e => e == userLoginDTO.Email, "Email")
+              .Include("UserRoles")
+              .Execute()
+              .Items
+              .FirstOrDefault();
+
+            if (user == null)
+            {
+                return null;
+            }
+
+            var valid = Argon2.Verify(user.PasswordHash, userLoginDTO.Password);
+            if (!valid)
+            {
+                return null;
+            }
+
+            return mapper.Map<UserDTO>(user);
         }
     }
 }

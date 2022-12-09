@@ -10,12 +10,11 @@ namespace Infrastructure.EFCore.Test
         private SocialNetworkDBContext dbContext;
         private EFUnitOfWork unitOfWork;
         private EFGenericRepository<User> repository;
-        private const string ConnectionString = @"Data Source=(localdb)\MSSQLLocalDB; Initial Catalog=PV179-SocialNetworkDB";
 
         [SetUp]
         public void Setup()
         {
-            dbContext = new SocialNetworkDBContext(ConnectionString);
+            dbContext = new SocialNetworkDBContext();
             unitOfWork = new EFUnitOfWork(dbContext);
             repository = new EFGenericRepository<User>(unitOfWork);
 
@@ -25,14 +24,14 @@ namespace Infrastructure.EFCore.Test
             dbContext.Users.Add(new User
             {
                 Username = "ben",
-                PrimaryEmail = "ben@gmail.com",
+                Email = "ben@gmail.com",
                 PasswordHash = "aaafht3x"
             });
 
             dbContext.Users.Add(new User
             {
                 Username = "john",
-                PrimaryEmail = "john@gmail.com",
+                Email = "john@gmail.com",
                 PasswordHash = "51df6545ecvd"
             });
 
@@ -54,7 +53,7 @@ namespace Infrastructure.EFCore.Test
             repository.Insert(new User
             {
                 Username = "thomas",
-                PrimaryEmail = "thomas@gmail.com",
+                Email = "thomas@gmail.com",
                 PasswordHash = "541dremnb4"
             });
 

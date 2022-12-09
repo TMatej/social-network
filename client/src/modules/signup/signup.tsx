@@ -3,31 +3,38 @@ import { Form, Formik } from "formik";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFileEdit } from "@fortawesome/free-solid-svg-icons";
 
-import { TextField } from "components/input/text-field";
+import { FormTextField, TextField } from "components/input/text-field";
 import { Button } from "components/button";
 import { Paper } from "components/paper";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
+import { axios } from "api/axios";
 
 type SignupFormData = {
+  username: string;
   email: string;
   password: string;
   repeatPassword: string;
 };
 
-const signup = async (data: SignupFormData) => {};
-
 export const Signup = () => {
-  const { mutate } = useMutation(signup, {
-    onSuccess: () => {},
-    onError: () => {},
-  });
+  const navigate = useNavigate();
+  const { mutate } = useMutation(
+    (data: SignupFormData) => axios.post("/users", data),
+    {
+      onSuccess: () => {
+        navigate("/login");
+      },
+      onError: () => {},
+    }
+  );
 
   return (
     <Formik<SignupFormData>
       initialValues={{
-        email: "",
-        password: "",
-        repeatPassword: "",
+        username: "johndoe",
+        email: "johndoe@gmail.com",
+        password: "johndoe",
+        repeatPassword: "johndoe",
       }}
       onSubmit={(data) => mutate(data)}
     >
@@ -35,17 +42,26 @@ export const Signup = () => {
         <div className="h-full flex flex-col justify-center items-center">
           <Paper className="md:min-w-[350px]">
             <h1 className="text-xl font-bold mb-6">Sign up</h1>
-            <TextField
+            <FormTextField
+              name="username"
+              className="mb-4"
+              label="Username"
+              placeholder="johndoe"
+            />
+            <FormTextField
+              name="email"
               className="mb-4"
               label="Email"
               placeholder="john@gmail.com"
             />
-            <TextField
+            <FormTextField
+              name="password"
               className="mb-4"
               label="Password"
               placeholder="*******"
             />
-            <TextField
+            <FormTextField
+              name="repeatPassword"
               className="mb-6"
               label="Repeat password"
               placeholder="*******"

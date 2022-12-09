@@ -11,15 +11,20 @@ namespace DalUnitTests.EntityTests
 {
     internal class ConversationTest
     {
-        private const string connectionString = @"Data Source=(localdb)\MSSQLLocalDB; Initial Catalog=PV179-SocialNetworkDB";
-
         [SetUp]
         public void Setup()
         {
-            using (var db = new SocialNetworkDBContext(connectionString))
+            using (var db = new SocialNetworkDBContext())
             {
                 db.Database.EnsureDeleted();
                 db.Database.EnsureCreated();
+
+                db.Users.Add(new User
+                {
+                    Username = "ben",
+                    Email = "ben@gmail.com",
+                    PasswordHash = "aaafht3x"
+                });
                 db.SaveChanges();
             }
         }
@@ -27,7 +32,7 @@ namespace DalUnitTests.EntityTests
         [TearDown]
         public void TearDown()
         {
-            using (var db = new SocialNetworkDBContext(connectionString))
+            using (var db = new SocialNetworkDBContext())
             {
                 db.Database.EnsureDeleted();
                 db.Dispose();
@@ -36,7 +41,7 @@ namespace DalUnitTests.EntityTests
         [Test]
         public void Test_Add()
         {
-            using (var db = new SocialNetworkDBContext(connectionString))
+            using (var db = new SocialNetworkDBContext())
             {
                 db.Conversations.Add(new Conversation
                 {
@@ -53,9 +58,9 @@ namespace DalUnitTests.EntityTests
         [Test]
         public void Test_Add_Incomplete()
         {
-            using (var db = new SocialNetworkDBContext(connectionString))
+            using (var db = new SocialNetworkDBContext())
             {
-                db.Conversations.Add(new Conversation {} );
+                db.Conversations.Add(new Conversation { });
                 Assert.Throws<DbUpdateException>(() => db.SaveChanges());
             }
         }

@@ -11,15 +11,27 @@ namespace DalUnitTests.EntityTests
 {
     public class EventTest
     {
-        private const string connectionString = @"Data Source=(localdb)\MSSQLLocalDB; Initial Catalog=PV179-SocialNetworkDB";
-
         [SetUp]
         public void Setup()
         {
-            using (var db = new SocialNetworkDBContext(connectionString))
+            using (var db = new SocialNetworkDBContext())
             {
                 db.Database.EnsureDeleted();
                 db.Database.EnsureCreated();
+
+                db.Users.Add(new User
+                {
+                    Username = "ben",
+                    Email = "ben@gmail.com",
+                    PasswordHash = "aaafht3x"
+                });
+                db.SaveChanges();
+
+                db.Groups.Add(new Group
+                {
+                    Name = "Example Group",
+                    Description = "This is an example group",
+                });
                 db.SaveChanges();
             }
         }
@@ -27,7 +39,7 @@ namespace DalUnitTests.EntityTests
         [TearDown]
         public void TearDown()
         {
-            using (var db = new SocialNetworkDBContext(connectionString))
+            using (var db = new SocialNetworkDBContext())
             {
                 db.Database.EnsureDeleted();
                 db.Dispose();
@@ -36,15 +48,14 @@ namespace DalUnitTests.EntityTests
         [Test]
         public void Test_Add()
         {
-            using (var db = new SocialNetworkDBContext(connectionString))
+            using (var db = new SocialNetworkDBContext())
             {
                 db.Events.Add(new Event
                 {
                     UserId = 1,
-                    GroupId = 2,
+                    GroupId = 1,
                     Title = "Example Event",
                     Description = "This is an example event",
-                    CreatedAt = DateTime.Now
                 });
                 db.SaveChanges();
 
@@ -57,13 +68,12 @@ namespace DalUnitTests.EntityTests
         [Test]
         public void Test_Add_Incomplete()
         {
-            using (var db = new SocialNetworkDBContext(connectionString))
+            using (var db = new SocialNetworkDBContext())
             {
                 db.Events.Add(new Event
                 {
                     Title = "Example Event",
                     Description = "This is an example event",
-                    CreatedAt = DateTime.Now
                 });
                 Assert.Throws<DbUpdateException>(() => db.SaveChanges());
             }
@@ -71,15 +81,14 @@ namespace DalUnitTests.EntityTests
         [Test]
         public void Test_Add_Long()
         {
-            using (var db = new SocialNetworkDBContext(connectionString))
+            using (var db = new SocialNetworkDBContext())
             {
                 db.Events.Add(new Event
                 {
                     UserId = 1,
                     GroupId = 2,
-                    Title = new String('l',1000),
+                    Title = new String('l', 1000),
                     Description = new String('l', 1000),
-                    CreatedAt = DateTime.Now
                 });
                 Assert.Throws<DbUpdateException>(() => db.SaveChanges());
             }

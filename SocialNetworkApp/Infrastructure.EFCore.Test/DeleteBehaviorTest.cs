@@ -20,12 +20,11 @@ namespace Infrastructure.EFCore.Test
         private EFGenericRepository<User> userRepository;
         private EFGenericRepository<Event> eventRepository;
         private EFGenericRepository<EventParticipant> eventParticipantRepository;
-        private const string ConnectionString = @"Data Source=(localdb)\MSSQLLocalDB; Initial Catalog=PV179-SocialNetworkDB";
 
         [SetUp]
         public void Setup()
         {
-            dbContext = new SocialNetworkDBContext(ConnectionString);
+            dbContext = new SocialNetworkDBContext();
             unitOfWork = new EFUnitOfWork(dbContext);
             userRepository = new EFGenericRepository<User>(unitOfWork);
             eventRepository = new EFGenericRepository<Event>(unitOfWork);
@@ -33,7 +32,12 @@ namespace Infrastructure.EFCore.Test
 
             dbContext.Database.EnsureDeleted();
             dbContext.Database.EnsureCreated();
-            /* FOR NOW USES DATA FROM DB SEEDING */
+
+            /*dbContext.EventParticipants.Add(new EventParticipant 
+            {
+
+            });
+            unitOfWork.Commit();*/
         }
 
         [TearDown]
@@ -43,7 +47,7 @@ namespace Infrastructure.EFCore.Test
             dbContext.Dispose();
         }
 
-        [Test]
+        /*[Test]
         public void EventParticipantDeleted_After_UserDeleted_Test()
         {
             // Arrange
@@ -73,6 +77,6 @@ namespace Infrastructure.EFCore.Test
                 .Where(ep => ep.Id == 1)
                 .FirstOrDefault();
             Assert.That(eventParticipant, Is.Null);
-        }
+        }*/
     }
 }
