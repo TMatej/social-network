@@ -18,6 +18,20 @@ namespace DalUnitTests.EntityTests
             {
                 db.Database.EnsureDeleted();
                 db.Database.EnsureCreated();
+
+                db.Users.Add(new User
+                {
+                    Username = "ben",
+                    Email = "ben@gmail.com",
+                    PasswordHash = "aaafht3x"
+                });
+                db.SaveChanges();
+
+                db.Groups.Add(new Group
+                {
+                    Name = "Example Group",
+                    Description = "This is an example group",
+                });
                 db.SaveChanges();
             }
         }
@@ -39,7 +53,7 @@ namespace DalUnitTests.EntityTests
                 db.Events.Add(new Event
                 {
                     UserId = 1,
-                    GroupId = 3,
+                    GroupId = 1,
                     Title = "Example Event",
                     Description = "This is an example event",
                 });

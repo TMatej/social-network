@@ -18,6 +18,27 @@ namespace DalUnitTests.EntityTests
             {
                 db.Database.EnsureDeleted();
                 db.Database.EnsureCreated();
+
+                db.Users.Add(new User
+                {
+                    Username = "ben",
+                    Email = "ben@gmail.com",
+                    PasswordHash = "aaafht3x"
+                });
+                db.SaveChanges();
+
+                db.Profiles.Add(new Profile
+                {
+                    UserId = 1,
+                });
+                db.SaveChanges();
+
+                db.Galeries.Add(new Gallery
+                {
+                    Title = "Test Gallery",
+                    Description = "This is a test gallery.",
+                    ProfileId = 1
+                });
                 db.SaveChanges();
             }
         }
@@ -31,6 +52,7 @@ namespace DalUnitTests.EntityTests
                 db.Dispose();
             }
         }
+
         [Test]
         public void Test_Add()
         {
@@ -45,9 +67,10 @@ namespace DalUnitTests.EntityTests
                 });
                 db.SaveChanges();
 
-                var photo = db.Profiles.FirstOrDefault();
+                var photo = db.Photos.FirstOrDefault();
                 Assert.That(photo, Is.Not.Null);
                 Assert.That(photo.Id, Is.EqualTo(1));
+                Assert.That(photo.Title, Is.EqualTo("My first photo"));
             }
         }
 

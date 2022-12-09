@@ -18,6 +18,18 @@ namespace DalUnitTests.EntityTests
             {
                 db.Database.EnsureDeleted();
                 db.Database.EnsureCreated();
+                db.Users.Add(new User
+                {
+                    Username = "ben",
+                    Email = "ben@gmail.com",
+                    PasswordHash = "aaafht3x"
+                });
+                db.SaveChanges();
+
+                db.Profiles.Add(new Profile
+                {
+                    UserId = 1,
+                });
                 db.SaveChanges();
             }
         }

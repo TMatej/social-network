@@ -13,6 +13,19 @@ namespace DalUnitTests.EntityTests
             {
                 db.Database.EnsureDeleted();
                 db.Database.EnsureCreated();
+
+                db.Users.Add(new User
+                {
+                    Username = "ben",
+                    Email = "ben@gmail.com",
+                    PasswordHash = "aaafht3x"
+                });
+                db.SaveChanges();
+
+                db.Profiles.Add(new Profile
+                {
+                    UserId = 1,
+                });
                 db.SaveChanges();
             }
         }
@@ -27,21 +40,39 @@ namespace DalUnitTests.EntityTests
             }
         }
         [Test]
-        public void Test_Add()
+        public void Test_AddComment_ToPhoto()
         {
             using (var db = new SocialNetworkDBContext())
             {
+                db.Galeries.Add(new Gallery
+                {
+                    Title = "Test Gallery",
+                    Description = "This is a test gallery.",
+                    ProfileId = 1
+                });
+                db.SaveChanges();
+
+                db.Photos.Add(new Photo
+                {
+                    Title = "My first photo",
+                    Description = "This is my first photo",
+                    Url = "https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png",
+                    GaleryId = 1
+                });
+                db.SaveChanges();
+
                 db.Comments.Add(new Comment
                 {
                     Content = "This is an example comment",
-                    CommentableId = 2,
+                    CommentableId = 1,
                     UserId = 1,
                 });
                 db.SaveChanges();
 
-                var comment = db.Comments.OrderBy(x => x.Id).LastOrDefault();
+                var comment = db.Comments.FirstOrDefault();
                 Assert.That(comment, Is.Not.Null);
-                Assert.That(comment.Id, Is.EqualTo(8)); /*id's 5,6,7 are already used in initialization */
+                Assert.That(comment.Id, Is.EqualTo(2));
+                Assert.That(comment.UserId, Is.EqualTo(1));
             }
         }
 

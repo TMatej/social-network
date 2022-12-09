@@ -40,7 +40,7 @@ namespace DalUnitTests.EntityTests
 
                 var group = db.Groups.OrderBy(x => x.Id).LastOrDefault();
                 Assert.That(group, Is.Not.Null);
-                Assert.That(group.Id, Is.EqualTo(5)); /* id's 3 and 4 have groups from initialization */
+                Assert.That(group.Id, Is.EqualTo(1));
             }
         }
 
