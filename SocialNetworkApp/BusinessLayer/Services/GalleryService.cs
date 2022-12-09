@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using BusinessLayer.Contracts;
 using BusinessLayer.DTOs.Photo;
-using BusinessLayer.DTOs.Query;
 using DataAccessLayer.Entity;
 using Infrastructure.Query;
 using Infrastructure.Repository;

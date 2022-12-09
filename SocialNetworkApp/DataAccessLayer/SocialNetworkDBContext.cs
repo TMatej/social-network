@@ -2,7 +2,6 @@
 using DataAccessLayer.Entity;
 using DataAccessLayer.Entity.JoinEntity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
 
 namespace DataAccessLayer
 {

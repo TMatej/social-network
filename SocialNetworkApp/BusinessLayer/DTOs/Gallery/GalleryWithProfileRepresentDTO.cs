@@ -1,10 +1,4 @@
-﻿using BusinessLayer.DTOs.Photo;
-using BusinessLayer.DTOs.Profile;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using BusinessLayer.DTOs.Profile;
 
 namespace BusinessLayer.DTOs.Gallery
 {

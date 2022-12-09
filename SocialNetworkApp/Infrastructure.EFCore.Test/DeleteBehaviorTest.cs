@@ -1,13 +1,7 @@
 ﻿using DataAccessLayer.Entity;
 using DataAccessLayer;
 using Infrastructure.EFCore.UnitOfWork;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Infrastructure.EFCore.Repository;
-using System.Reflection;
 using DataAccessLayer.Entity.JoinEntity;
 
 namespace Infrastructure.EFCore.Test
