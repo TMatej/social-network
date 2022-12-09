@@ -129,9 +129,13 @@ jobs:
           images: ${{ env.Registry }}/${{ env.IMAGE_NAME }}
 
       - name: Build and push
-        uses: docker/build-push-action@v3
-        with:
-          context: SocialNetworkApp/PresentationLayer
-          push: ${{ github.event_name != 'pull_request' }}
-          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }} # ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
+        run: |
+          docker build -t ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }} .
+          docker push ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }}
+        working-directory: SocialNetworkApp/PresentationLayer
+        #uses: docker/build-push-action@v3
+        #with:
+        #  context: SocialNetworkApp/PresentationLayer
+        #  push: ${{ github.event_name != 'pull_request' }}
+        #  tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }} # ${{ steps.meta.outputs.tags }}
+        #  labels: ${{ steps.meta.outputs.labels }}
