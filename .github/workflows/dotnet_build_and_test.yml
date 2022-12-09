@@ -92,7 +92,15 @@ jobs:
           POSTGRES_HOST: localhost
       working-directory: SocialNetworkApp
       
-    - name: Run tests
+    - name: Run Unit-tests
+      run: dotnet test --no-build --verbosity normal
+      working-directory: SocialNetworkApp/DalUnitTests
+      
+    - name: Run Infrastructure-tests
+      run: dotnet test --no-build --verbosity normal
+      working-directory: SocialNetworkApp/Infrastructure.EFCore.Test  
+      
+    - name: Run Service-tests
       run: dotnet test --no-build --verbosity normal
       working-directory: SocialNetworkApp/ServiceTests
     
