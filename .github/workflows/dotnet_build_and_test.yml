@@ -45,6 +45,13 @@ jobs:
     timeout-minutes: 10
     container: mcr.microsoft.com/dotnet/sdk:6.0
     
+    env:
+      POSTGRES_DB: ${{ secrets.POSTGRES_DB }}
+      POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
+      POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
+      POSTGRES_PORT: 5432
+      POSTGRES_HOST: postgres
+    
     services:
       postgres:
         image: postgres
@@ -73,12 +80,6 @@ jobs:
  
     - name: Build
       run: dotnet build --no-restore
-      env:
-          POSTGRES_DB: ${{ secrets.POSTGRES_DB }}
-          POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
-          POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
-          POSTGRES_PORT: 5432
-          POSTGRES_HOST: postgres
       working-directory: SocialNetworkApp
       
     - name: Run Unit-tests
