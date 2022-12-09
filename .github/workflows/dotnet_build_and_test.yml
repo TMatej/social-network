@@ -133,6 +133,6 @@ jobs:
       with:
         context: SocialNetworkApp/PresentationLayer
         push: ${{ github.event_name != 'pull_request' }}
-        tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/${{ env.IMAGE_TAG }} # ${{ steps.meta.outputs.tags }}
+        tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }} # ${{ steps.meta.outputs.tags }}
         labels: ${{ steps.meta.outputs.labels }}
       
