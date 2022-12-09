@@ -49,8 +49,6 @@ jobs:
       postgres:
         image: postgres:latest
         env:
-          POSTGRES_DB: ${{ secrets.POSTGRES_DB }}
-          POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
           POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
         options: >-
           --health-cmd pg_isready
@@ -73,19 +71,25 @@ jobs:
       run: dotnet restore
       working-directory: SocialNetworkApp
       
-    - name: Install EF Core tools
-      run: |
-        dotnet tool install --global dotnet-ef
-        dotnet tool update --global dotnet-ef
-        dotnet ef
-      working-directory: SocialNetworkApp
+    #- name: Install EF Core tools
+    #  run: |
+    #    dotnet tool install --global dotnet-ef
+    #    dotnet tool update --global dotnet-ef
+    #    dotnet ef
+    #  working-directory: SocialNetworkApp
         
-    - name: Create PostgreSQL db
-      run: dotnet ef database update
-      working-directory: SocialNetworkApp/DataAccessLayer
+    #- name: Create PostgreSQL db
+    #  run: dotnet ef database update
+    #  working-directory: SocialNetworkApp/DataAccessLayer
       
     - name: Build
       run: dotnet build --no-restore
+      env:
+          POSTGRES_DB: postgres
+          POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
+          POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
+          POSTGRES_PORT: 5432
+          POSTGRES_HOST: localhost
       working-directory: SocialNetworkApp
       
     - name: Run tests
