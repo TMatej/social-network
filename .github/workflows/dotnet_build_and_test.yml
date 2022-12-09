@@ -94,5 +94,5 @@ jobs:
       
     - name: Run tests
       run: dotnet test --no-build --verbosity normal
-      working-directory: SocialNetworkApp
+      working-directory: SocialNetworkApp/ServiceTests
     
