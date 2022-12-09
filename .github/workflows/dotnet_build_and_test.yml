@@ -71,16 +71,16 @@ jobs:
       run: dotnet restore
       working-directory: SocialNetworkApp
       
-    - name: Install EF Core tools
-      run: |
-        dotnet tool install --global dotnet-ef
-        dotnet tool update --global dotnet-ef
-        dotnet ef
-      working-directory: SocialNetworkApp
+    #- name: Install EF Core tools
+    #  run: |
+    #    dotnet tool install --global dotnet-ef
+    #    dotnet tool update --global dotnet-ef
+    #    dotnet ef
+    #  working-directory: SocialNetworkApp
         
-    - name: Create PostgreSQL db
-      run: dotnet ef database update
-      working-directory: SocialNetworkApp/DataAccessLayer
+    #- name: Create PostgreSQL db
+    #  run: dotnet ef database update
+    #  working-directory: SocialNetworkApp/DataAccessLayer
       
     - name: Build
       run: dotnet build --no-restore
