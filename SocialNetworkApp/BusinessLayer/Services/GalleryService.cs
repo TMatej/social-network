@@ -6,6 +6,8 @@ using DataAccessLayer.Entity;
 using Infrastructure.Query;
 using Infrastructure.Repository;
 using Infrastructure.UnitOfWork;
+using BusinessLayer.DTOs.Gallery;
+using Ardalis.GuardClauses;
 
 namespace BusinessLayer.Services
 {
@@ -26,7 +28,7 @@ namespace BusinessLayer.Services
             _galleryQuery = galleryQuery;
         }
 
-        public Gallery GetByIdWithPhotos(int id)
+        public GalleryWithPhotosRepresentDTO GetByIdWithPhotos(int id)
         {
             var gallery = _galleryQuery
                 .Where<int>(x => x == id, "Id")
@@ -36,7 +38,7 @@ namespace BusinessLayer.Services
             return gallery.Items.FirstOrDefault();
         }
 
-        public Gallery GetByIdWithProfile(int id)
+        public GalleryWithProfileRepresentDTO GetByIdWithProfile(int id)
         {
             var gallery = _galleryQuery
                 .Where<int>(x => x == id, "Id")
@@ -46,7 +48,7 @@ namespace BusinessLayer.Services
             return gallery.Items.FirstOrDefault();
         }
 
-        public Gallery GetByIdDetailed(int id)
+        public GalleryRepresentDTO GetByIdDetailed(int id)
         {
             var gallery = _galleryQuery
                 .Where<int>(x => x == id, "Id")
@@ -54,6 +56,16 @@ namespace BusinessLayer.Services
                 .Execute();
 
             return gallery.Items.FirstOrDefault();
+        }
+
+        public void UploadPhotoToGallery(PhotoInsertDTO photoDTO, int galleryId)
+        {
+            Guard.Against.Null(photoDTO);
+
+            var mapped = _mapper.Map<Photo>(photoDTO);
+            mapped.GaleryId = galleryId;
+            _photoRepository.Insert(mapped);
+            _uow.Commit();
         }
     }
 }

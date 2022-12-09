@@ -5,6 +5,7 @@ using BusinessLayer.DTOs.Profile;
 using BusinessLayer.DTOs.Query;
 using DataAccessLayer.Entity;
 using Profile = AutoMapper.Profile;
+using BusinessLayer.DTOs.Gallery;
 
 namespace BusinessLayer.Config
 {
