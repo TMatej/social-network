@@ -43,6 +43,7 @@ namespace Infrastructure.EFCore.Repository
             {
                 dbSet.Attach(entityToDelete);
             }
+
             dbSet.Remove(entityToDelete);
         }
 

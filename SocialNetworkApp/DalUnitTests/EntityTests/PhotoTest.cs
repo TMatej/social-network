@@ -1,11 +1,6 @@
 ﻿using DataAccessLayer.Entity;
 using DataAccessLayer;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DalUnitTests.EntityTests
 {
@@ -33,7 +28,7 @@ namespace DalUnitTests.EntityTests
                 });
                 db.SaveChanges();
 
-                db.Galeries.Add(new Gallery
+                db.Galleries.Add(new Gallery
                 {
                     Title = "Test Gallery",
                     Description = "This is a test gallery.",
@@ -63,7 +58,7 @@ namespace DalUnitTests.EntityTests
                     Title = "My first photo",
                     Description = "This is my first photo",
                     Url = "https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png",
-                    GaleryId = 1
+                    GalleryId = 1
                 });
                 db.SaveChanges();
 
@@ -83,7 +78,7 @@ namespace DalUnitTests.EntityTests
                 {
                     Title = "My first photo",
                     Description = "This is my first photo",
-                    GaleryId = 1
+                    GalleryId = 1
                 });
                 Assert.Throws<DbUpdateException>(() => db.SaveChanges());
             }
@@ -97,7 +92,7 @@ namespace DalUnitTests.EntityTests
                 {
                     Title = new String('l', 500),
                     Description = new String('l', 500),
-                    GaleryId = 1
+                    GalleryId = 1
                 });
                 Assert.Throws<DbUpdateException>(() => db.SaveChanges());
             }

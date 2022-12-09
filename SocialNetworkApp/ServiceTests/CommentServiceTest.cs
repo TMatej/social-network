@@ -1,4 +1,5 @@
-﻿using DataAccessLayer.Entity;
+﻿using AutoMapper;
+using DataAccessLayer.Entity;
 using Infrastructure.Query;
 using Infrastructure.Repository;
 using Infrastructure.UnitOfWork;
@@ -11,6 +12,7 @@ namespace ServiceTests
         IRepository<Comment> commentRepo;
         IQuery<Comment> commentQuery;
         IUnitOfWork uow;
+        IMapper mapper;
 
         [SetUp]
         public void Setup()
@@ -18,6 +20,7 @@ namespace ServiceTests
             commentRepo = Substitute.For<IRepository<Comment>>();
             commentQuery = Substitute.For<IQuery<Comment>>();
             uow = Substitute.For<IUnitOfWork>();
+            mapper = Substitute.For<IMapper>();
         }
 
         [Test]
@@ -34,7 +37,7 @@ namespace ServiceTests
             commentQuery.OrderBy<DateTime>(Arg.Any<string>()).Returns(commentQuery);
             commentQuery.Execute().Returns(new QueryResult<Comment>(1, 3, 20, new List<Comment>() { post }));
 
-            var commentService = new CommentService(commentRepo, uow, commentQuery);
+            var commentService = new CommentService(mapper, commentQuery, commentRepo, uow);
             var res = commentService.getCommentsForEntity(44, 3, 20);
 
             commentQuery.Received(1).Where<int>(Arg.Any<Expression<Func<int, bool>>>(), "CommentableId");

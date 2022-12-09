@@ -13,7 +13,7 @@ namespace Infrastructure.Query
 
         IQuery<TEntity> Include(string columnname);
 
-        IQuery<TEntity> Include(List<string> parameters);
+        IQuery<TEntity> Include(params string[] parameters);
 
         QueryResult<TEntity> Execute();
     }

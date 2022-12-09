@@ -44,7 +44,7 @@ namespace DalUnitTests.EntityTests
         {
             using (var db = new SocialNetworkDBContext())
             {
-                db.Galeries.Add(new Gallery
+                db.Galleries.Add(new Gallery
                 {
                     Title = "Test Gallery",
                     Description = "This is a test gallery.",
@@ -57,7 +57,7 @@ namespace DalUnitTests.EntityTests
                     Title = "My first photo",
                     Description = "This is my first photo",
                     Url = "https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png",
-                    GaleryId = 1
+                    GalleryId = 1
                 });
                 db.SaveChanges();
 

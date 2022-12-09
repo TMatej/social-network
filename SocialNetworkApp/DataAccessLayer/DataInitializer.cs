@@ -295,7 +295,7 @@ namespace DataAccessLayer.Data
                 Title = "My first photo",
                 Description = "This is my first photo",
                 Url = "https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png",
-                GaleryId = 1
+                GalleryId = 1
             };
 
             var photo2 = new Photo
@@ -304,7 +304,7 @@ namespace DataAccessLayer.Data
                 Title = "My last photo",
                 Description = "This is my last photo... No I didn't die",
                 Url = "https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png",
-                GaleryId = 1
+                GalleryId = 1
             };
 
             modelBuilder.Entity<Photo>().HasData(photo1);

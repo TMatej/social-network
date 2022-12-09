@@ -1,14 +1,6 @@
 ﻿using DataAccessLayer.Entity;
 using Infrastructure.Query;
-using NSubstitute;
 using NSubstitute.Extensions;
-using NUnit.Framework.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ServiceTests
 {

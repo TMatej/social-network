@@ -5,6 +5,8 @@ using DataAccessLayer.Entity;
 using Infrastructure.Query;
 using Infrastructure.Repository;
 using Infrastructure.UnitOfWork;
+using BusinessLayer.DTOs.Gallery;
+using Ardalis.GuardClauses;
 
 namespace BusinessLayer.Services
 {
@@ -25,21 +27,42 @@ namespace BusinessLayer.Services
             _galleryQuery = galleryQuery;
         }
 
-        public Gallery GetByIdWithListOfPhotos(int id)
+        public GalleryWithPhotosRepresentDTO GetByIdWithPhotos(int id)
         {
             var gallery = _galleryQuery
                 .Where<int>(x => x == id, "Id")
-                .Page(1, 10)
                 .Include("Photos")
                 .Execute();
 
-            return gallery.Items.First();
+            return _mapper.Map<GalleryWithPhotosRepresentDTO>(gallery.Items.FirstOrDefault());
+        }
+
+        public GalleryWithProfileRepresentDTO GetByIdWithProfile(int id)
+        {
+            var gallery = _galleryQuery
+                .Where<int>(x => x == id, "Id")
+                .Include("Profile")
+                .Execute();
+
+            return _mapper.Map<GalleryWithProfileRepresentDTO>(gallery.Items.FirstOrDefault());
+        }
+
+        public GalleryRepresentDTO GetByIdDetailed(int id)
+        {
+            var gallery = _galleryQuery
+                .Where<int>(x => x == id, "Id")
+                .Include("Profile", "Photos")
+                .Execute();
+
+            return _mapper.Map<GalleryRepresentDTO>(gallery.Items.FirstOrDefault());
         }
 
         public void UploadPhotoToGallery(PhotoInsertDTO photoDTO, int galleryId)
         {
+            Guard.Against.Null(photoDTO);
+
             var mapped = _mapper.Map<Photo>(photoDTO);
-            mapped.GaleryId = galleryId;
+            mapped.GalleryId = galleryId;
             _photoRepository.Insert(mapped);
             _uow.Commit();
         }

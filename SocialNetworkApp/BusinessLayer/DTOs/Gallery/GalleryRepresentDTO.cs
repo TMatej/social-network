@@ -1,7 +1,7 @@
 ﻿using BusinessLayer.DTOs.Photo;
 using BusinessLayer.DTOs.Profile;
 
-namespace BusinessLayer.DTOs.Query
+namespace BusinessLayer.DTOs.Gallery
 {
     public class GalleryRepresentDTO
     {
@@ -10,7 +10,6 @@ namespace BusinessLayer.DTOs.Query
         public string Description { get; set; }
         public DateTime CreatedAt { get; set; }
         public ProfileBasicRepresentDTO Profile { get; set; }
-        public int ProfileId { get; set; }
         public List<PhotoRepresentDTO> Photos { get; set; }
     }
 }

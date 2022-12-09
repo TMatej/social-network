@@ -1,11 +1,6 @@
 ﻿using DataAccessLayer;
 using DataAccessLayer.Entity;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DalUnitTests.EntityTests
 {
@@ -48,7 +43,7 @@ namespace DalUnitTests.EntityTests
         {
             using (var db = new SocialNetworkDBContext())
             {
-                db.Galeries.Add(new Gallery
+                db.Galleries.Add(new Gallery
                 {
                     Title = "Example Galery",
                     Description = "This is an example galery",
@@ -56,7 +51,7 @@ namespace DalUnitTests.EntityTests
                 });
                 db.SaveChanges();
 
-                var galery = db.Galeries.FirstOrDefault();
+                var galery = db.Galleries.FirstOrDefault();
                 Assert.That(galery, Is.Not.Null);
                 Assert.That(galery.Id, Is.EqualTo(1));
             }
@@ -67,7 +62,7 @@ namespace DalUnitTests.EntityTests
         {
             using (var db = new SocialNetworkDBContext())
             {
-                db.Galeries.Add(new Gallery
+                db.Galleries.Add(new Gallery
                 {
                     Description = "This is an example galery",
                 });
@@ -79,7 +74,7 @@ namespace DalUnitTests.EntityTests
         {
             using (var db = new SocialNetworkDBContext())
             {
-                db.Galeries.Add(new Gallery
+                db.Galleries.Add(new Gallery
                 {
                     Title = new String('l', 500),
                     Description = new String('l', 5000),

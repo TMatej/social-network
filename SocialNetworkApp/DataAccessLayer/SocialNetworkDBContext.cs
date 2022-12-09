@@ -2,7 +2,6 @@
 using DataAccessLayer.Entity;
 using DataAccessLayer.Entity.JoinEntity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
 
 namespace DataAccessLayer
 {
@@ -19,7 +18,7 @@ namespace DataAccessLayer
         public DbSet<Event> Events { get; set; }
         public DbSet<FileEntity> FileEntities { get; set; }
         public DbSet<EventParticipant> EventParticipants { get; set; }
-        public DbSet<Gallery> Galeries { get; set; }
+        public DbSet<Gallery> Galleries { get; set; }
         public DbSet<Group> Groups { get; set; }
         public DbSet<GroupMember> GroupMembers { get; set; }
         public DbSet<GroupRole> GroupRoles { get; set; }
@@ -98,9 +97,9 @@ namespace DataAccessLayer
                 .HasForeignKey(a => a.ProfileId);
 
             modelBuilder.Entity<Photo>()
-                .HasOne(p => p.Galery)
+                .HasOne(p => p.Gallery)
                 .WithMany(g => g.Photos)
-                .HasForeignKey(a => a.GaleryId);
+                .HasForeignKey(a => a.GalleryId);
 
             /* Set One-To-One relationship */
             /*modelBuilder.Entity<User>()

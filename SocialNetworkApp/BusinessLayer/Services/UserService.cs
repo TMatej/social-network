@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using Ardalis.GuardClauses;
+using AutoMapper;
 using BusinessLayer.Contracts;
 using BusinessLayer.DTOs.User;
 using DataAccessLayer.Entity;
@@ -12,19 +13,28 @@ namespace BusinessLayer.Services
 {
     public class UserService : GenericService<User>, IUserService
     {
-        public readonly IRepository<User> userRepo;
-        public readonly IRepository<Contact> contactRepo;
-        public readonly IQuery<User> userQuery;
-        private IUnitOfWork uow;
+        private readonly IRepository<User> userRepo;
+        private readonly IQuery<EventParticipant> eventParticipantQuery;
+        private readonly IQuery<ConversationParticipant> conversationParticipantQuery;
+        private readonly IQuery<Contact> contactQuery;
+        private readonly IQuery<User> userQuery;
+        private readonly IRepository<Contact> contactRepo;
         public IMapper mapper;
 
-        public UserService(IMapper mapper, IQuery<User> userQuery, IRepository<User> userRepo, IRepository<Contact> contactRepo, IUnitOfWork uow) : base(userRepo, uow)
+        public UserService(IRepository<User> userRepo,
+            IQuery<EventParticipant> eventParticipantQuery,
+            IQuery<ConversationParticipant> conversationParticipantQuery,
+            IQuery<Contact> contactQuery,
+            IQuery<User> userQuery,
+            IRepository<Contact> contactRepo,
+            IUnitOfWork uow) : base(userRepo, uow)
         {
             this.userRepo = userRepo;
+            this.eventParticipantQuery = eventParticipantQuery;
+            this.conversationParticipantQuery = conversationParticipantQuery;
+            this.contactQuery = contactQuery;
             this.contactRepo = contactRepo;
-            this.uow = uow;
             this.userQuery = userQuery;
-            this.mapper = mapper;
         }
 
         // Real auth implementation after shown to us on lectures
@@ -45,6 +55,29 @@ namespace BusinessLayer.Services
             };
 
             userRepo.Insert(user);
+            _uow.Commit(); // always neccessary to call iow.Commit() to persist the data into DB
+        }
+
+        public override void Delete(object id)
+        {
+            Guard.Against.Null(id);
+            var user = userRepo.GetByID(id);
+
+            // remove all conversationParticipations
+            // remove all eventParticipations
+            // remove all contacts
+
+            var contacts = contactQuery
+                .Where<int>(x => x == user.Id, "User1Id")
+                .Execute();
+
+            foreach (var contact in contacts.Items)
+            {
+                contactRepo.Delete(contact.Id);
+            }
+
+            userRepo.Delete(id);
+            _uow.Commit();
         }
 
         public void AddContacts(int userId, List<int> contactIds)
