@@ -35,7 +35,7 @@ namespace BusinessLayer.Services
                 .Include("Photos")
                 .Execute();
 
-            return gallery.Items.FirstOrDefault();
+            return _mapper.Map<GalleryWithPhotosRepresentDTO>(gallery.Items.FirstOrDefault());
         }
 
         public GalleryWithProfileRepresentDTO GetByIdWithProfile(int id)
@@ -45,7 +45,7 @@ namespace BusinessLayer.Services
                 .Include("Profile")
                 .Execute();
 
-            return gallery.Items.FirstOrDefault();
+            return _mapper.Map<GalleryWithProfileRepresentDTO>(gallery.Items.FirstOrDefault());
         }
 
         public GalleryRepresentDTO GetByIdDetailed(int id)
@@ -55,7 +55,7 @@ namespace BusinessLayer.Services
                 .Include("Profile", "Photos")
                 .Execute();
 
-            return gallery.Items.FirstOrDefault();
+            return _mapper.Map<GalleryRepresentDTO>(gallery.Items.FirstOrDefault());
         }
 
         public void UploadPhotoToGallery(PhotoInsertDTO photoDTO, int galleryId)
@@ -63,7 +63,7 @@ namespace BusinessLayer.Services
             Guard.Against.Null(photoDTO);
 
             var mapped = _mapper.Map<Photo>(photoDTO);
-            mapped.GaleryId = galleryId;
+            mapped.GalleryId = galleryId;
             _photoRepository.Insert(mapped);
             _uow.Commit();
         }

@@ -20,7 +20,11 @@ namespace BusinessLayer.Config
             CreateMap<Gallery, GalleryRepresentDTO>()
                 .ForMember(dest => dest.Profile,
                     opt => opt.MapFrom(src => src.Profile));
-            
+            CreateMap<Gallery, GalleryWithProfileRepresentDTO>()
+                .ForMember(dest => dest.Profile,
+                    opt => opt.MapFrom(src => src.Profile));
+            CreateMap<Gallery, GalleryWithPhotosRepresentDTO>();
+
             /* Photo */
             CreateMap<Photo, PhotoInsertDTO>().ReverseMap();
             CreateMap<Photo, PhotoRepresentDTO>().ReverseMap();
