@@ -130,8 +130,7 @@ jobs:
       - name: Build and push
         uses: docker/build-push-action@v3
         with:
-          context: SocialNetworkApp
           push: ${{ github.event_name != 'pull_request' }}
-          file: PresentationLayer/Dockerfile
+          file: ${{  github.context }}/SocialNetworkApp/PresentationLayer/Dockerfile
           tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }} # ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
