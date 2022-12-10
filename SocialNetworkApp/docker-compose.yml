@@ -17,7 +17,7 @@ services:
   server:
     container_name: social-network-app-server
     build:
-      dockerfile: PresentationLayer/Dockerfile
+      dockerfile: Dockerfile
     environment:
       POSTGRES_DB: social-network-db
       POSTGRES_HOST: localhost
