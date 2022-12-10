@@ -5,14 +5,14 @@ name: CI
 
 on:
   push:
-    branches: ["turek-dockerization"]
+    branches: ["main"]
   pull_request:
     types:
       - opened
       - edited
       - synchronize
       - reopened
-    branches: ["turek-dockerization"]
+    branches: ["main"]
 
   # for manual running
   workflow_dispatch:
