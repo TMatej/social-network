@@ -127,22 +127,10 @@ jobs:
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
 
-        # this magic needs to be done, because of how VS creates and starts the docker build
-        # https://stackoverflow.com/questions/66146088/docker-failed-to-compute-cache-key-not-found-runs-fine-in-visual-studio
-      - name: Build Image
-        run: docker build -f PresentationLayer/Dockerfile -t ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }} .
-        working-directory: SocialNetworkApp
-
-      - name: Push Image to registry ${{ env.REGISTRY }}
-        if: ${{ github.event_name != 'pull_request' }}
-        run: docker push ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }}
-        working-directory: SocialNetworkApp
-
-        # Need to somehow specify the right context :/
-        #uses: docker/build-push-action@v3
-        #with:
-        #  context: SocialNetworkApp/PresentationLayer
-        #  file: ${{ github.context }}/PresentationLayer/Dockerfile
-        #  push: ${{ github.event_name != 'pull_request' }}
-        #  tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }} # ${{ steps.meta.outputs.tags }}
-        #  labels: ${{ steps.meta.outputs.labels }}
+      - name: Build&Push Image
+        uses: docker/build-push-action@v3
+        with:
+          context: SocialNetworkApp
+          push: ${{ github.event_name != 'pull_request' }}
+          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }} # ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
