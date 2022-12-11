@@ -1,5 +1,6 @@
 import clsx from "clsx";
 import { useField } from "formik";
+import { ReactNode } from "react";
 
 import { WithRequiredProps } from "types/utility-types";
 
@@ -12,6 +13,7 @@ type TextFieldProps = {
   placeholder?: string;
   onChange?: (value: string) => void;
   type?: "text" | "password";
+  after?: ReactNode;
 };
 
 export const TextField = ({
@@ -23,6 +25,7 @@ export const TextField = ({
   placeholder,
   onChange,
   type = "text",
+  after,
 }: TextFieldProps) => {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     onChange?.(e.target.value);
@@ -36,14 +39,17 @@ export const TextField = ({
             {label}:
           </span>
         )}
-        <input
-          className="rounded bg-white bg-opacity-5 p-2 w-full outline-none"
-          name={name}
-          type={type}
-          value={value}
-          onChange={handleChange}
-          placeholder={placeholder}
-        />
+        <div className="rounded bg-white bg-opacity-5 p-1 w-full flex">
+          <input
+            className="px-1 bg-transparent outline-none"
+            name={name}
+            type={type}
+            value={value}
+            onChange={handleChange}
+            placeholder={placeholder}
+          />
+          {after}
+        </div>
       </label>
       {error && <span className="text-sm text-red-500">{error}</span>}
     </div>

@@ -19,6 +19,20 @@ public class SessionsController : Controller
         this.userFacade = userFacade;
     }
 
+
+    [HttpGet]
+    public async Task<IActionResult> Get()
+    {
+        var authentication = await HttpContext.AuthenticateAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+        if (authentication.Succeeded && authentication.Principal.Identity != null && authentication.Principal.Identity.Name != null )
+        {
+            var userDto = userFacade.GetUserFromCookieAuthId(int.Parse(authentication.Principal.Identity.Name));
+            return Ok(userDto);
+        }
+
+        return Unauthorized();
+    }
+
     [HttpPost]
     public async Task<IActionResult> Login(UserLoginDTO userLoginDTO)
     {

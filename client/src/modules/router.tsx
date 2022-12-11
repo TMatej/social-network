@@ -1,19 +1,41 @@
 import { Route, BrowserRouter, Routes, Navigate } from "react-router-dom";
-import { useStore } from "store";
+import { User, useStore } from "store";
 
 import { Login } from "./login/login";
 import { Signup } from "./signup/signup";
+import { Profile } from "./profile/profile";
+import { useQuery } from "@tanstack/react-query";
+import { axios } from "api/axios";
+import { Spinner } from "components/spinner";
+import { Layout } from "components/layout";
 
 export const Router = () => {
   const user = useStore((state) => state.user);
+  const setUser = useStore((state) => state.setUser);
+  const { isLoading } = useQuery(["user"], () => axios.get<User>("/sessions"), {
+    onSuccess: ({ data }) => {
+      setUser(data);
+    },
+    retry: false,
+  });
 
-  console.log({ user });
+  if (isLoading) {
+    return (
+      <div className="fixed w-full h-full top-0 left-0">
+        <div className="w-full h-full flex justify-center items-center">
+          <Spinner />
+        </div>
+      </div>
+    );
+  }
 
   return (
     <BrowserRouter>
       <Routes>
         {user ? (
-          <Route path="/" element={<h1>Home</h1>} />
+          <Route path="/" element={<Layout />}>
+            <Route path="/profile/:id" element={<Profile />} />
+          </Route>
         ) : (
           <>
             <Route path="login" element={<Login />} />

@@ -8,7 +8,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace DataAccessLayer.Migrations
 {
     /// <inheritdoc />
-    public partial class AddedRoles : Migration
+    public partial class Initial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -101,15 +101,20 @@ namespace DataAccessLayer.Migrations
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     Username = table.Column<string>(type: "character varying(64)", maxLength: 64, nullable: false),
-                    PasswordHash = table.Column<string>(type: "text", nullable: false),
-                    PrimaryEmail = table.Column<string>(type: "character varying(255)", maxLength: 255, nullable: false),
-                    SecondaryEmail = table.Column<string>(type: "character varying(255)", maxLength: 255, nullable: true),
+                    PasswordHash = table.Column<string>(type: "character varying(1024)", maxLength: 1024, nullable: false),
+                    Email = table.Column<string>(type: "character varying(255)", maxLength: 255, nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValueSql: "now()"),
+                    AvatarId = table.Column<int>(type: "integer", nullable: true),
                     FirstName = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Users", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Users_FileEntities_AvatarId",
+                        column: x => x.AvatarId,
+                        principalTable: "FileEntities",
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -259,7 +264,6 @@ namespace DataAccessLayer.Migrations
                     AddressHouseNumber = table.Column<string>(name: "Address_HouseNumber", type: "character varying(32)", maxLength: 32, nullable: true),
                     AddressPostalCode = table.Column<string>(name: "Address_PostalCode", type: "character varying(32)", maxLength: 32, nullable: true),
                     Sex = table.Column<int>(type: "integer", nullable: true),
-                    FileEntityId = table.Column<int>(type: "integer", nullable: true),
                     PhoneNumber = table.Column<string>(type: "character varying(20)", maxLength: 20, nullable: true),
                     DateOfBirth = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValueSql: "now()"),
@@ -268,11 +272,6 @@ namespace DataAccessLayer.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Profile", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Profile_FileEntities_FileEntityId",
-                        column: x => x.FileEntityId,
-                        principalTable: "FileEntities",
-                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_Profile_Postable_Id",
                         column: x => x.Id,
@@ -573,11 +572,11 @@ namespace DataAccessLayer.Migrations
 
             migrationBuilder.InsertData(
                 table: "Users",
-                columns: new[] { "Id", "FirstName", "PasswordHash", "PrimaryEmail", "SecondaryEmail", "Username" },
+                columns: new[] { "Id", "AvatarId", "Email", "FirstName", "PasswordHash", "Username" },
                 values: new object[,]
                 {
-                    { 1, null, "0123456789abcde0", "JozoJeSuper@gmail.com", "NajlepsieZaklinadlo@gmail.com", "jozkoVajda123" },
-                    { 2, null, "0123456789abcde0", "cokoloko@gmail.com", null, "lokomotivatomas123" }
+                    { 1, null, "JozoJeSuper@gmail.com", null, "0123456789abcde0", "jozkoVajda123" },
+                    { 2, null, "cokoloko@gmail.com", null, "0123456789abcde0", "lokomotivatomas123" }
                 });
 
             migrationBuilder.InsertData(
@@ -624,11 +623,11 @@ namespace DataAccessLayer.Migrations
 
             migrationBuilder.InsertData(
                 table: "Profile",
-                columns: new[] { "Id", "Address_City", "Address_HouseNumber", "Address_PostalCode", "Address_Region", "Address_State", "Address_Street", "DateOfBirth", "FileEntityId", "Name", "PhoneNumber", "Sex", "UserId" },
+                columns: new[] { "Id", "Address_City", "Address_HouseNumber", "Address_PostalCode", "Address_Region", "Address_State", "Address_Street", "DateOfBirth", "Name", "PhoneNumber", "Sex", "UserId" },
                 values: new object[,]
                 {
-                    { 1, "Example City", "Example House number", "Example Postal Code", "Example Region", "Example State", "Example Street", null, null, null, null, null, 1 },
-                    { 2, "Example City", null, null, null, "Example State", null, null, null, null, null, null, 2 }
+                    { 1, "Example City", "Example House number", "Example Postal Code", "Example Region", "Example State", "Example Street", null, null, null, null, 1 },
+                    { 2, "Example City", null, null, null, "Example State", null, null, null, null, null, 2 }
                 });
 
             migrationBuilder.InsertData(
@@ -820,11 +819,6 @@ namespace DataAccessLayer.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Profile_FileEntityId",
-                table: "Profile",
-                column: "FileEntityId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Profile_UserId",
                 table: "Profile",
                 column: "UserId");
@@ -844,6 +838,12 @@ namespace DataAccessLayer.Migrations
                 name: "IX_UserRoles_UserId",
                 table: "UserRoles",
                 column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Users_AvatarId",
+                table: "Users",
+                column: "AvatarId",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Users_Username",
@@ -913,13 +913,13 @@ namespace DataAccessLayer.Migrations
                 name: "Profile");
 
             migrationBuilder.DropTable(
-                name: "FileEntities");
-
-            migrationBuilder.DropTable(
                 name: "Postable");
 
             migrationBuilder.DropTable(
                 name: "Users");
+
+            migrationBuilder.DropTable(
+                name: "FileEntities");
         }
     }
 }

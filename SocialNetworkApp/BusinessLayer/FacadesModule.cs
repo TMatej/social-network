@@ -12,6 +12,10 @@ namespace BusinessLayer
                 .As<IUserFacade>()
                 .InstancePerLifetimeScope()
                 .OnActivated(e => Console.WriteLine($"Build {e.Instance.GetType().Name}"));
+            containerBuilder.RegisterType<ProfileFacade>()
+                .As<IProfileFacade>()
+                .InstancePerLifetimeScope()
+                .OnActivated(e => Console.WriteLine($"Build {e.Instance.GetType().Name}"));
         }
     }
 }

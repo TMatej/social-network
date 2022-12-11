@@ -3,11 +3,12 @@ import { Form, Formik } from "formik";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFileEdit } from "@fortawesome/free-solid-svg-icons";
 
-import { FormTextField, TextField } from "components/input/text-field";
+import { FormTextField } from "components/input/text-field";
 import { Button } from "components/button";
 import { Paper } from "components/paper";
 import { NavLink, useNavigate } from "react-router-dom";
 import { axios } from "api/axios";
+import { useStore } from "store";
 
 type SignupFormData = {
   username: string;
@@ -18,13 +19,23 @@ type SignupFormData = {
 
 export const Signup = () => {
   const navigate = useNavigate();
-  const { mutate } = useMutation(
+  const showNotification = useStore((state) => state.showNotification);
+  const { mutate, isLoading } = useMutation(
     (data: SignupFormData) => axios.post("/users", data),
     {
       onSuccess: () => {
         navigate("/login");
+        showNotification({
+          message: "successfully signed up",
+          type: "success",
+        });
       },
-      onError: () => {},
+      onError: () => {
+        showNotification({
+          message: "signup failed",
+          type: "error",
+        });
+      },
     }
   );
 
@@ -40,7 +51,7 @@ export const Signup = () => {
     >
       <Form className="h-full">
         <div className="h-full flex flex-col justify-center items-center">
-          <Paper className="md:min-w-[350px]">
+          <Paper className="p-3 md:min-w-[350px]">
             <h1 className="text-xl font-bold mb-6">Sign up</h1>
             <FormTextField
               name="username"
@@ -59,14 +70,21 @@ export const Signup = () => {
               className="mb-4"
               label="Password"
               placeholder="*******"
+              type="password"
             />
             <FormTextField
               name="repeatPassword"
               className="mb-6"
               label="Repeat password"
               placeholder="*******"
+              type="password"
             />
-            <Button leftIcon={<FontAwesomeIcon icon={faFileEdit} />}>
+            <Button
+              className="w-full"
+              disabled={isLoading}
+              leftIcon={<FontAwesomeIcon icon={faFileEdit} />}
+              type="submit"
+            >
               sign up
             </Button>
           </Paper>

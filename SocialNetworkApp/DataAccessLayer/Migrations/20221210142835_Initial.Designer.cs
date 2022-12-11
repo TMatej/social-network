@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace DataAccessLayer.Migrations
 {
     [DbContext(typeof(SocialNetworkDBContext))]
-    [Migration("20221206183845_RemovedSecondaryEmail")]
-    partial class RemovedSecondaryEmail
+    [Migration("20221210142835_Initial")]
+    partial class Initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -610,6 +610,9 @@ namespace DataAccessLayer.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
+                    b.Property<int?>("AvatarId")
+                        .HasColumnType("integer");
+
                     b.Property<DateTime>("CreatedAt")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp with time zone")
@@ -634,6 +637,9 @@ namespace DataAccessLayer.Migrations
                         .HasColumnType("character varying(64)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("AvatarId")
+                        .IsUnique();
 
                     b.HasIndex("Username")
                         .IsUnique();
@@ -863,9 +869,6 @@ namespace DataAccessLayer.Migrations
                     b.Property<DateTime?>("DateOfBirth")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<int?>("FileEntityId")
-                        .HasColumnType("integer");
-
                     b.Property<string>("Name")
                         .HasMaxLength(64)
                         .HasColumnType("character varying(64)");
@@ -879,8 +882,6 @@ namespace DataAccessLayer.Migrations
 
                     b.Property<int>("UserId")
                         .HasColumnType("integer");
-
-                    b.HasIndex("FileEntityId");
 
                     b.HasIndex("UserId");
 
@@ -1083,6 +1084,15 @@ namespace DataAccessLayer.Migrations
                     b.Navigation("Conversation");
                 });
 
+            modelBuilder.Entity("DataAccessLayer.Entity.User", b =>
+                {
+                    b.HasOne("DataAccessLayer.Entity.FileEntity", "Avatar")
+                        .WithOne()
+                        .HasForeignKey("DataAccessLayer.Entity.User", "AvatarId");
+
+                    b.Navigation("Avatar");
+                });
+
             modelBuilder.Entity("DataAccessLayer.Entity.Comment", b =>
                 {
                     b.HasOne("DataAccessLayer.Entity.Commentable", "Commentable")
@@ -1161,10 +1171,6 @@ namespace DataAccessLayer.Migrations
 
             modelBuilder.Entity("DataAccessLayer.Entity.Profile", b =>
                 {
-                    b.HasOne("DataAccessLayer.Entity.FileEntity", "FileEntity")
-                        .WithMany()
-                        .HasForeignKey("FileEntityId");
-
                     b.HasOne("DataAccessLayer.Entity.Postable", null)
                         .WithOne()
                         .HasForeignKey("DataAccessLayer.Entity.Profile", "Id")
@@ -1233,8 +1239,6 @@ namespace DataAccessLayer.Migrations
                         });
 
                     b.Navigation("Address");
-
-                    b.Navigation("FileEntity");
 
                     b.Navigation("User");
                 });

@@ -1,5 +1,6 @@
 ﻿using DataAccessLayer.Entity.JoinEntity;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DataAccessLayer.Entity
 {
@@ -24,6 +25,10 @@ namespace DataAccessLayer.Entity
         public DateTime CreatedAt { get; set; }
 
         public Profile Profile { get; set; }
+
+        public int? AvatarId { get; set; }
+
+        public FileEntity Avatar { get; set; }
 
         public IList<EventParticipant> EventParticipants { get; set; }
 

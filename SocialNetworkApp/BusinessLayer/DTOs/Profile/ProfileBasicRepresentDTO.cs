@@ -1,4 +1,5 @@
-﻿using DataAccessLayer.Entity;
+﻿using BusinessLayer.DTOs.User;
+using DataAccessLayer.Entity;
 using DataAccessLayer.Entity.Enum;
 
 namespace BusinessLayer.DTOs.Profile
@@ -11,6 +12,6 @@ namespace BusinessLayer.DTOs.Profile
         public string PhoneNumber { get; set; }
         public DateTime? DateOfBirth { get; set; }
         public DateTime CreatedAt { get; set; }
-        public int UserId { get; set; }
+        public UserDTO User { get; set; }
     }
 }
