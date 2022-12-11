@@ -1,8 +1,9 @@
 import create, { StateCreator } from "zustand";
 
-type User = {
+export type User = {
+  id: number;
   email: string;
-  username: string;
+  roles: string[];
 };
 
 type AuthSlice = {

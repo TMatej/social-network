@@ -1,11 +1,6 @@
 ﻿using DataAccessLayer.Entity;
 using DataAccessLayer;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DalUnitTests.EntityTests
 {
@@ -18,6 +13,27 @@ namespace DalUnitTests.EntityTests
             {
                 db.Database.EnsureDeleted();
                 db.Database.EnsureCreated();
+
+                db.Users.Add(new User
+                {
+                    Username = "ben",
+                    Email = "ben@gmail.com",
+                    PasswordHash = "aaafht3x"
+                });
+                db.SaveChanges();
+
+                db.Profiles.Add(new Profile
+                {
+                    UserId = 1,
+                });
+                db.SaveChanges();
+
+                db.Galleries.Add(new Gallery
+                {
+                    Title = "Test Gallery",
+                    Description = "This is a test gallery.",
+                    ProfileId = 1
+                });
                 db.SaveChanges();
             }
         }
@@ -31,6 +47,7 @@ namespace DalUnitTests.EntityTests
                 db.Dispose();
             }
         }
+
         [Test]
         public void Test_Add()
         {
@@ -41,13 +58,14 @@ namespace DalUnitTests.EntityTests
                     Title = "My first photo",
                     Description = "This is my first photo",
                     Url = "https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png",
-                    GaleryId = 1
+                    GalleryId = 1
                 });
                 db.SaveChanges();
 
-                var photo = db.Profiles.FirstOrDefault();
+                var photo = db.Photos.FirstOrDefault();
                 Assert.That(photo, Is.Not.Null);
                 Assert.That(photo.Id, Is.EqualTo(1));
+                Assert.That(photo.Title, Is.EqualTo("My first photo"));
             }
         }
 
@@ -60,7 +78,7 @@ namespace DalUnitTests.EntityTests
                 {
                     Title = "My first photo",
                     Description = "This is my first photo",
-                    GaleryId = 1
+                    GalleryId = 1
                 });
                 Assert.Throws<DbUpdateException>(() => db.SaveChanges());
             }
@@ -74,7 +92,7 @@ namespace DalUnitTests.EntityTests
                 {
                     Title = new String('l', 500),
                     Description = new String('l', 500),
-                    GaleryId = 1
+                    GalleryId = 1
                 });
                 Assert.Throws<DbUpdateException>(() => db.SaveChanges());
             }

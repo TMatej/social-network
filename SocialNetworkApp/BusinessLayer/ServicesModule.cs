@@ -38,6 +38,14 @@ namespace BusinessLayer
                 .As<IGalleryService>()
                 .InstancePerLifetimeScope()
                 .OnActivated(e => Console.WriteLine($"Build {e.Instance.GetType().Name}"));
+            containerBuilder.RegisterType<PhotoService>()
+                .As<IPhotoService>()
+                .InstancePerLifetimeScope()
+                .OnActivated(e => Console.WriteLine($"Build {e.Instance.GetType().Name}"));
+            containerBuilder.RegisterType<CommentService>()
+                .As<ICommentService>()
+                .InstancePerLifetimeScope()
+                .OnActivated(e => Console.WriteLine($"Build {e.Instance.GetType().Name}"));
             containerBuilder.RegisterType<GroupService>()
                 .As<IGroupService>()
                 .InstancePerLifetimeScope()

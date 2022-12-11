@@ -13,8 +13,22 @@ namespace DalUnitTests.EntityTests
             {
                 db.Database.EnsureDeleted();
                 db.Database.EnsureCreated();
-                db.Messages.Add(
-                new Message
+                
+                db.Users.Add(new User
+                {
+                    Username = "ben",
+                    Email = "ben@gmail.com",
+                    PasswordHash = "aaafht3x"
+                });
+                db.SaveChanges();
+
+                db.Conversations.Add(new Conversation
+                {
+                    UserId = 1
+                });
+                db.SaveChanges();
+
+                db.Messages.Add(new Message
                 {
                     Content = "Hello World!",
                     ConversationId = 1,
@@ -42,7 +56,7 @@ namespace DalUnitTests.EntityTests
                 db.Attachments.Add(new Attachment
                 {
                     Url = "https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png",
-                    MessageId = 3
+                    MessageId = 1
                 });
                 db.SaveChanges();
 

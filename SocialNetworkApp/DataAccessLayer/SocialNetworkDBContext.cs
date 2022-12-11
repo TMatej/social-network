@@ -2,13 +2,13 @@
 using DataAccessLayer.Entity;
 using DataAccessLayer.Entity.JoinEntity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
 
 namespace DataAccessLayer
 {
     public class SocialNetworkDBContext : DbContext
     {
         private string connectionString { get; set; }
+        private bool seedData { get; }
 
         public DbSet<Attachment> Attachments { get; set; }
         public DbSet<Comment> Comments { get; set; }
@@ -18,7 +18,7 @@ namespace DataAccessLayer
         public DbSet<Event> Events { get; set; }
         public DbSet<FileEntity> FileEntities { get; set; }
         public DbSet<EventParticipant> EventParticipants { get; set; }
-        public DbSet<Gallery> Galeries { get; set; }
+        public DbSet<Gallery> Galleries { get; set; }
         public DbSet<Group> Groups { get; set; }
         public DbSet<GroupMember> GroupMembers { get; set; }
         public DbSet<GroupRole> GroupRoles { get; set; }
@@ -31,14 +31,23 @@ namespace DataAccessLayer
         public DbSet<Role> Roles { get; set; }
         public DbSet<UserRole> UserRoles { get; set; }
 
-        public SocialNetworkDBContext()
+        public SocialNetworkDBContext(bool seedData = false)
         {
-            this.connectionString = "Host=localhost;Port=5432;Database=SocialNetworkDB;Username=postgres;Password=postgres";
+            /* NOT VERY SECURE WAY - concrete values should be later deleted */
+            var host = Environment.GetEnvironmentVariable("POSTGRES_HOST") ?? "localhost";
+            var userName = Environment.GetEnvironmentVariable("POSTGRES_USER") ?? "postgres";
+            var password = Environment.GetEnvironmentVariable("POSTGRES_PASSWORD") ?? "postgres";
+            var port = Environment.GetEnvironmentVariable("POSTGRES_PORT") ?? "5432";
+            var database = Environment.GetEnvironmentVariable("POSTGRES_DB") ?? "social-network-db";
+
+            connectionString = $"Host={host};Username={userName};Password={password};Port={port};Database={database};";
+            this.seedData = seedData;
         }
 
-        public SocialNetworkDBContext(string connectionString)
+        public SocialNetworkDBContext(string connectionString, bool seedData = false)
         {
             this.connectionString = connectionString;
+            this.seedData = seedData;
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -88,9 +97,9 @@ namespace DataAccessLayer
                 .HasForeignKey(a => a.ProfileId);
 
             modelBuilder.Entity<Photo>()
-                .HasOne(p => p.Galery)
+                .HasOne(p => p.Gallery)
                 .WithMany(g => g.Photos)
-                .HasForeignKey(a => a.GaleryId);
+                .HasForeignKey(a => a.GalleryId);
 
             /* Set One-To-One relationship */
             /*modelBuilder.Entity<User>()
@@ -251,7 +260,7 @@ namespace DataAccessLayer
                 .Property(u => u.CreatedAt)
                 .HasDefaultValueSql("now()");
 
-            modelBuilder.Seed();
+            if (seedData) modelBuilder.Seed();
 
             base.OnModelCreating(modelBuilder);
         }

@@ -13,6 +13,21 @@ namespace DalUnitTests.EntityTests
             {
                 db.Database.EnsureDeleted();
                 db.Database.EnsureCreated();
+
+                db.Users.Add(new User
+                {
+                    Username = "ben",
+                    Email = "ben@gmail.com",
+                    PasswordHash = "aaafht3x"
+                });
+
+                db.Groups.Add(new Group
+                {
+                    Name = "Test Group",
+                    Description = "This is a test group."
+                });
+
+                db.SaveChanges();
             }
         }
 
@@ -25,6 +40,7 @@ namespace DalUnitTests.EntityTests
                 db.Dispose();
             }
         }
+
         [Test]
         public void Test_Add()
         {

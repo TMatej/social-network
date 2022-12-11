@@ -11,6 +11,7 @@ type TextFieldProps = {
   label?: string;
   placeholder?: string;
   onChange?: (value: string) => void;
+  type?: "text" | "password";
 };
 
 export const TextField = ({
@@ -21,6 +22,7 @@ export const TextField = ({
   label,
   placeholder,
   onChange,
+  type = "text",
 }: TextFieldProps) => {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     onChange?.(e.target.value);
@@ -37,7 +39,7 @@ export const TextField = ({
         <input
           className="rounded bg-white bg-opacity-5 p-2 w-full outline-none"
           name={name}
-          type="text"
+          type={type}
           value={value}
           onChange={handleChange}
           placeholder={placeholder}

@@ -1,11 +1,6 @@
 ﻿using DataAccessLayer.Entity;
 using DataAccessLayer;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DalUnitTests.EntityTests
 {
@@ -18,6 +13,20 @@ namespace DalUnitTests.EntityTests
             {
                 db.Database.EnsureDeleted();
                 db.Database.EnsureCreated();
+
+                db.Users.Add(new User
+                {
+                    Username = "ben",
+                    Email = "ben@gmail.com",
+                    PasswordHash = "aaafht3x"
+                });
+                db.SaveChanges();
+
+                db.Groups.Add(new Group
+                {
+                    Name = "Example Group",
+                    Description = "This is an example group",
+                });
                 db.SaveChanges();
             }
         }
@@ -39,7 +48,7 @@ namespace DalUnitTests.EntityTests
                 db.Events.Add(new Event
                 {
                     UserId = 1,
-                    GroupId = 2,
+                    GroupId = 1,
                     Title = "Example Event",
                     Description = "This is an example event",
                 });

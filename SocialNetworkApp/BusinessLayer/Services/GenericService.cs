@@ -19,7 +19,7 @@ namespace BusinessLayer.Services
             _uow = uow;
         }
 
-        public void Delete(object id)
+        public virtual void Delete(object id)
         {
             Guard.Against.Null(id);
             _repository.Delete(id);

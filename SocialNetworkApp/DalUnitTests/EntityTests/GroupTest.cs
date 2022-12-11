@@ -38,9 +38,9 @@ namespace DalUnitTests.EntityTests
                 });
                 db.SaveChanges();
 
-                var group = db.Groups.FirstOrDefault();
+                var group = db.Groups.OrderBy(x => x.Id).LastOrDefault();
                 Assert.That(group, Is.Not.Null);
-                Assert.That(group.Id, Is.EqualTo(2));
+                Assert.That(group.Id, Is.EqualTo(1));
             }
         }
 

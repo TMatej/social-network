@@ -20,8 +20,7 @@ namespace DataAccessLayer.Entity.JoinEntity
         [ForeignKey(nameof(UserId))]
         public User User { get; set; }
 
-        [Required]
-        public int ParticipationTypeId { get; set; }
+        public int? ParticipationTypeId { get; set; }
 
         [ForeignKey(nameof(ParticipationTypeId))]
         public ParticipationType ParticipationType { get; set; }

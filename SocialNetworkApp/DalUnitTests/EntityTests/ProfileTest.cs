@@ -1,11 +1,6 @@
 ﻿using DataAccessLayer.Entity;
 using DataAccessLayer;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DalUnitTests.EntityTests
 {
@@ -45,6 +40,7 @@ namespace DalUnitTests.EntityTests
                 db.Dispose();
             }
         }
+
         [Test]
         public void Test_Add()
         {
@@ -52,13 +48,14 @@ namespace DalUnitTests.EntityTests
             {
                 db.Profiles.Add(new Profile
                 {
-                    UserId = 2,
+                    UserId = 1,
                 });
                 db.SaveChanges();
 
                 var profile = db.Profiles.FirstOrDefault();
                 Assert.That(profile, Is.Not.Null);
                 Assert.That(profile.Id, Is.EqualTo(1));
+                Assert.That(profile.UserId, Is.EqualTo(1));
             }
         }
 

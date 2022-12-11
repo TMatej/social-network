@@ -1,11 +1,6 @@
 ﻿using DataAccessLayer.Entity;
 using DataAccessLayer;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 
 
@@ -21,6 +16,19 @@ namespace DalUnitTests.EntityTests
             {
                 db.Database.EnsureDeleted();
                 db.Database.EnsureCreated();
+
+                db.Users.Add(new User
+                {
+                    Username = "ben",
+                    Email = "ben@gmail.com",
+                    PasswordHash = "aaafht3x"
+                });
+                db.SaveChanges();
+
+                db.Conversations.Add(new Conversation
+                {
+                    UserId = 1
+                });
                 db.SaveChanges();
             }
         }

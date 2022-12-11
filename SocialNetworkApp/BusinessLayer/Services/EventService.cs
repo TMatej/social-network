@@ -1,17 +1,9 @@
-﻿using AutoMapper;
-using BusinessLayer.Contracts;
-using BusinessLayer.DTOs;
+﻿using BusinessLayer.Contracts;
 using DataAccessLayer.Entity;
 using DataAccessLayer.Entity.JoinEntity;
 using Infrastructure.Query;
 using Infrastructure.Repository;
 using Infrastructure.UnitOfWork;
-using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BusinessLayer.Services
 {

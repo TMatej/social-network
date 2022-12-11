@@ -10,11 +10,11 @@ namespace PresentationLayer.Controllers;
 
 [ApiController]
 [Route("[controller]")]
-public class SessionController : Controller
+public class SessionsController : Controller
 {
     private readonly IUserFacade userFacade;
 
-    public SessionController(IUserFacade userFacade)
+    public SessionsController(IUserFacade userFacade)
     {
         this.userFacade = userFacade;
     }
@@ -25,9 +25,9 @@ public class SessionController : Controller
 
         var userDto = userFacade.Login(userLoginDTO);
         var claims = new List<Claim>
-    {
-        new Claim(ClaimTypes.Name, userDto.Id.ToString()),
-    };
+        {
+            new Claim(ClaimTypes.Name, userDto.Id.ToString()),
+        };
 
         foreach (var role in userDto.Roles)
         {

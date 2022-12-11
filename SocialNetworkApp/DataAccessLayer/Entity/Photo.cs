@@ -17,10 +17,10 @@ namespace DataAccessLayer.Entity
         [Required]
         public string Url { get; set; }
 
-        [ForeignKey(nameof(GaleryId))]
-        public Gallery Galery { get; set; }
+        [ForeignKey(nameof(GalleryId))]
+        public Gallery Gallery { get; set; }
 
         [Required]
-        public int GaleryId { get; set; }
+        public int GalleryId { get; set; }
     }
 }

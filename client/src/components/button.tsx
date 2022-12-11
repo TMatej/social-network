@@ -8,6 +8,7 @@ export const Button = ({
   disabled,
   children,
   className,
+  type,
 }: {
   children?: ReactNode;
   leftIcon?: ReactNode;
@@ -15,11 +16,13 @@ export const Button = ({
   onClick?: () => void;
   className?: string;
   disabled?: boolean;
+  type?: "submit";
 }) => {
   return (
     <button
       onClick={onClick}
       disabled={disabled}
+      type={type}
       className={clsx(
         "w-full p-1 flex justify-center items-center rounded bg-cyan-600 hover:bg-cyan-700 disabled:bg-cyan-500",
         className
