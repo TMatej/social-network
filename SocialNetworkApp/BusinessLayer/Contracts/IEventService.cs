@@ -3,7 +3,7 @@
 
 namespace BusinessLayer.Contracts
 {
-    public interface IEventService
+    public interface IEventService:IGenericService<Event>
     {
         public IEnumerable<Event> FindByName(string name);
         public IEnumerable<Event> FindByCreator(User creator);
