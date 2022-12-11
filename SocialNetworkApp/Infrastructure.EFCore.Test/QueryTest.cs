@@ -13,7 +13,7 @@ namespace Infrastructure.EFCore.Test
         [SetUp]
         public void Setup()
         {
-            dbContext = new SocialNetworkDBContext();
+            dbContext = new SocialNetworkDBContext("social-network-test-db");
             unitOfWork = new EFUnitOfWork(dbContext);
 
             dbContext.Database.EnsureDeleted();

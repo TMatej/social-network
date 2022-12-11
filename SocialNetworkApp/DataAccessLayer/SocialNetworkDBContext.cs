@@ -31,20 +31,34 @@ namespace DataAccessLayer
         public DbSet<Role> Roles { get; set; }
         public DbSet<UserRole> UserRoles { get; set; }
 
-        public SocialNetworkDBContext(bool seedData = false)
+        public SocialNetworkDBContext() { }
+
+        public SocialNetworkDBContext(bool seedData)
         {
-            /* NOT VERY SECURE WAY - concrete values should be later deleted */
-            var host = Environment.GetEnvironmentVariable("POSTGRES_HOST") ?? "localhost";
-            var userName = Environment.GetEnvironmentVariable("POSTGRES_USER") ?? "postgres";
-            var password = Environment.GetEnvironmentVariable("POSTGRES_PASSWORD") ?? "postgres";
-            var port = Environment.GetEnvironmentVariable("POSTGRES_PORT") ?? "5432";
-            var database = Environment.GetEnvironmentVariable("POSTGRES_DB") ?? "social-network-db";
+            /* Production style */
+            var host = Environment.GetEnvironmentVariable("POSTGRES_HOST");
+            var userName = Environment.GetEnvironmentVariable("POSTGRES_USER");
+            var password = Environment.GetEnvironmentVariable("POSTGRES_PASSWORD");
+            var port = Environment.GetEnvironmentVariable("POSTGRES_PORT");
+            var database = Environment.GetEnvironmentVariable("POSTGRES_DB");
 
             connectionString = $"Host={host};Username={userName};Password={password};Port={port};Database={database};";
             this.seedData = seedData;
         }
 
-        public SocialNetworkDBContext(string connectionString, bool seedData = false)
+        public SocialNetworkDBContext(string database)
+        {
+            /* Constructor for tests */
+            var host = Environment.GetEnvironmentVariable("POSTGRES_HOST") ?? "localhost";
+            var userName = Environment.GetEnvironmentVariable("POSTGRES_USER") ?? "postgres";
+            var password = Environment.GetEnvironmentVariable("POSTGRES_PASSWORD") ?? "postgres";
+            var port = Environment.GetEnvironmentVariable("POSTGRES_PORT") ?? "5432";
+
+            connectionString = $"Host={host};Username={userName};Password={password};Port={port};Database={database};";
+            this.seedData = false;
+        }
+
+        public SocialNetworkDBContext(string connectionString, bool seedData)
         {
             this.connectionString = connectionString;
             this.seedData = seedData;
