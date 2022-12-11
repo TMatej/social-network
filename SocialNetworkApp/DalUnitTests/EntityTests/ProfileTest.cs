@@ -9,7 +9,7 @@ namespace DalUnitTests.EntityTests
         [SetUp]
         public void Setup()
         {
-            using (var db = new SocialNetworkDBContext())
+            using (var db = new SocialNetworkDBContext("social-network-test-db"))
             {
                 db.Database.EnsureDeleted();
                 db.Database.EnsureCreated();
@@ -34,7 +34,7 @@ namespace DalUnitTests.EntityTests
         [TearDown]
         public void TearDown()
         {
-            using (var db = new SocialNetworkDBContext())
+            using (var db = new SocialNetworkDBContext("social-network-test-db"))
             {
                 db.Database.EnsureDeleted();
                 db.Dispose();
@@ -44,7 +44,7 @@ namespace DalUnitTests.EntityTests
         [Test]
         public void Test_Add()
         {
-            using (var db = new SocialNetworkDBContext())
+            using (var db = new SocialNetworkDBContext("social-network-test-db"))
             {
                 db.Profiles.Add(new Profile
                 {
@@ -62,7 +62,7 @@ namespace DalUnitTests.EntityTests
         [Test]
         public void Test_Add_Duplicate()
         {
-            using (var db = new SocialNetworkDBContext())
+            using (var db = new SocialNetworkDBContext("social-network-test-db"))
             {
                 db.Profiles.Add(new Profile
                 {
@@ -79,7 +79,7 @@ namespace DalUnitTests.EntityTests
         [Test]
         public void Test_Add_Incomplete()
         {
-            using (var db = new SocialNetworkDBContext())
+            using (var db = new SocialNetworkDBContext("social-network-test-db"))
             {
                 db.Profiles.Add(new Profile { });
                 Assert.Throws<DbUpdateException>(() => db.SaveChanges());
@@ -88,7 +88,7 @@ namespace DalUnitTests.EntityTests
         [Test]
         public void Test_Add_Long()
         {
-            using (var db = new SocialNetworkDBContext())
+            using (var db = new SocialNetworkDBContext("social-network-test-db"))
             {
                 db.Profiles.Add(new Profile
                 {

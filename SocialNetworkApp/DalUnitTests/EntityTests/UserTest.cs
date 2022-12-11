@@ -9,7 +9,7 @@ namespace DalUnitTests.EntityTests
         [SetUp]
         public void Setup()
         {
-            using (var db = new SocialNetworkDBContext())
+            using (var db = new SocialNetworkDBContext("social-network-test-db"))
             {
                 db.Database.EnsureDeleted();
                 db.Database.EnsureCreated();
@@ -19,7 +19,7 @@ namespace DalUnitTests.EntityTests
         [TearDown]
         public void TearDown()
         {
-            using (var db = new SocialNetworkDBContext())
+            using (var db = new SocialNetworkDBContext("social-network-test-db"))
             {
                 db.Database.EnsureDeleted();
                 db.Dispose();
@@ -28,7 +28,7 @@ namespace DalUnitTests.EntityTests
         [Test]
         public void Test_Add()
         {
-            using (var db = new SocialNetworkDBContext())
+            using (var db = new SocialNetworkDBContext("social-network-test-db"))
             {
                 db.Users.Add(new User { Username = "lokomotiva123", Email = "cokoloko@gmail.com", PasswordHash = "0123456789abcde0" });
                 db.SaveChanges();
@@ -41,7 +41,7 @@ namespace DalUnitTests.EntityTests
         [Test]
         public void Test_Add_Incomplete()
         {
-            using (var db = new SocialNetworkDBContext())
+            using (var db = new SocialNetworkDBContext("social-network-test-db"))
             {
                 db.Users.Add(new User { Username = "lokomotiva123" });
 
@@ -51,7 +51,7 @@ namespace DalUnitTests.EntityTests
         [Test]
         public void Test_Add_Duplicate()
         {
-            using (var db = new SocialNetworkDBContext())
+            using (var db = new SocialNetworkDBContext("social-network-test-db"))
             {
                 db.Users.Add(new User { Username = "lokomotiva123", Email = "cokoloko@gmail.com", PasswordHash = "0123456789abcde0" });
 
@@ -63,7 +63,7 @@ namespace DalUnitTests.EntityTests
         [Test]
         public void Test_Add_Long()
         {
-            using (var db = new SocialNetworkDBContext())
+            using (var db = new SocialNetworkDBContext("social-network-test-db"))
             {
                 db.Users.Add(new User { Username = new String('l', 100), Email = new String('l', 500), PasswordHash = "0" });
 

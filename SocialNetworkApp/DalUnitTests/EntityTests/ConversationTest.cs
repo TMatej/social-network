@@ -9,7 +9,7 @@ namespace DalUnitTests.EntityTests
         [SetUp]
         public void Setup()
         {
-            using (var db = new SocialNetworkDBContext())
+            using (var db = new SocialNetworkDBContext("social-network-test-db"))
             {
                 db.Database.EnsureDeleted();
                 db.Database.EnsureCreated();
@@ -27,7 +27,7 @@ namespace DalUnitTests.EntityTests
         [TearDown]
         public void TearDown()
         {
-            using (var db = new SocialNetworkDBContext())
+            using (var db = new SocialNetworkDBContext("social-network-test-db"))
             {
                 db.Database.EnsureDeleted();
                 db.Dispose();
@@ -36,7 +36,7 @@ namespace DalUnitTests.EntityTests
         [Test]
         public void Test_Add()
         {
-            using (var db = new SocialNetworkDBContext())
+            using (var db = new SocialNetworkDBContext("social-network-test-db"))
             {
                 db.Conversations.Add(new Conversation
                 {
@@ -53,7 +53,7 @@ namespace DalUnitTests.EntityTests
         [Test]
         public void Test_Add_Incomplete()
         {
-            using (var db = new SocialNetworkDBContext())
+            using (var db = new SocialNetworkDBContext("social-network-test-db"))
             {
                 db.Conversations.Add(new Conversation { });
                 Assert.Throws<DbUpdateException>(() => db.SaveChanges());
