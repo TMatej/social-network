@@ -21,7 +21,7 @@ namespace BusinessLayer.Services
 
         public IEnumerable<Event> FindByCreator(User creator)
         {
-            var query = eventQuery.Where<int>(id => id == creator.Id, "UserId");
+            var query = eventQuery.Where<int>(id => id == creator.Id, nameof(Event.UserId));
             var executed = query.Execute();
             var items = executed.Items;
             return items;
@@ -29,30 +29,30 @@ namespace BusinessLayer.Services
 
         public IEnumerable<Event> FindByName(string name)
         {
-            return eventQuery.Where<string>(name => name.Contains(name, StringComparison.CurrentCultureIgnoreCase), "Title").Execute().Items;
+            return eventQuery.Where<string>(name => name.Contains(name, StringComparison.CurrentCultureIgnoreCase), nameof(Event.Title)).Execute().Items;
         }
 
         public IEnumerable<Event> FindByGroup(Group group)
         {
-            return eventQuery.Where<int>(id => id == group.Id, "GroupId").Execute().Items;
+            return eventQuery.Where<int>(id => id == group.Id, nameof(Event.GroupId)).Execute().Items;
         }
-        public void AddParticipant(User user, Event _event, ParticipationType participationType)
+        public void AddParticipant(int userId, int eventId, int participationTypeId)
         {
             {
                 var participant = new EventParticipant()
                 {
-                    EventId = _event.Id,
-                    UserId = user.Id,
-                    ParticipationTypeId = participationType.Id
+                    EventId = eventId,
+                    ParticipationTypeId = participationTypeId,
+                    UserId = userId
                 };
 
                 participantRepository.Insert(participant);
             }
             _uow.Commit();
         }
-        public void RemoveParticipant(User user, Event _event)
+        public void RemoveParticipant(int userId, int eventId)
         {
-            var participant = participantQuery.Where<int>(eventId => eventId == _event.Id, "EventId").Where<int>(userId => userId == user.Id, "UserId").Execute().Items.FirstOrDefault();
+            var participant = participantQuery.Where<int>(eId => eId == eventId,nameof(EventParticipant.EventId)).Where<int>(uId => uId == userId, nameof(EventParticipant.UserId)).Execute().Items.FirstOrDefault();
             if (participant != null)
             {
                 participantRepository.Delete(participant);

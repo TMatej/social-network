@@ -22,15 +22,7 @@ namespace BusinessLayer.Facades
             this.eventService = eventService;
             this.mapper = mapper;
         }
-        public void AddParticipant(UserDTO userDTO, EventRepresentDTO eventDTO, ParticipationTypeDTO participationTypeDTO)
-        {
-            var user = mapper.Map<User>(userDTO);
-            var _event = mapper.Map<Event>(eventDTO);
-            var participationType = mapper.Map<ParticipationType>(participationTypeDTO);
-            eventService.AddParticipant(user, _event, participationType);
-        }
-
-        public void CreateEvent(EventCreateDTO eventCreateDTO)
+            public void CreateEvent(EventCreateDTO eventCreateDTO)
         {
             var _event = new Event()
             {
@@ -68,14 +60,15 @@ namespace BusinessLayer.Facades
             return events.Select(e => mapper.Map<EventRepresentDTO>(e));
         }
 
-        public void RemoveParticipant(UserDTO userDTO, EventRepresentDTO eventDTO)
+        public void RemoveParticipant(EventParticipationDTO eventParticipationDTO)
         {
-            var user = mapper.Map<User>(userDTO);
-            var _event = mapper.Map<Event>(eventDTO);
-            eventService.RemoveParticipant(user, _event);
-
+            eventService.RemoveParticipant(eventParticipationDTO.UserId, eventParticipationDTO.EventId);
         }
-
+        public void AddParticipant(EventParticipationDTO eventParticipationDTO)
+        {
+            eventService.AddParticipant(eventParticipationDTO.UserId, eventParticipationDTO.EventId, eventParticipationDTO.ParticipationTypeId);
+        }
+        
         public void UpdateEvent(EventRepresentDTO eventRepresentDTO)
         {
             var _event = mapper.Map<Event>(eventRepresentDTO);

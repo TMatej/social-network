@@ -2,9 +2,9 @@
 
 namespace BusinessLayer.Contracts
 {
-    public interface IGroupService
+    public interface IGroupService:IGenericService<Group>
     {
-        public void AddToGroup(User user, Group group, GroupRole groupRole);
-        public void RemoveFromGroup(User user, Group group);
+        public void AddToGroup(int groupId, int userId, int roleId);
+        public void RemoveFromGroup(int userId, int groupId);
     }
 }

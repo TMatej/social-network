@@ -8,8 +8,8 @@ namespace BusinessLayer.Contracts
         public IEnumerable<Event> FindByName(string name);
         public IEnumerable<Event> FindByCreator(User creator);
         public IEnumerable<Event> FindByGroup(Group group);
-        public void AddParticipant(User user, Event _event, ParticipationType participationType);
-        public void RemoveParticipant(User user, Event _event);
+        public void AddParticipant(int userId, int eventId, int participationTypeId);
+        public void RemoveParticipant(int userId, int eventId);
 
 
     }
