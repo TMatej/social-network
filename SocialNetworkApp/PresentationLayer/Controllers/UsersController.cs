@@ -1,6 +1,7 @@
 using BusinessLayer.DTOs.User;
 using Microsoft.AspNetCore.Mvc;
 using BusinessLayer.Facades;
+using PresentationLayer.Models;
 
 namespace PresentationLayer.Controllers;
 
@@ -28,5 +29,17 @@ public class UsersController : ControllerBase
     {
         var profile = profileFacade.GetProfileByUserId(userId);
         return Ok(profile);
+    }
+
+    [HttpPatch("{userId}/profile")]
+    public IActionResult UpdateUserProfile(int userId, [FromBody] ProfileUpsertModel profile)
+    {
+        return Ok();
+    }
+
+    [HttpDelete("{userId}/profile")]
+    public IActionResult DeleteUserProfile(int userId)
+    {
+        return Ok();
     }
 }

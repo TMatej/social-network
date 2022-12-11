@@ -18,7 +18,7 @@ namespace Infrastructure.EFCore.Test
         [SetUp]
         public void Setup()
         {
-            dbContext = new SocialNetworkDBContext();
+            dbContext = new SocialNetworkDBContext("social-network-test-db");
             unitOfWork = new EFUnitOfWork(dbContext);
             userRepository = new EFGenericRepository<User>(unitOfWork);
             eventRepository = new EFGenericRepository<Event>(unitOfWork);
