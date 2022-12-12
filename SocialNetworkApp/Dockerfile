@@ -21,6 +21,9 @@ FROM build AS publish
 RUN dotnet publish "PresentationLayer.csproj" -c Release -o /app/publish /p:UseAppHost=false
 
 FROM base AS final
+RUN addgroup --gid 1000 group && \
+  adduser --gid 1000 --uid 1000 --disable-password --gecos User user
+RUN echo 'Europe/Prague' > /etc/timezone
 WORKDIR /app
 COPY --from=publish /app/publish .
 EXPOSE 8000
