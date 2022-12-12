@@ -18,11 +18,7 @@ services:
       context: .
       dockerfile: Dockerfile
     environment:
-      POSTGRES_DB: social-network-test-db
-      POSTGRES_HOST: pgdb
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
-      POSTGRES_PORT: 5432
+      DefaultConnection: "Host=pgdb;Username=postgres;Password=postgres;Port=5432;Database=social-network-test-db;"
     ports:
       - "8000:8000"
     depends_on:

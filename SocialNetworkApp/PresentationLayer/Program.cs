@@ -8,13 +8,20 @@ using Infrastructure.EFCore;
 
 
 var builder = WebApplication.CreateBuilder(args);
+builder.Configuration.AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
+builder.Configuration.AddJsonFile($"appsettings.{builder.Environment.EnvironmentName}.json", optional: true);
+builder.Configuration.AddEnvironmentVariables();
 builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory())
-  .ConfigureContainer<ContainerBuilder>(builder =>
+  .ConfigureContainer<ContainerBuilder>(containerBuilder =>
   {
-      builder.RegisterModule(new EFCoreModule());
-      builder.RegisterModule(new DALModule());
-      builder.RegisterModule(new ServicesModule());
-      builder.RegisterModule(new FacadesModule());
+      containerBuilder.RegisterModule(new EFCoreModule());
+      containerBuilder.RegisterModule(new DALModule 
+      { 
+          ConnectionString = builder.Configuration.GetConnectionString("DefaultConnection"),
+          SeedData = builder.Configuration.GetSection("Properties").GetValue<bool>("SeedData")
+      });
+      containerBuilder.RegisterModule(new ServicesModule());
+      containerBuilder.RegisterModule(new FacadesModule());
   });
 builder.Services.AddCors();
 builder.Services.AddControllers();
