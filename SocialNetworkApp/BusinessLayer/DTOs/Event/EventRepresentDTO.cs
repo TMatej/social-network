@@ -3,7 +3,7 @@ using BusinessLayer.DTOs.User;
 
 namespace BusinessLayer.DTOs.Event
 {
-    internal class EventRepresentDTO
+    public class EventRepresentDTO
     {
         public int Id { get; set; }
         public UserDTO User { get; set; }
