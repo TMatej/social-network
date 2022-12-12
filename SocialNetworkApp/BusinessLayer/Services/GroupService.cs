@@ -29,14 +29,16 @@ namespace BusinessLayer.Services
             groupMemberRepository.Insert(groupMember);
             _uow.Commit();
         }
-        public void RemoveFromGroup(int userId, int groupId)
+        public bool RemoveFromGroup(int userId, int groupId)
         {
             var groupMember = groupMemberQuery.Where<int>(gId => gId == groupId, nameof(GroupMember.GroupId)).Where<int>(uId => uId == userId, nameof(GroupMember.UserId)).Execute().Items.FirstOrDefault();
             if (groupMember != null)
             {
                 groupMemberRepository.Delete(groupMember);
                 _uow.Commit();
+                return true;
             }
+            return false;
         }
     }
 }

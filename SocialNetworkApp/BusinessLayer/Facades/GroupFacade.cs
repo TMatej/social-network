@@ -49,9 +49,16 @@ namespace BusinessLayer.Facades
             _groupService.AddToGroup(groupMembershipDTO.GroupId, groupMembershipDTO.UserId, groupMembershipDTO.MembershipTypeId);
         }
 
-        public void RemoveFromGroup(GroupMembershipDTO groupMembershipDTO)
+        public bool RemoveFromGroup(GroupMembershipDTO groupMembershipDTO)
         {
-            _groupService.RemoveFromGroup(groupMembershipDTO.GroupId, groupMembershipDTO.UserId);
+            return _groupService.RemoveFromGroup(groupMembershipDTO.GroupId, groupMembershipDTO.UserId);
+        }
+
+        public GroupRepresentDTO? GetGroup(int id)
+        {
+            var group = _groupService.GetByID(id);
+            
+           return group==null ? null : _mapper.Map<GroupRepresentDTO>(group);
         }
     }
 }

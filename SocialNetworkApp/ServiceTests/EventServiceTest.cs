@@ -120,7 +120,7 @@ namespace ServiceTests
         public void AddParticipant()
         {
             var eventService = new EventService(eventQuery, participantQuery, eventRepository, participantRepository, uow);
-            eventService.AddParticipant(mockParticipant2, mockEvent, participationType);
+            eventService.AddParticipant(mockParticipant2.Id, mockEvent.Id, participationType.Id);
             participantRepository.Received().Insert(Arg.Is<EventParticipant>(x => x.EventId == mockEvent.Id && x.UserId == mockParticipant2.Id && x.ParticipationTypeId == participationType.Id));
             uow.Received().Commit();
         }
@@ -130,7 +130,7 @@ namespace ServiceTests
             var result = new QueryResult<EventParticipant>(1, 1, 1, new List<EventParticipant> { mockEventParticipant1 });
             var queryWithResult = MockQuery.CreateMockQueryWithResult(result);
             var eventService = new EventService(eventQuery, queryWithResult, eventRepository, participantRepository, uow);
-            eventService.RemoveParticipant(mockParticipant1, mockEvent);
+            eventService.RemoveParticipant(mockParticipant1.Id, mockEvent.Id);
             participantRepository.Received().Delete(Arg.Is<EventParticipant>(x => x.EventId == mockEvent.Id && x.UserId == mockParticipant1.Id));
             uow.Received().Commit();
 

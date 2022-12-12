@@ -23,5 +23,7 @@ namespace BusinessLayer.Facades
         public void UpdateEvent(EventRepresentDTO eventRepresentDTO);
 
         public void DeleteEvent(EventRepresentDTO eventRepresentDTO);
+
+        public EventRepresentDTO? GetEvent(int id);
     }
 }

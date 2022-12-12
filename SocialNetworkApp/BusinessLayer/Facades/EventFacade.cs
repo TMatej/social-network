@@ -74,5 +74,11 @@ namespace BusinessLayer.Facades
             var _event = mapper.Map<Event>(eventRepresentDTO);
             eventService.Update(_event);
         }
+
+        public EventRepresentDTO? GetEvent(int id)
+        {
+            var _event = eventService.GetByID(id);
+            return _event == null ? null : mapper.Map<EventRepresentDTO>(_event);
+        }
     }
 }
