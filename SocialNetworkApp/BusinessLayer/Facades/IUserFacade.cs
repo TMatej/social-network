@@ -6,5 +6,6 @@ namespace BusinessLayer.Facades
     {
         UserDTO Login(UserLoginDTO userLoginDTO);
         void Register(UserRegisterDTO userRegisterDTO);
+        public UserDTO GetUserFromCookieAuthId(int id);
     }
 }

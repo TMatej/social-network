@@ -4,12 +4,12 @@ version: "3.9"
 
 services:
   db:
-    container_name: postgres
-    image: postgres
+    container_name: pgdb
+    build:
+      context: ./postgresDocker
+      dockerfile: Dockerfile
     restart: always
     environment:
-      POSTGRES_DB: social-network-db
-      POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
     ports:
       - "5432:5432"
@@ -17,13 +17,11 @@ services:
   server:
     container_name: social-network-app-server
     build:
+      context: ./SocialNetworkApp
       dockerfile: Dockerfile
     environment:
-      POSTGRES_DB: social-network-db
-      POSTGRES_HOST: localhost
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
-      POSTGRES_PORT: 5432
+      ConnectionStrings__DefaultConnection: "Host=pgdb;Username=postgres;Password=postgres;Port=5432;Database=social_network_test_db;"
+      Properties__SeedData: true
     ports:
       - "8000:8000"
     depends_on:

@@ -31,20 +31,21 @@ namespace DataAccessLayer
         public DbSet<Role> Roles { get; set; }
         public DbSet<UserRole> UserRoles { get; set; }
 
-        public SocialNetworkDBContext(bool seedData = false)
+        public SocialNetworkDBContext() { }
+
+        public SocialNetworkDBContext(string database)
         {
-            /* NOT VERY SECURE WAY - concrete values should be later deleted */
+            /* Constructor for tests */
             var host = Environment.GetEnvironmentVariable("POSTGRES_HOST") ?? "localhost";
             var userName = Environment.GetEnvironmentVariable("POSTGRES_USER") ?? "postgres";
             var password = Environment.GetEnvironmentVariable("POSTGRES_PASSWORD") ?? "postgres";
             var port = Environment.GetEnvironmentVariable("POSTGRES_PORT") ?? "5432";
-            var database = Environment.GetEnvironmentVariable("POSTGRES_DB") ?? "social-network-db";
 
             connectionString = $"Host={host};Username={userName};Password={password};Port={port};Database={database};";
-            this.seedData = seedData;
+            seedData = false;
         }
 
-        public SocialNetworkDBContext(string connectionString, bool seedData = false)
+        public SocialNetworkDBContext(string connectionString, bool seedData)
         {
             this.connectionString = connectionString;
             this.seedData = seedData;
@@ -167,6 +168,11 @@ namespace DataAccessLayer
                 .HasMany(u => u.ConversationParticipants)
                 .WithOne(c => c.User)
                 .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<User>()
+                .HasOne(u => u.Avatar)
+                .WithOne()
+                .HasForeignKey<User>(u => u.AvatarId); 
 
             modelBuilder.Entity<Message>()
                 .HasOne(m => m.Author)

@@ -17,14 +17,24 @@ type LoginFormData = {
 export const Login = () => {
   const setUser = useStore((state) => state.setUser);
   const navigate = useNavigate();
-  const { mutate } = useMutation(
+  const showNotification = useStore((state) => state.showNotification);
+  const { mutate, isLoading } = useMutation(
     (data: LoginFormData) => axios.post<User>("/sessions", data),
     {
       onSuccess: ({ data }) => {
         setUser(data);
         navigate("/");
+        showNotification({
+          message: "successfully logged in",
+          type: "success",
+        });
       },
-      onError: () => {},
+      onError: () => {
+        showNotification({
+          message: "login failed",
+          type: "error",
+        });
+      },
     }
   );
 
@@ -38,7 +48,7 @@ export const Login = () => {
     >
       <Form className="h-full">
         <div className="h-full flex flex-col justify-center items-center">
-          <Paper className="md:min-w-[350px]">
+          <Paper className="p-3 md:min-w-[350px]">
             <h1 className="text-xl font-bold mb-6">Login</h1>
             <FormTextField
               name="email"
@@ -54,6 +64,8 @@ export const Login = () => {
               placeholder="*******"
             />
             <Button
+              className="w-full"
+              disabled={isLoading}
               type="submit"
               leftIcon={<FontAwesomeIcon icon={faSignIn} />}
             >

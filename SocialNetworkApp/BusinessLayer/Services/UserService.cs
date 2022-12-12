@@ -1,4 +1,4 @@
-﻿using Ardalis.GuardClauses;
+using Ardalis.GuardClauses;
 using AutoMapper;
 using BusinessLayer.Contracts;
 using BusinessLayer.DTOs.User;
@@ -8,6 +8,7 @@ using Infrastructure.Query;
 using Infrastructure.Repository;
 using Infrastructure.UnitOfWork;
 using Isopoh.Cryptography.Argon2;
+using Microsoft.AspNetCore.Http;
 
 namespace BusinessLayer.Services
 {
@@ -19,6 +20,7 @@ namespace BusinessLayer.Services
         private readonly IQuery<Contact> contactQuery;
         private readonly IQuery<User> userQuery;
         private readonly IRepository<Contact> contactRepo;
+        public readonly IFileService fileService;
         public IMapper mapper;
 
         public UserService(IRepository<User> userRepo,
@@ -26,6 +28,8 @@ namespace BusinessLayer.Services
             IQuery<ConversationParticipant> conversationParticipantQuery,
             IQuery<Contact> contactQuery,
             IQuery<User> userQuery,
+            IFileService fileService,
+            IMapper mapper,
             IRepository<Contact> contactRepo,
             IUnitOfWork uow) : base(userRepo, uow)
         {
@@ -35,6 +39,8 @@ namespace BusinessLayer.Services
             this.contactQuery = contactQuery;
             this.contactRepo = contactRepo;
             this.userQuery = userQuery;
+            this.mapper = mapper;
+            this.fileService = fileService;
         }
 
         // Real auth implementation after shown to us on lectures
@@ -78,6 +84,16 @@ namespace BusinessLayer.Services
 
             userRepo.Delete(id);
             _uow.Commit();
+        }
+
+        public void changeAvatar(int userId, IFormFile avatar)
+        {
+            Guard.Against.Null(userId);
+
+            var file = fileService.saveFile(avatar);
+            var user = GetByID(userId);
+            user.AvatarId = file.Id;
+            Update(user);
         }
 
         public void AddContacts(int userId, List<int> contactIds)

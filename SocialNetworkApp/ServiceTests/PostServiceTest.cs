@@ -15,6 +15,7 @@ namespace ServiceTests
         IRepository<DataAccessLayer.Entity.Profile> profileRepository;
         IRepository<Post> postRepository;
         IQuery<Post> postQuery;
+        IQuery<DataAccessLayer.Entity.Profile> profileQuery;
         IPostService postService;
         IFileService fileService;
         IUnitOfWork uow;
@@ -28,6 +29,7 @@ namespace ServiceTests
             profileRepository = Substitute.For<IRepository<DataAccessLayer.Entity.Profile>>();
             postRepository = Substitute.For<IRepository<Post>>();
             postQuery = Substitute.For<IQuery<Post>>();
+            profileQuery = Substitute.For<IQuery<DataAccessLayer.Entity.Profile>>();
             uow = Substitute.For<IUnitOfWork>();
         }
 
@@ -44,7 +46,7 @@ namespace ServiceTests
                 Title = "Test",
             };
             mapper.Map<Post>(postDTO).Returns(post);
-            var profileService = new ProfileService(profileRepository, postService, fileService, uow, mapper);
+            var profileService = new ProfileService(profileQuery, profileRepository, postService, fileService, uow, mapper);
             profileService.addPost(1, 1, postDTO);
             postService.Received(1).Insert(post);
         }
