@@ -18,43 +18,43 @@ namespace PresentationLayer.Controllers
             this.eventFacade = eventFacade;
         }
 
-        [HttpPost]
+        [HttpPost("/event")]
         public IActionResult CreateEvent(EventCreateDTO eventCreateDTO)
         {
             eventFacade.CreateEvent(eventCreateDTO);
             return Ok();
         }
 
-        [HttpGet]
+        [HttpGet("/event/{eventId}")]
         public IActionResult GetEvent(int eventId)
         {
             var _event = eventFacade.GetEvent(eventId);
             return _event == null ? NotFound() : Ok(_event);
         }
 
-        [HttpPut]
-        public IActionResult UpdateEvent(EventRepresentDTO eventRepresentDTO)
+        [HttpPut("/event")]
+        public IActionResult UpdateEvent([FromBody]EventRepresentDTO eventRepresentDTO)
         {
             eventFacade.UpdateEvent(eventRepresentDTO);
             return Ok();
         }
 
-        [HttpDelete]
-        public IActionResult DeleteEvent(EventRepresentDTO eventRepresentDTO)
+        [HttpDelete("/event")]
+        public IActionResult DeleteEvent([FromBody]EventRepresentDTO eventRepresentDTO)
         {
             eventFacade.DeleteEvent(eventRepresentDTO);
             return Ok();
         }
 
-        [HttpDelete]
-        public IActionResult DeleteParticipation(EventParticipationDTO eventParticipationDTO)
+        [HttpDelete("/participation")]
+        public IActionResult DeleteParticipation([FromBody]EventParticipationDTO eventParticipationDTO)
         {
             var success = eventFacade.RemoveParticipant(eventParticipationDTO);
             return success ? Ok() : NotFound();
         }
 
-        [HttpPost]
-        public IActionResult AddParticipation(EventParticipationDTO eventParticipationDTO)
+        [HttpPost("/participation")]
+        public IActionResult AddParticipation([FromBody]EventParticipationDTO eventParticipationDTO)
         {
             eventFacade.AddParticipant(eventParticipationDTO);
             return Ok();

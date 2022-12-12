@@ -20,42 +20,42 @@ namespace PresentationLayer.Controllers
             this.groupFacade = groupFacade;
         }
         
-        [HttpPost]
+        [HttpPost("/group")]
         public IActionResult CreateGroup(GroupCreateDTO groupCreateDTO)
         {
             groupFacade.CreateGroup(groupCreateDTO);
             return Ok();
         }
         
-        [HttpGet]
+        [HttpGet("/group/{groupId}")]
         public IActionResult GetGroup(int groupId)
         {
             var group = groupFacade.GetGroup(groupId);
             return group == null ? NotFound() : Ok(group);
         }
         
-        [HttpPut]
+        [HttpPut("/group")]
         public IActionResult UpdateGroup(GroupRepresentDTO groupRepresentDTO)
         {
             groupFacade.UpdateGroup(groupRepresentDTO);
             return Ok();
         }
         
-        [HttpDelete]
+        [HttpDelete("/group")]
         public IActionResult DeleteGroup(GroupRepresentDTO groupRepresentDTO)
         {
             groupFacade.DeleteGroup(groupRepresentDTO);
             return Ok();
         }
 
-        [HttpDelete]
+        [HttpDelete("/membership")]
         public IActionResult DeleteMembership(GroupMembershipDTO groupMembershipDTO)
         {
             var success = groupFacade.RemoveFromGroup(groupMembershipDTO);
             return success ? Ok() : NotFound();
         }
 
-        [HttpPost]
+        [HttpPost("/membership")]
         public IActionResult AddMembership(GroupMembershipDTO groupMembershipDTO)
         {
             groupFacade.AddToGroup(groupMembershipDTO);
