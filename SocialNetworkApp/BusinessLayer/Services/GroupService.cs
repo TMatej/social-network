@@ -18,25 +18,27 @@ namespace BusinessLayer.Services
             this.groupMemberRepository = groupMemberRepository;
             this.groupMemberQuery = groupMemberQuery;
         }
-        public void AddToGroup(User user, Group group, GroupRole groupRole)
+        public void AddToGroup(int groupId, int userId, int roleId)
         {
             var groupMember = new GroupMember
             {
-                GroupId = group.Id,
-                UserId = user.Id,
-                GroupRoleId = groupRole.Id
+                GroupId = groupId,
+                UserId = userId,
+                GroupRoleId = roleId
             };
             groupMemberRepository.Insert(groupMember);
             _uow.Commit();
         }
-        public void RemoveFromGroup(User user, Group group)
+        public bool RemoveFromGroup(int userId, int groupId)
         {
-            var groupMember = groupMemberQuery.Where<int>(groupId => groupId == group.Id, "GroupId").Where<int>(userId => userId == user.Id, "UserId").Execute().Items.FirstOrDefault();
+            var groupMember = groupMemberQuery.Where<int>(gId => gId == groupId, nameof(GroupMember.GroupId)).Where<int>(uId => uId == userId, nameof(GroupMember.UserId)).Execute().Items.FirstOrDefault();
             if (groupMember != null)
             {
                 groupMemberRepository.Delete(groupMember);
                 _uow.Commit();
+                return true;
             }
+            return false;
         }
     }
 }
