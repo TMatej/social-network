@@ -33,19 +33,6 @@ namespace DataAccessLayer
 
         public SocialNetworkDBContext() { }
 
-        public SocialNetworkDBContext(bool seedData)
-        {
-            /* Production style */
-            var host = Environment.GetEnvironmentVariable("POSTGRES_HOST");
-            var userName = Environment.GetEnvironmentVariable("POSTGRES_USER");
-            var password = Environment.GetEnvironmentVariable("POSTGRES_PASSWORD");
-            var port = Environment.GetEnvironmentVariable("POSTGRES_PORT");
-            var database = Environment.GetEnvironmentVariable("POSTGRES_DB");
-
-            connectionString = $"Host={host};Username={userName};Password={password};Port={port};Database={database};";
-            this.seedData = seedData;
-        }
-
         public SocialNetworkDBContext(string database)
         {
             /* Constructor for tests */
@@ -55,7 +42,7 @@ namespace DataAccessLayer
             var port = Environment.GetEnvironmentVariable("POSTGRES_PORT") ?? "5432";
 
             connectionString = $"Host={host};Username={userName};Password={password};Port={port};Database={database};";
-            this.seedData = false;
+            seedData = false;
         }
 
         public SocialNetworkDBContext(string connectionString, bool seedData)
