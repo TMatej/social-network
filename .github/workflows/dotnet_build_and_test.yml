@@ -47,7 +47,7 @@ jobs:
     container: mcr.microsoft.com/dotnet/sdk:6.0
 
     env:
-      ConnectionStrings__DefaultConnection: "Host=pgdb;Username=postgres;Password=${{ secrets.POSTGRES_TEST_PASSWORD }};Port=5432;Database=social-network-test-db;"
+      ConnectionStrings__DefaultConnection: "Host=postgres;Username=postgres;Password=${{ secrets.POSTGRES_TEST_PASSWORD }};Port=5432;Database=social_network_test_db;"
       Properties__SeedData: false
       
     services:
