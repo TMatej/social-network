@@ -60,9 +60,9 @@ namespace BusinessLayer.Facades
             return events.Select(e => mapper.Map<EventRepresentDTO>(e));
         }
 
-        public void RemoveParticipant(EventParticipationDTO eventParticipationDTO)
+        public bool RemoveParticipant(EventParticipationDTO eventParticipationDTO)
         {
-            eventService.RemoveParticipant(eventParticipationDTO.UserId, eventParticipationDTO.EventId);
+            return eventService.RemoveParticipant(eventParticipationDTO.UserId, eventParticipationDTO.EventId);
         }
         public void AddParticipant(EventParticipationDTO eventParticipationDTO)
         {

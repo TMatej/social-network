@@ -50,14 +50,16 @@ namespace BusinessLayer.Services
             }
             _uow.Commit();
         }
-        public void RemoveParticipant(int userId, int eventId)
+        public bool RemoveParticipant(int userId, int eventId)
         {
             var participant = participantQuery.Where<int>(eId => eId == eventId,nameof(EventParticipant.EventId)).Where<int>(uId => uId == userId, nameof(EventParticipant.UserId)).Execute().Items.FirstOrDefault();
             if (participant != null)
             {
                 participantRepository.Delete(participant);
+                _uow.Commit();
+                return true;
             }
-            _uow.Commit();
+            return false;
         }
     }
 }

@@ -16,7 +16,7 @@ namespace BusinessLayer.Facades
         public IEnumerable<EventRepresentDTO> FindByCreator(UserDTO creatorDTO);
         public IEnumerable<EventRepresentDTO> FindByGroup(GroupRepresentDTO groupDTO);
         public void AddParticipant(EventParticipationDTO eventParticipationDTO);
-        public void RemoveParticipant(EventParticipationDTO eventParticipationDTOO);
+        public bool RemoveParticipant(EventParticipationDTO eventParticipationDTOO);
 
         public void CreateEvent(EventCreateDTO eventCreateDTO);
 
