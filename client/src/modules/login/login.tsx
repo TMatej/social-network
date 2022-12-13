@@ -21,9 +21,9 @@ export const Login = () => {
   const { mutate, isLoading } = useMutation(
     (data: LoginFormData) => axios.post<User>("/sessions", data),
     {
-      onSuccess: ({ data }) => {
-        setUser(data);
-        navigate("/");
+      onSuccess: ({ data: user }) => {
+        setUser(user);
+        navigate(`/profile/${user.id}`);
         showNotification({
           message: "successfully logged in",
           type: "success",

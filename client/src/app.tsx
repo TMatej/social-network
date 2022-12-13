@@ -5,7 +5,13 @@ import { fas } from "@fortawesome/free-solid-svg-icons";
 import { Router } from "modules/router";
 import { Notifications } from "components/notification/notification";
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      suspense: true,
+    },
+  },
+});
 
 library.add(fas);
 

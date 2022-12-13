@@ -6,13 +6,21 @@ import { useParams } from "react-router-dom";
 
 export const Profile = () => {
   const { id } = useParams<{ id: string }>();
-  const { data } = useQuery(["profile", id], () =>
+  const { data, isError } = useQuery(["profile", id], () =>
     axios.get(`/users/${id}/profile`)
   );
-  console.log({ id, data });
+  console.log({ id, data, isError });
+
+  if (isError) {
+    return (
+      <Container>
+        <Paper className="p-3">User not found</Paper>
+      </Container>
+    );
+  }
 
   return (
-    <Container className="py-3">
+    <Container className="p-3">
       <Paper className="p-4">
         <div className="border-2 border-white border-opacity-5 bg-cyan-900 w-44 h-44 rounded-full overflow-hidden">
           <img

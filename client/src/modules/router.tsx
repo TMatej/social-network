@@ -17,6 +17,7 @@ export const Router = () => {
       setUser(data);
     },
     retry: false,
+    suspense: false,
   });
 
   if (isLoading) {
