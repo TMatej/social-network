@@ -17,7 +17,7 @@ namespace BusinessLayer.Facades
         ILikeService likeService;
         IMapper mapper;
 
-        PostFacade(IPostService postService, ILikeService likeService, IMapper mapper)
+        public PostFacade(IPostService postService, ILikeService likeService, IMapper mapper)
         {
             this.postService = postService;
             this.likeService = likeService;
