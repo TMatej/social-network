@@ -1,7 +1,7 @@
 apiVersion: "acid.zalan.do/v1"
 kind: postgresql
 metadata:
-  name: social-network-cluster  ## name of our cluster
+  name: social-network-db-cluster  ## name of our cluster
   namespace: turek-ns
 spec:
   teamId: "acid"
