@@ -1,0 +1,5 @@
+name: CI - client
+
+on:
+  # for manual running
+  workflow_dispatch:
