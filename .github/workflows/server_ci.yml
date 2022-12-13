@@ -103,7 +103,7 @@ jobs:
 
     env:
       REGISTRY: ghcr.io
-      IMAGE_NAME: tmatej/social-network
+      IMAGE_NAME: tmatej/social-network-server
       IMAGE_TAG: latest
 
     steps:
@@ -119,7 +119,7 @@ jobs:
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
 
-      - name: Build&Push Image
+      - name: Build Image
         uses: docker/build-push-action@v3
         with:
           context: SocialNetworkApp

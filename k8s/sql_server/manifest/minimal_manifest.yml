@@ -1,0 +1,34 @@
+apiVersion: "acid.zalan.do/v1"
+kind: postgresql
+metadata:
+  name: social-network-db-cluster  ## name of our cluster
+  namespace: turek-ns
+spec:
+  teamId: "acid"
+  numberOfInstances: 1     ## single instance
+  users:
+    administrator:               ## create user to db
+    - superuser
+    - createdb
+  databases:            
+    social_network_db: administrator        ## create db 'social_network_db' and add access to 'administrator' user
+  postgresql:
+    version: "14"          ## deploy postgres version 14
+  volume:
+    size: 4Gi            
+    storageClass: nfs-csi  ## use nfs-csi class for backend storage
+  spiloRunAsUser: 101      ## security context for db deployment
+  spiloRunAsGroup: 103
+  spiloFSGroup: 103
+  resources:               ## give some resources
+    requests:
+      cpu: 10m
+      memory: 500Mi
+    limits:
+      cpu: 500m
+      memory: 1Gi
+  patroni:
+    initdb:                ## setup db for utf-8
+      encoding: "UTF8"
+      locale: "en_US.UTF-8"
+      data-checksums: "true"

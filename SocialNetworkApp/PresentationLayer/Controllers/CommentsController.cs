@@ -16,7 +16,7 @@ namespace PresentationLayer.Controllers
             this.commentFacade = commentFacade;
         }
         //GET /comments?entityId={entityId}&page={page}&size={size} - vrati komentare pro commentable entitu s entityId se strankovanim
-        [HttpGet("?entityId={entityId}&page={page}&size={size}")]
+        [HttpGet]
         public IActionResult GetCommentsOfCommentableEntity(int entityId, int page, int size)
         {
             var comments = commentFacade.GetCommentsForEntity(entityId, page, size);
