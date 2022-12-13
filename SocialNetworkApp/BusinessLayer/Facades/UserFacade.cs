@@ -1,6 +1,7 @@
 using AutoMapper;
 using BusinessLayer.Contracts;
 using BusinessLayer.DTOs.User;
+using BusinessLayer.Facades.Interfaces;
 using Infrastructure.UnitOfWork;
 
 namespace BusinessLayer.Facades

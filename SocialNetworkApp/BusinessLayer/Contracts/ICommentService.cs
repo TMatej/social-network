@@ -10,6 +10,6 @@ namespace BusinessLayer.Contracts
         void EditComment(CommentEditDTO commentDTO);
         CommentRepresentDTO GetDetailedCommentById(int id);
         CommentBasicRepresentDTO GetPlainCommentById(int id);
-        public QueryResult<Comment> getCommentsForEntity(int entityId, int page = 1, int pageSize = 10);
+        public IEnumerable<Comment> getCommentsForEntity(int entityId, int page = 1, int pageSize = 10);
     }
 }

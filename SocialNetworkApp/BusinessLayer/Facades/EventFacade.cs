@@ -3,6 +3,7 @@ using BusinessLayer.Contracts;
 using BusinessLayer.DTOs.Event;
 using BusinessLayer.DTOs.Group;
 using BusinessLayer.DTOs.User;
+using BusinessLayer.Facades.Interfaces;
 using DataAccessLayer.Entity;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using System;
