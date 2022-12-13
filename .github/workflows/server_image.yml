@@ -113,10 +113,6 @@ jobs:
         uses: docker/build-push-action@v3
         with:
           context: SocialNetworkApp
-<<<<<<<< HEAD:.github/workflows/server_image.yml
           push: true
-========
-          push: false
->>>>>>>> main:.github/workflows/dotnet_build_and_test.yml
           tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }} # ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
