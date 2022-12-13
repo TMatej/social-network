@@ -25,6 +25,6 @@ FROM base AS final
 RUN echo 'Europe/Prague' > /etc/timezone
 WORKDIR /app
 COPY --from=publish /app/publish .
-EXPOSE 8000
-ENV ASPNETCORE_URLS=http://+:8000
+EXPOSE 5000
+ENV ASPNETCORE_URLS=http://+:5000
 ENTRYPOINT ["dotnet", "PresentationLayer.dll"]

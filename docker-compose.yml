@@ -25,7 +25,7 @@ services:
       ConnectionStrings__DefaultConnection: "Host=social-network-pgdb;Username=postgres;Password=postgres;Port=5432;Database=social_network_test_db;"
       Properties__SeedData: true
     ports:
-      - 8000:8000
+      - 5000:5000
     depends_on:
       - db
 
