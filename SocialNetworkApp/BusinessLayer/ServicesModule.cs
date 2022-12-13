@@ -10,8 +10,8 @@ namespace BusinessLayer
     {
         protected override void Load(ContainerBuilder containerBuilder)
         {
-            containerBuilder.RegisterType<UserService>()
-                .As<IUserService>()
+            containerBuilder.RegisterType<CommentService>()
+                .As<ICommentService>()
                 .InstancePerLifetimeScope()
                 .OnActivated(e => Console.WriteLine($"Build {e.Instance.GetType().Name}"));
             containerBuilder.RegisterType<ContactService>()
@@ -22,8 +22,32 @@ namespace BusinessLayer
                 .As<IConversationService>()
                 .InstancePerLifetimeScope()
                 .OnActivated(e => Console.WriteLine($"Build {e.Instance.GetType().Name}"));
+            containerBuilder.RegisterType<EventService>()
+                .As<IEventService>()
+                .InstancePerLifetimeScope()
+                .OnActivated(e => Console.WriteLine($"Build {e.Instance.GetType().Name}"));
             containerBuilder.RegisterType<FileService>()
                 .As<IFileService>()
+                .InstancePerLifetimeScope()
+                .OnActivated(e => Console.WriteLine($"Build {e.Instance.GetType().Name}"));
+            containerBuilder.RegisterType<GalleryService>()
+                .As<IGalleryService>()
+                .InstancePerLifetimeScope()
+                .OnActivated(e => Console.WriteLine($"Build {e.Instance.GetType().Name}"));
+            containerBuilder.RegisterGeneric(typeof(GenericService<>))
+                .As(typeof(IGenericService<>))
+                .InstancePerLifetimeScope()
+                .OnActivated(e => Console.WriteLine($"Build {e.Instance.GetType().Name}"));
+            containerBuilder.RegisterType<GroupService>()
+                .As<IGroupService>()
+                .InstancePerLifetimeScope()
+                .OnActivated(e => Console.WriteLine($"Build {e.Instance.GetType().Name}"));
+            containerBuilder.RegisterType<LikeService>()
+                .As<ILikeService>()
+                .InstancePerLifetimeScope()
+                .OnActivated(e => Console.WriteLine($"Build {e.Instance.GetType().Name}"));
+            containerBuilder.RegisterType<PhotoService>()
+                .As<IPhotoService>()
                 .InstancePerLifetimeScope()
                 .OnActivated(e => Console.WriteLine($"Build {e.Instance.GetType().Name}"));
             containerBuilder.RegisterType<PostService>()
@@ -34,24 +58,8 @@ namespace BusinessLayer
                 .As<IProfileService>()
                 .InstancePerLifetimeScope()
                 .OnActivated(e => Console.WriteLine($"Build {e.Instance.GetType().Name}"));
-            containerBuilder.RegisterType<GalleryService>()
-                .As<IGalleryService>()
-                .InstancePerLifetimeScope()
-                .OnActivated(e => Console.WriteLine($"Build {e.Instance.GetType().Name}"));
-            containerBuilder.RegisterType<PhotoService>()
-                .As<IPhotoService>()
-                .InstancePerLifetimeScope()
-                .OnActivated(e => Console.WriteLine($"Build {e.Instance.GetType().Name}"));
-            containerBuilder.RegisterType<CommentService>()
-                .As<ICommentService>()
-                .InstancePerLifetimeScope()
-                .OnActivated(e => Console.WriteLine($"Build {e.Instance.GetType().Name}"));
-            containerBuilder.RegisterType<GroupService>()
-                .As<IGroupService>()
-                .InstancePerLifetimeScope()
-                .OnActivated(e => Console.WriteLine($"Build {e.Instance.GetType().Name}"));
-            containerBuilder.RegisterType<EventService>()
-                .As<IEventService>()
+            containerBuilder.RegisterType<UserService>()
+                .As<IUserService>()
                 .InstancePerLifetimeScope()
                 .OnActivated(e => Console.WriteLine($"Build {e.Instance.GetType().Name}"));
             containerBuilder.RegisterInstance(new Mapper(new MapperConfiguration(expression => expression.AddProfile<MappingProfile>())))

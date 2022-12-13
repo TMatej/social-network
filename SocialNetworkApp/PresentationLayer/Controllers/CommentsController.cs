@@ -1,7 +1,5 @@
-﻿using BusinessLayer.Contracts;
-using BusinessLayer.DTOs.Comment;
+﻿using BusinessLayer.DTOs.Comment;
 using BusinessLayer.Facades.Interfaces;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using PresentationLayer.Models;
 
