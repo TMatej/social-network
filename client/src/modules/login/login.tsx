@@ -7,7 +7,8 @@ import { FormTextField } from "components/input/text-field";
 import { Button } from "components/button";
 import { Paper } from "components/paper";
 import { axios } from "api/axios";
-import { User, useStore } from "store";
+import { useStore } from "store";
+import { User } from "models";
 
 type LoginFormData = {
   email: string;
@@ -23,7 +24,7 @@ export const Login = () => {
     {
       onSuccess: ({ data: user }) => {
         setUser(user);
-        navigate(`/profile/${user.id}`);
+        navigate(`/profile/${user.id}/info`);
         showNotification({
           message: "successfully logged in",
           type: "success",

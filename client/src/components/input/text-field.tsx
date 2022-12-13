@@ -14,6 +14,7 @@ type TextFieldProps = {
   onChange?: (value: string) => void;
   type?: "text" | "password";
   after?: ReactNode;
+  rows?: number;
 };
 
 export const TextField = ({
@@ -26,8 +27,11 @@ export const TextField = ({
   onChange,
   type = "text",
   after,
+  rows,
 }: TextFieldProps) => {
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
     onChange?.(e.target.value);
   };
 
@@ -40,14 +44,25 @@ export const TextField = ({
           </span>
         )}
         <div className="rounded bg-white bg-opacity-5 p-1 w-full flex">
-          <input
-            className="px-1 bg-transparent outline-none"
-            name={name}
-            type={type}
-            value={value}
-            onChange={handleChange}
-            placeholder={placeholder}
-          />
+          {rows ? (
+            <textarea
+              className="px-1 bg-transparent outline-none w-full"
+              name={name}
+              value={value}
+              onChange={handleChange}
+              placeholder={placeholder}
+              rows={rows}
+            />
+          ) : (
+            <input
+              className="px-1 bg-transparent outline-none"
+              name={name}
+              type={type}
+              value={value}
+              onChange={handleChange}
+              placeholder={placeholder}
+            />
+          )}
           {after}
         </div>
       </label>

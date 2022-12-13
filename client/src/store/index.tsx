@@ -1,11 +1,6 @@
+import { User } from "models";
 import { v4 } from "uuid";
 import create, { StateCreator } from "zustand";
-
-export type User = {
-  id: number;
-  email: string;
-  roles: string[];
-};
 
 type AuthSlice = {
   user?: User;

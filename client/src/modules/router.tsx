@@ -1,6 +1,5 @@
 import { Route, BrowserRouter, Routes, Navigate } from "react-router-dom";
-import { User, useStore } from "store";
-
+import { useStore } from "store";
 import { Login } from "./login/login";
 import { Signup } from "./signup/signup";
 import { Profile } from "./profile/profile";
@@ -8,6 +7,11 @@ import { useQuery } from "@tanstack/react-query";
 import { axios } from "api/axios";
 import { Spinner } from "components/spinner";
 import { Layout } from "components/layout";
+import { User } from "models";
+import { Info } from "./profile/info";
+import { Galleries } from "./profile/galleries";
+import { Gallery } from "./profile/gallery";
+import { Wall } from "./profile/wall";
 
 export const Router = () => {
   const user = useStore((state) => state.user);
@@ -34,8 +38,13 @@ export const Router = () => {
     <BrowserRouter>
       <Routes>
         {user ? (
-          <Route path="/" element={<Layout />}>
-            <Route path="/profile/:id" element={<Profile />} />
+          <Route element={<Layout />}>
+            <Route path="profile/:id" element={<Profile />}>
+              <Route path="info" element={<Info />} />
+              <Route path="galleries" element={<Galleries />} />
+              <Route path="galleries/:galleryId" element={<Gallery />} />
+              <Route path="wall" element={<Wall />} />
+            </Route>
           </Route>
         ) : (
           <>
