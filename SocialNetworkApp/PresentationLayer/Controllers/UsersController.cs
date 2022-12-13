@@ -1,7 +1,7 @@
 using BusinessLayer.DTOs.User;
 using Microsoft.AspNetCore.Mvc;
-using BusinessLayer.Facades;
 using PresentationLayer.Models;
+using BusinessLayer.Facades.Interfaces;
 
 namespace PresentationLayer.Controllers;
 

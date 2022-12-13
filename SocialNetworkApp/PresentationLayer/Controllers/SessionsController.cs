@@ -3,8 +3,8 @@ using BusinessLayer.DTOs.User;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authentication;
 using System.Security.Claims;
-using BusinessLayer.Facades;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using BusinessLayer.Facades.Interfaces;
 
 namespace PresentationLayer.Controllers;
 

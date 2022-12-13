@@ -1,6 +1,6 @@
 using BusinessLayer.DTOs.User;
 
-namespace BusinessLayer.Facades
+namespace BusinessLayer.Facades.Interfaces
 {
     public interface IUserFacade
     {

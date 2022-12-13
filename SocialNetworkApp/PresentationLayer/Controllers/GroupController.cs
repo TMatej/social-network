@@ -1,11 +1,11 @@
 ﻿using BusinessLayer.DTOs.User;
-using BusinessLayer.Facades;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using BusinessLayer.DTOs.Group;
+using BusinessLayer.Facades.Interfaces;
 
 namespace PresentationLayer.Controllers
 {
