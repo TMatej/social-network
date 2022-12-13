@@ -1,6 +1,16 @@
-name: Node.js CI - client
+name: CI - client 
 
 on:
+  push:
+    branches: ["main"]
+  pull_request:
+    types:
+      - opened
+      - edited
+      - synchronize
+      - reopened
+    branches: ["main"]
+
   # for manual running
   workflow_dispatch:
 
@@ -22,10 +32,8 @@ jobs:
       run: npm install
       working-directory: client
 
-    - name: Run the tests
-      run: npm test 
-      working-directory: client
-
     - name: Build
       run: npm run build
       working-directory: client
+
+  
