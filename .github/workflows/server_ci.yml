@@ -103,7 +103,7 @@ jobs:
 
     env:
       REGISTRY: ghcr.io
-      IMAGE_NAME: tmatej/social-network
+      IMAGE_NAME: tmatej/social-network-server
       IMAGE_TAG: latest
 
     steps:

@@ -36,4 +36,36 @@ jobs:
       run: npm run build
       working-directory: client
 
-  
+  build-image:
+    needs: build
+
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+
+    env:
+      REGISTRY: ghcr.io
+      IMAGE_NAME: tmatej/social-network-client
+      IMAGE_TAG: latest
+
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v3
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
+      - name: Extract Docker metadata
+        id: meta
+        uses: docker/metadata-action@v4
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+
+      - name: Build&Push Image
+        uses: docker/build-push-action@v3
+        with:
+          context: SocialNetworkApp
+          push: false
+          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }} # ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}  
