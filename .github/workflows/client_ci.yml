@@ -1,0 +1,28 @@
+name: Node.js CI - client
+
+on:
+  # for manual running
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    
+    steps:
+    - name: Checkout branch
+      uses: actions/checkout@v3
+
+    - name: Use Node.js - 18
+      uses: actions/setup-node@v3
+      with:
+        node-version: 18
+
+    - name: Install dependencies
+      run: npm install
+
+    - name: Run the tests
+      run: npm test 
+
+    - name: Build
+      run: npm run build
