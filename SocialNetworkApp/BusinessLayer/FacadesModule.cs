@@ -1,6 +1,7 @@
 
 using Autofac;
 using BusinessLayer.Facades;
+using BusinessLayer.Facades.Interfaces;
 
 namespace BusinessLayer
 {

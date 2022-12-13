@@ -46,8 +46,8 @@ namespace ServiceTests
             commentQuery.Received(1).Execute();
 
             Assert.That(res, Is.Not.Null);
-            Assert.That(res.Items.Count(), Is.EqualTo(1));
-            Assert.That(res.Items.First(), Is.EqualTo(post));
+            Assert.That(res.Count(), Is.EqualTo(1));
+            Assert.That(res.First(), Is.EqualTo(post));
         }
     }
 }

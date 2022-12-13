@@ -2,6 +2,7 @@
 using BusinessLayer.Contracts;
 using BusinessLayer.DTOs.Event;
 using BusinessLayer.DTOs.Group;
+using BusinessLayer.Facades.Interfaces;
 using BusinessLayer.Services;
 using DataAccessLayer.Entity;
 using System;

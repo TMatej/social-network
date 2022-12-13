@@ -8,7 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BusinessLayer.Facades
+namespace BusinessLayer.Facades.Interfaces
 {
     public interface IEventFacade
     {

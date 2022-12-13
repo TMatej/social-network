@@ -39,13 +39,14 @@ namespace BusinessLayer.Services
             return mapper.Map<CommentBasicRepresentDTO>(GetByID(id));
         }
 
-        public QueryResult<Comment> getCommentsForEntity(int entityId, int page = 1, int pageSize = 10)
+        public IEnumerable<Comment> getCommentsForEntity(int entityId, int page = 1, int pageSize = 10)
         {
             return commentQuery
                 .Where<int>(id => id == entityId, "CommentableId")
                 .Page(page, pageSize)
                 .OrderBy<DateTime>("CreatedAt")
-                .Execute();
+                .Execute()
+                .Items;
         }
     }
 }
