@@ -1,0 +1,24 @@
+apiVersion: networking.k8s.io/v1                                                
+kind: Ingress                                                                   
+metadata:                                                                       
+  name: social-network-app-server-ingress                                                
+  annotations:                                                                  
+    kuberentes.io/ingress.class: "nginx"                                        
+    kubernetes.io/tls-acme: "true"                                              
+    cert-manager.io/cluster-issuer: "letsencrypt-prod"
+spec:                                                                           
+  tls:                                                                          
+    - hosts: # Make sure that the domain name does not already exist                                            
+        - "social-network-application-server.dyn.cloud.e-infra.cz"
+      # secretName is the same as domain name, but "." are replaced by "-" 
+      secretName: social-network-application-server-dyn-cloud-e-infra-cz-tls                                 
+  rules:                                                                        
+  - host: "social-network-application-server.dyn.cloud.e-infra.cz"                                          
+    http:                                                                       
+      paths:                                                                    
+      - backend:                                                                
+          service:                                                              
+            name: social-network-app-server-svc                                          
+            port:                                                               
+              number: 5000
+        pathType: ImplementationSpecific

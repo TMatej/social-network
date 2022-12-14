@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: social-network-pgdb-dep
+  labels:
+    app: social-network-pgdb
+spec:
+  replicas: 1
+  selector:
+     matchLabels:
+       app: social-network-pgdb
+  template:
+    metadata:
+      labels:
+        app: social-network-pgdb
+    spec:
+      terminationGracePeriodSeconds: 30
+      hostname: social-network-pgdb-postgres
+      securityContext:
+        fsGroup: 10001
+        runAsUser: 10001
+      containers:
+      - name: social-network-app-pgdb
+        image: ghcr.io/tmatej/social-network-pgdb:latest
+        ports:
+        - containerPort: 5432
+        env:
+        - name: POSTGRES_USER
+          value: "administrator"
+        - name: POSTGRES_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: postgres
+              key: POSTGRES_PASSWORD
+        resources:
+          limits:
+            cpu: "1"
+            memory: 8Gi
+          requests:
+            cpu: "1"
+            memory: 8Gi
+        volumeMounts:
+        - name: postgresdb
+          mountPath: /var/opt/postgresdb
+      volumes:
+      - name: postgresdb
+        persistentVolumeClaim:
+          claimName: social-network-pgdb-data
