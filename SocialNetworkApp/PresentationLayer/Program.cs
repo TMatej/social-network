@@ -47,7 +47,7 @@ if (app.Environment.IsDevelopment())
 app.UseStaticFiles();
 app.UseRouting();
 app.UseCors(builder => {
-  builder.WithOrigins("http://localhost:5173")
+  builder.WithOrigins("http://localhost:5173", "https://social-network-ksnxjqxm9-ciza99.vercel.app", "http://social-network-ksnxjqxm9-ciza99.vercel.app")
     .AllowCredentials()
     .AllowAnyHeader()
     .AllowAnyMethod();

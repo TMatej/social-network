@@ -17,15 +17,19 @@ import { Friends } from "./profile/friends";
 export const Router = () => {
   const user = useStore((state) => state.user);
   const setUser = useStore((state) => state.setUser);
-  const { isLoading } = useQuery(["user"], () => axios.get<User>("/sessions"), {
-    onSuccess: ({ data }) => {
-      setUser(data);
-    },
-    retry: false,
-    suspense: false,
-  });
+  const { isLoading, isInitialLoading } = useQuery(
+    ["user"],
+    () => axios.get<User>("/sessions"),
+    {
+      onSuccess: ({ data }) => {
+        setUser(data);
+      },
+      retry: false,
+      suspense: false,
+    }
+  );
 
-  if (isLoading) {
+  if (isLoading && isInitialLoading) {
     return (
       <div className="fixed w-full h-full top-0 left-0">
         <div className="w-full h-full flex justify-center items-center">
