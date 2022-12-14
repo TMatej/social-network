@@ -30,6 +30,7 @@ namespace DataAccessLayer
         public DbSet<User> Users { get; set; }
         public DbSet<Role> Roles { get; set; }
         public DbSet<UserRole> UserRoles { get; set; }
+        public DbSet<Like> Likes { get; set; }
 
         public SocialNetworkDBContext() { }
 

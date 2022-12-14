@@ -2,6 +2,8 @@ using BusinessLayer.DTOs.User;
 using Microsoft.AspNetCore.Mvc;
 using PresentationLayer.Models;
 using BusinessLayer.Facades.Interfaces;
+using BusinessLayer.DTOs.Profile;
+using Microsoft.AspNetCore.Authorization;
 
 namespace PresentationLayer.Controllers;
 
@@ -32,8 +34,10 @@ public class UsersController : ControllerBase
     }
 
     [HttpPatch("{userId}/profile")]
-    public IActionResult UpdateUserProfile(int userId, [FromBody] ProfileUpsertModel profile)
+    [Authorize]
+    public IActionResult UpdateUserProfile(int userId, [FromBody] ProfileUpdateDTO profileUpdateDTO)
     {
+        profileFacade.UpdateProfile(int.Parse(HttpContext.User.Identity.Name), profileUpdateDTO);
         return Ok();
     }
 

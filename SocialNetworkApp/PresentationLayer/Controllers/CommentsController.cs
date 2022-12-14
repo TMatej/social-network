@@ -1,5 +1,6 @@
 ﻿using BusinessLayer.DTOs.Comment;
 using BusinessLayer.Facades.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PresentationLayer.Models;
 
@@ -30,9 +31,15 @@ namespace PresentationLayer.Controllers
         //POST /comments?entityId={entityId} - prida comment pod libovolnou commantable entitu s entityId
         //TODO permissions
         [HttpPost]
+        [Authorize]
         public IActionResult AddCommentToCommentableEntity(int entityId, [FromBody] CommentCreateDTO commentCreateDTO)
         {
-            commentFacade.AddComment(commentCreateDTO);
+            var userId = HttpContext?.User.Identity?.Name;
+            if (userId == null)
+            {
+                return Unauthorized();
+            }
+            commentFacade.AddComment(entityId, int.Parse(userId), commentCreateDTO);
             return Ok();
         }
 

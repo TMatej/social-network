@@ -25,9 +25,13 @@ namespace BusinessLayer.Facades
             this.mapper = mapper;
         }
 
-        public void AddComment(CommentCreateDTO commentDTO)
+        public void AddComment(int entityId, int userId, CommentCreateDTO commentDTO)
         {
-            commentService.AddComment(commentDTO);
+            commentService.Insert(new Comment() {
+                UserId = userId,
+                CommentableId = entityId,
+                Content = commentDTO.Content,
+            });
         }
 
         public IEnumerable<CommentRepresentDTO> GetCommentsForEntity(int entityId, int page = 1, int pageSize = 10)

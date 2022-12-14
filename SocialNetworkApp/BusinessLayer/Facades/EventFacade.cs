@@ -27,7 +27,6 @@ namespace BusinessLayer.Facades
         {
             var _event = new Event()
             {
-                CreatedAt = DateTime.Now,
                 Description = eventCreateDTO.Description,
                 GroupId = eventCreateDTO.Group.Id,
                 UserId = eventCreateDTO.User.Id,

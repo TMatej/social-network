@@ -30,7 +30,6 @@ namespace BusinessLayer.Facades
             {
                 UserId = postDTO.UserId,
                 PostableId = postDTO.PostableId,
-                CreatedAt = DateTime.Now,
                 Title = postDTO.Title,
                 Content = postDTO.Content
             };

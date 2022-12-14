@@ -4,8 +4,15 @@ import { fas } from "@fortawesome/free-solid-svg-icons";
 
 import { Router } from "modules/router";
 import { Notifications } from "components/notification/notification";
+import { Dialog } from "components/dialog";
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      suspense: true,
+    },
+  },
+});
 
 library.add(fas);
 
@@ -14,6 +21,7 @@ export const App = () => {
     <QueryClientProvider client={queryClient}>
       <Notifications>
         <Router />
+        <Dialog />
       </Notifications>
     </QueryClientProvider>
   );

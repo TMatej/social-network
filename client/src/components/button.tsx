@@ -9,6 +9,7 @@ export const Button = ({
   children,
   className,
   type,
+  variant = "block",
 }: {
   children?: ReactNode;
   leftIcon?: ReactNode;
@@ -17,6 +18,7 @@ export const Button = ({
   className?: string;
   disabled?: boolean;
   type?: "submit";
+  variant?: "block" | "clear";
 }) => {
   return (
     <button
@@ -24,15 +26,23 @@ export const Button = ({
       disabled={disabled}
       type={type}
       className={clsx(
-        "py-1 px-2 flex justify-center items-center rounded bg-cyan-600 hover:bg-cyan-700 disabled:bg-cyan-900",
+        "flex justify-center items-center rounded",
+        {
+          "py-1 px-2 bg-cyan-600 disabled:bg-cyan-900 hover:brightness-90":
+            variant === "block",
+          "outline-none text-gray-300 py-1": variant === "clear",
+        },
         className
       )}
     >
       {leftIcon}
       <span
-        className={clsx("font-bold", {
+        className={clsx({
           "ml-2": leftIcon,
           "mr-2": rightIcon,
+          "font-semibold text-cyan-600 hover:text-cyan-700":
+            variant === "clear",
+          "font-bold": variant === "block",
         })}
       >
         {children}
