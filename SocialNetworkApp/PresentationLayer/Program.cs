@@ -5,7 +5,7 @@ using Autofac.Extensions.DependencyInjection;
 using BusinessLayer;
 using DataAccessLayer;
 using Infrastructure.EFCore;
-
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Configuration.AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
@@ -32,6 +32,14 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     options => { options.Cookie.Name = "auth"; builder.Configuration.Bind("CookieSettings", options); });
 
 var app = builder.Build();
+
+/* NOT VERY SAFE - probably find better way */
+using (var serviceScope = app.Services.GetRequiredService<IServiceScopeFactory>().CreateScope())
+{
+    var context = serviceScope.ServiceProvider.GetService<SocialNetworkDBContext>();
+    context.Database.Migrate();
+}
+    
 
 if (app.Environment.IsDevelopment())
 {
