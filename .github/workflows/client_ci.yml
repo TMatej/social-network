@@ -3,6 +3,8 @@ name: CI - client
 on:
   push:
     branches: ["main"]
+    paths:
+      - 'client/**'
   pull_request:
     types:
       - opened
@@ -10,6 +12,8 @@ on:
       - synchronize
       - reopened
     branches: ["main"]
+    paths:
+      - 'client/**'
 
   # for manual running
   workflow_dispatch:
