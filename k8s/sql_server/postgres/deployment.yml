@@ -42,6 +42,8 @@ spec:
         volumeMounts:
         - name: postgresdb
           mountPath: /var/opt/postgresdb
+      imagePullSecrets:
+      - name: github-registry-access-token
       volumes:
       - name: postgresdb
         persistentVolumeClaim:

@@ -3,45 +3,17 @@
 version: "3.9"
 
 services:
-  # db-postgres:
-  #   container_name: social-network-pgdb
-  #   image: social-network-pgdb:latest
-  #   build:
-  #     context: ./database
-  #     dockerfile: postgresql/Dockerfile
-  #   restart: always
-  #   environment:
-  #     POSTGRES_PASSWORD: postgres
-  #   ports:
-  #     - 5432:5432
-
-  # server:
-  #   container_name: social-network-app-server
-  #   image: social-network-server:latest
-  #   build:
-  #     context: ./SocialNetworkApp
-  #     dockerfile: Dockerfile
-  #   environment:
-  #     ConnectionStrings__DefaultConnection: "Host=social-network-pgdb;Username=postgres;Password=postgres;Port=5432;Database=social_network_test_db;"
-  #     Properties__SeedData: true
-  #   ports:
-  #     - 5000:5000
-  #   depends_on:
-  #     - db-postgres
-
-  db-mssql:
-    container_name: social-network-mssqldb
-    image: social-network-mssqldb:latest
+  db-postgres:
+    container_name: social-network-pgdb
+    image: social-network-pgdb:latest
     build:
       context: ./database
-      dockerfile: mssql/Dockerfile
+      dockerfile: postgresql/Dockerfile
     restart: always
     environment:
-      MSSQL_PID: "Developer"
-      ACCEPT_EULA: "Y"
-      SA_PASSWORD: mySuperpassword9
+      POSTGRES_PASSWORD: postgres
     ports:
-      - 1433:1433
+      - 5432:5432
 
   server:
     container_name: social-network-app-server
@@ -50,12 +22,40 @@ services:
       context: ./SocialNetworkApp
       dockerfile: Dockerfile
     environment:
-      ConnectionStrings__DefaultConnection: "Data Source=social-network-mssqldb;Database=social_network_test_db;User Id=sa;Password=mySuperpassword9;"
+      ConnectionStrings__DefaultConnection: "Host=social-network-pgdb;Username=postgres;Password=postgres;Port=5432;Database=social_network_test_db;"
       Properties__SeedData: true
     ports:
       - 5000:5000
     depends_on:
-      - db-mssql
+      - db-postgres
+
+  # db-mssql:
+  #   container_name: social-network-mssqldb
+  #   image: social-network-mssqldb:latest
+  #   build:
+  #     context: ./database
+  #     dockerfile: mssql/Dockerfile
+  #   restart: always
+  #   environment:
+  #     MSSQL_PID: "Developer"
+  #     ACCEPT_EULA: "Y"
+  #     SA_PASSWORD: mySuperpassword9
+  #   ports:
+  #     - 1433:1433
+
+  # server:
+  #   container_name: social-network-app-server
+  #   image: social-network-server:latest
+  #   build:
+  #     context: ./SocialNetworkApp
+  #     dockerfile: Dockerfile
+  #   environment:
+  #     ConnectionStrings__DefaultConnection: "Data Source=social-network-mssqldb;Database=social_network_test_db;User Id=sa;Password=mySuperpassword9;"
+  #     Properties__SeedData: true
+  #   ports:
+  #     - 5000:5000
+  #   depends_on:
+  #     - db-mssql
 
   client:
     container_name: social-network-app-client
