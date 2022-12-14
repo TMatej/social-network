@@ -9,11 +9,11 @@ metadata:
 spec:                                                                           
   tls:                                                                          
     - hosts: # Make sure that the domain name does not already exist                                            
-        - "social-network-app-server.dyn.cloud.e-infra.cz"
+        - "social-network-application-server.dyn.cloud.e-infra.cz"
       # secretName is the same as domain name, but "." are replaced by "-" 
-      secretName: social-network-app-server-dyn-cloud-e-infra-cz-tls                                 
+      secretName: social-network-application-server-dyn-cloud-e-infra-cz-tls                                 
   rules:                                                                        
-  - host: "social-network-app-server.dyn.cloud.e-infra.cz"                                          
+  - host: "social-network-application-server.dyn.cloud.e-infra.cz"                                          
     http:                                                                       
       paths:                                                                    
       - backend:                                                                

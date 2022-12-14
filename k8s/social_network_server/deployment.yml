@@ -28,7 +28,15 @@ spec:
         - name: ConnectionStrings__DefaultConnection
           valueFrom:
             secretKeyRef:
-              name: social-network-app-server-db-secret
+              name: snas-postgres-db-secret
               key: connectionString
+          # valueFrom:
+          #   secretKeyRef:
+          #     name: snas-postgres-cluster-db-secret
+          #     key: connectionString
+          # valueFrom:
+          #   secretKeyRef:
+          #     name: snas-mssql-db-secret
+          #     key: connectionString
       imagePullSecrets:
       - name: github-registry-access-token
