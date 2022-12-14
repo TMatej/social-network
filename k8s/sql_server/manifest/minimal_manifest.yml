@@ -3,6 +3,8 @@ kind: postgresql
 metadata:
   name: social-network-db-cluster  ## name of our cluster
   namespace: turek-ns
+  labels:
+    team: social-network-devs
 spec:
   teamId: "acid"
   numberOfInstances: 1     ## single instance

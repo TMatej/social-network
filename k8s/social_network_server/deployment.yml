@@ -1,0 +1,34 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: social-network-app-server-dep
+  labels:
+    app: social-network-app-server
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: social-network-app-server
+  template:
+    metadata:
+      labels:
+        app: social-network-app-server
+    spec:
+      securityContext:
+        runAsUser: 1000
+        runAsNonRoot: true
+      containers:
+      - name: social-network-app-server
+        image: ghcr.io/tmatej/social-network-server:latest
+        ports:
+        - containerPort: 5000
+        env:      
+        - name: Properties__SeedData
+          value: "true"                                                             
+        - name: ConnectionStrings__DefaultConnection
+          valueFrom:
+            secretKeyRef:
+              name: social-network-app-server-db-secret
+              key: connectionString
+      imagePullSecrets:
+      - name: github-registry-access-token
