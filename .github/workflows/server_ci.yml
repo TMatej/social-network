@@ -6,6 +6,8 @@ name: CI - server
 on:
   push:
     branches: ["main"]
+    paths:
+      - 'SocialNetworkApp/**'
   pull_request:
     types:
       - opened
@@ -13,6 +15,8 @@ on:
       - synchronize
       - reopened
     branches: ["main"]
+    paths:
+      - 'SocialNetworkApp/**'
 
   # for manual running
   workflow_dispatch:
