@@ -4,6 +4,7 @@ import { fas } from "@fortawesome/free-solid-svg-icons";
 
 import { Router } from "modules/router";
 import { Notifications } from "components/notification/notification";
+import { Dialog } from "components/dialog";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -20,6 +21,7 @@ export const App = () => {
     <QueryClientProvider client={queryClient}>
       <Notifications>
         <Router />
+        <Dialog />
       </Notifications>
     </QueryClientProvider>
   );

@@ -47,5 +47,6 @@ export type Paginated<TItem> = {
 
 export type Comment = {
   id: number;
+  userId: number;
   content: string;
 };

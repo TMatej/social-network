@@ -26,7 +26,7 @@ export const Button = ({
       disabled={disabled}
       type={type}
       className={clsx(
-        "flex justify-center items-center",
+        "flex justify-center items-center rounded",
         {
           "py-1 px-2 bg-cyan-600 disabled:bg-cyan-900 hover:brightness-90":
             variant === "block",

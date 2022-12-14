@@ -44,6 +44,9 @@ namespace BusinessLayer.Config
             CreateMap<PostCreateDTO, Post>().ReverseMap();
             CreateMap<Post, PostRepresentDTO>().ReverseMap();
 
+            // Address
+            CreateMap<Address, AddressDTO>().ReverseMap();
+
             /* User */
             CreateMap<User, UserDTO>()
               .ForMember(x => x.Roles, opt => opt.MapFrom(x => x.UserRoles.Select(r => r.Role.Name)))

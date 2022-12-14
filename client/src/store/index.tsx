@@ -1,3 +1,4 @@
+import { Dialog } from "components/dialog";
 import { User } from "models";
 import { v4 } from "uuid";
 import create, { StateCreator } from "zustand";
@@ -40,9 +41,24 @@ const createNotificationSlice: StateCreator<NotificationSlice> = (set) => ({
   },
 });
 
-type Store = AuthSlice & NotificationSlice;
+type DialogSlice = {
+  dialogs: Dialog<any>[];
+  openDialog: <TProps extends {}>(dialog: Omit<Dialog<TProps>, "id">) => void;
+  closeDialog: (id: string) => void;
+};
+
+const createDialogSlice: StateCreator<DialogSlice> = (set) => ({
+  dialogs: [],
+  openDialog: (dialog) =>
+    set((prev) => ({ dialogs: [...prev.dialogs, { ...dialog, id: v4() }] })),
+  closeDialog: (id) =>
+    set((prev) => ({ dialogs: prev.dialogs.filter((d) => d.id !== id) })),
+});
+
+type Store = AuthSlice & NotificationSlice & DialogSlice;
 
 export const useStore = create<Store>((...a) => ({
   ...createAuthSlice(...a),
   ...createNotificationSlice(...a),
+  ...createDialogSlice(...a),
 }));

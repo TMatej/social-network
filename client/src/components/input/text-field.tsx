@@ -36,8 +36,8 @@ export const TextField = ({
   };
 
   return (
-    <div>
-      <label className={clsx("block", className)}>
+    <div className={className}>
+      <label className="block">
         {label && (
           <span className="block mb-1 font-semibold text-gray-300">
             {label}:
@@ -55,7 +55,7 @@ export const TextField = ({
             />
           ) : (
             <input
-              className="px-1 bg-transparent outline-none"
+              className="px-1 bg-transparent outline-none w-full"
               name={name}
               type={type}
               value={value}

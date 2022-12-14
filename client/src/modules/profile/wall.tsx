@@ -1,5 +1,6 @@
 import {
   faImage,
+  faPaperPlane,
   faThumbsUp,
   faTrash,
 } from "@fortawesome/free-solid-svg-icons";
@@ -19,6 +20,10 @@ import { useOutletContext } from "react-router-dom";
 import { Fragment, useEffect } from "react";
 import { useStore } from "store";
 import { Comments } from "components/comments";
+
+type AddCommentData = {
+  content: string;
+};
 
 const Post = ({ post }: { post: PostType }) => {
   const user = useStore((state) => state.user);
@@ -62,12 +67,31 @@ const Post = ({ post }: { post: PostType }) => {
     }
   );
 
+  const { mutate: addComment } = useMutation(
+    (data: AddCommentData) => axios.post(`/comments?entityId=${post.id}`, data),
+    {
+      onSuccess: () => {
+        showNotification({
+          message: "comment added",
+          type: "success",
+        });
+        queryClient.invalidateQueries(["comments", post.id]);
+      },
+      onError: () => {
+        showNotification({
+          message: "failed to add comment",
+          type: "error",
+        });
+      },
+    }
+  );
+
   const byLoggedInUser = user?.id === post.userId;
   return (
-    <Paper className="my-4 p-4">
+    <div>
       <p className="text-lg font-bold">{post.title}</p>
-      <p>{post.content}</p>
-      <div className="flex justify-end gap-2">
+      <p className="whitespace-pre">{post.content}</p>
+      <div className="flex gap-2 justify-end">
         <Button
           onClick={() => likePost()}
           leftIcon={<FontAwesomeIcon icon={faThumbsUp} />}
@@ -84,8 +108,35 @@ const Post = ({ post }: { post: PostType }) => {
           </Button>
         )}
       </div>
+      <div
+        style={{ marginLeft: 20 }}
+        className="border-t border-t-gray-600 mt-4"
+      >
+        <Formik<AddCommentData>
+          initialValues={{ content: "" }}
+          onSubmit={(data, { resetForm }) => {
+            addComment(data);
+            resetForm();
+          }}
+        >
+          <Form className="flex items-end gap-2 py-2">
+            <FormTextField
+              name="content"
+              label="Add comment"
+              className="flex-grow"
+              placeholder="type your comment here"
+            />
+            <Button
+              type="submit"
+              leftIcon={<FontAwesomeIcon icon={faPaperPlane} />}
+            >
+              Send
+            </Button>
+          </Form>
+        </Formik>
+      </div>
       <Comments entityId={post.id} />
-    </Paper>
+    </div>
   );
 };
 
@@ -120,7 +171,7 @@ export const Wall = () => {
   );
   const {
     data: posts,
-    isLoading,
+    isFetchingNextPage,
     fetchNextPage,
     hasNextPage,
   } = useInfiniteQuery({
@@ -134,13 +185,13 @@ export const Wall = () => {
     getNextPageParam: (data) => (data.items.length ? data.page + 1 : undefined),
     suspense: false,
   });
-  console.log({ isLoading, posts });
 
   useEffect(() => {
-    const listener = (e: Event) => {
+    const listener = () => {
       if (
         window.innerHeight + window.scrollY >=
           document.body.offsetHeight - 100 &&
+        !isFetchingNextPage &&
         hasNextPage
       ) {
         fetchNextPage();
@@ -149,47 +200,59 @@ export const Wall = () => {
 
     addEventListener("scroll", listener);
     return () => removeEventListener("scroll", listener);
-  }, [hasNextPage, fetchNextPage]);
+  }, [hasNextPage, fetchNextPage, isFetchingNextPage]);
 
   return (
-    <Paper className="p-4 mt-4">
-      <p className="font-bold text-xl mb-2">Add post:</p>
-      <Formik<NewPostData>
-        initialValues={{ content: "", title: "" }}
-        onSubmit={(data, { resetForm }) => {
-          addPost(data);
-          resetForm();
-        }}
-      >
-        <Form>
-          <FormTextField name="title" label="Title" placeholder="type title" />
-          <FormTextField
-            name="content"
-            label="Content"
-            placeholder="type some message"
-            rows={3}
-            className="mt-2"
-          />
-          <div className="flex justify-between mt-2">
-            <Button>
-              <FontAwesomeIcon icon={faImage} />
-            </Button>
-            <Button type="submit">Submit</Button>
-          </div>
-        </Form>
-      </Formik>
+    <>
+      <Paper className="p-4 mt-4">
+        <p className="font-bold text-xl mb-4">Wall</p>
+        <Formik<NewPostData>
+          initialValues={{ content: "", title: "" }}
+          onSubmit={(data, { resetForm }) => {
+            addPost(data);
+            resetForm();
+          }}
+        >
+          <Form>
+            <FormTextField
+              name="title"
+              label="Title"
+              placeholder="type title"
+            />
+            <FormTextField
+              name="content"
+              label="Content"
+              placeholder="type some message"
+              rows={3}
+              className="mt-2"
+            />
+            <div className="flex justify-between mt-2">
+              <Button>
+                <FontAwesomeIcon icon={faImage} />
+              </Button>
+              <Button
+                type="submit"
+                leftIcon={<FontAwesomeIcon icon={faPaperPlane} />}
+              >
+                Submit
+              </Button>
+            </div>
+          </Form>
+        </Formik>
+      </Paper>
 
-      <p className="mt-8 font-bold text-xl mb-2">Posts:</p>
       {posts?.pages.map((page, index) => (
         <Fragment key={index}>
           {page.items.length === 0 && (
-            <p className="mt-2 text-center text-gray-300">no more posts</p>
+            <p className="text-center text-gray-300 my-4">no more posts</p>
           )}
           {page.items.map((post) => (
-            <Post key={post.id} post={post} />
+            <Paper key={index} className="p-4 mt-4">
+              <Post key={post.id} post={post} />
+            </Paper>
           ))}
         </Fragment>
       ))}
-    </Paper>
+    </>
   );
 };

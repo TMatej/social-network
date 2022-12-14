@@ -12,6 +12,7 @@ import { Info } from "./profile/info";
 import { Galleries } from "./profile/galleries";
 import { Gallery } from "./profile/gallery";
 import { Wall } from "./profile/wall";
+import { Friends } from "./profile/friends";
 
 export const Router = () => {
   const user = useStore((state) => state.user);
@@ -44,6 +45,7 @@ export const Router = () => {
               <Route path="galleries" element={<Galleries />} />
               <Route path="galleries/:galleryId" element={<Gallery />} />
               <Route path="wall" element={<Wall />} />
+              <Route path="friends" element={<Friends />} />
             </Route>
           </Route>
         ) : (

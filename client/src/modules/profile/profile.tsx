@@ -8,15 +8,10 @@ import { LabeledItem } from "components/labeled-item";
 import { Paper } from "components/paper";
 import { Tab, Tabs } from "components/tabs";
 import { format } from "date-fns";
-import {
-  Outlet,
-  useLocation,
-  useNavigate,
-  useParams,
-  useMatch,
-} from "react-router-dom";
+import { Outlet, useNavigate, useMatch } from "react-router-dom";
 import { useStore } from "store";
 import { Profile as ProfileType } from "models";
+import { ProfileEditDialog } from "components/dialogs/profile-edit-dialog";
 
 type TabKeys = "info" | "galleries" | "wall" | "friends";
 
@@ -25,6 +20,7 @@ export const Profile = () => {
   const { id, tabKey } = match?.params ?? {};
   const navigate = useNavigate();
   const user = useStore((store) => store.user);
+  const openDialog = useStore((store) => store.openDialog);
   const { data: profile } = useQuery(["profile", id], () =>
     axios.get<ProfileType>(`/users/${id}/profile`).then((res) => res.data)
   );
@@ -65,7 +61,13 @@ export const Profile = () => {
               <Button
                 leftIcon={<FontAwesomeIcon icon={faEdit} />}
                 onClick={() => {
-                  console.log("TODO");
+                  openDialog({
+                    title: "Edit profile",
+                    Component: ProfileEditDialog,
+                    props: {
+                      profile: profile,
+                    },
+                  });
                 }}
               >
                 Edit
