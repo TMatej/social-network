@@ -20,11 +20,13 @@ namespace BusinessLayer.Services
         private readonly IQuery<Contact> contactQuery;
         private readonly IQuery<User> userQuery;
         private readonly IRepository<Contact> contactRepo;
+        private readonly IRepository<DataAccessLayer.Entity.Profile> profileRepo;
         public readonly IFileService fileService;
         public IMapper mapper;
 
         public UserService(IRepository<User> userRepo,
             IQuery<EventParticipant> eventParticipantQuery,
+            IRepository<DataAccessLayer.Entity.Profile> profileRepo,
             IQuery<ConversationParticipant> conversationParticipantQuery,
             IQuery<Contact> contactQuery,
             IQuery<User> userQuery,
@@ -34,6 +36,7 @@ namespace BusinessLayer.Services
             IUnitOfWork uow) : base(userRepo, uow)
         {
             this.userRepo = userRepo;
+            this.profileRepo = profileRepo;
             this.eventParticipantQuery = eventParticipantQuery;
             this.conversationParticipantQuery = conversationParticipantQuery;
             this.contactQuery = contactQuery;
@@ -53,11 +56,17 @@ namespace BusinessLayer.Services
 
             var passwordHash = Argon2.Hash(registerDTO.Password);
 
+            DataAccessLayer.Entity.Profile profile = new DataAccessLayer.Entity.Profile
+            {
+                Name = registerDTO.Username,
+            };
+
             User user = new User
             {
                 Username = registerDTO.Username,
                 PasswordHash = passwordHash,
                 Email = registerDTO.Email,
+                Profile = profile,
             };
 
             userRepo.Insert(user);

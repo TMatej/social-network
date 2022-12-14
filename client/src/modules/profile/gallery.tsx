@@ -17,21 +17,25 @@ export const Gallery = () => {
   const isCurrentUser = user?.id === profile?.user?.id;
 
   const galleriesMock: GalleryType[] = [
-    { id: "1", photos: [{ url: "test" }] },
-    { id: "2", photos: [] },
+    { id: 1, photos: [{ url: "test" }] },
+    { id: 2, photos: [] },
   ];
-  const gallery = galleriesMock.find((g) => g.id === galleryId);
+  const gallery = galleriesMock.find((g) => g.id === Number(galleryId));
 
   return (
     <Paper className="mt-4 p-4">
       <div className="flex justify-between items-center">
         <span className="text-xl font-bold">Gallery</span>
-        {isCurrentUser && (
-          <Button leftIcon={<FontAwesomeIcon icon={faAdd} />}>add photo</Button>
-        )}
-        <Button onClick={() => navigate("../galleries")}>
-          <FontAwesomeIcon icon={faArrowLeft} />
-        </Button>
+        <div className="flex items-center gap-2">
+          {isCurrentUser && (
+            <Button leftIcon={<FontAwesomeIcon icon={faAdd} />}>
+              add photo
+            </Button>
+          )}
+          <Button onClick={() => navigate("../galleries")}>
+            <FontAwesomeIcon icon={faArrowLeft} />
+          </Button>
+        </div>
       </div>
       <div className="grid grid-cols-4 gap-4 mt-4">
         {gallery?.photos?.length === 0 && "No photos"}

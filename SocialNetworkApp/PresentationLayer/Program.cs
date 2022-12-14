@@ -25,9 +25,7 @@ builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory())
   });
 builder.Services.AddCors();
 builder.Services.AddControllers();
-builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-  .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme,
-    options => builder.Configuration.Bind("JwtSettings", options))
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
   .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme,
     options => { options.Cookie.Name = "auth"; builder.Configuration.Bind("CookieSettings", options); });
 

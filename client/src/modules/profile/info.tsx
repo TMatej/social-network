@@ -12,10 +12,10 @@ export const Info = () => {
       <LabeledItem label="Phone number" item={profile?.phoneNumber} />
       <LabeledItem label="Date of birth" item={profile?.dateOfBirth} />
       <LabeledItem label="Sex" item={profile?.sex} />
-      <LabeledItem label="City" item={profile?.address.city} />
-      <LabeledItem label="State" item={profile?.address.state} />
-      <LabeledItem label="Region" item={profile?.address.region} />
-      <LabeledItem label="Street" item={profile?.address.street} />
+      <LabeledItem label="City" item={profile?.address?.city} />
+      <LabeledItem label="State" item={profile?.address?.state} />
+      <LabeledItem label="Region" item={profile?.address?.region} />
+      <LabeledItem label="Street" item={profile?.address?.street} />
     </Paper>
   );
 };

@@ -14,7 +14,10 @@ export const Galleries = () => {
   // );
   const isCurrentUser = user?.id === profile?.user?.id;
 
-  const galleriesMock: Gallery[] = [{ id: "1" }, { id: "2" }];
+  const galleriesMock: Gallery[] = [
+    { id: 1, photos: [] },
+    { id: 2, photos: [] },
+  ];
 
   return (
     <Paper className="mt-4 p-4">

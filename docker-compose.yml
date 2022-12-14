@@ -23,7 +23,7 @@ services:
       dockerfile: Dockerfile
     environment:
       ConnectionStrings__DefaultConnection: "Host=social-network-pgdb;Username=postgres;Password=postgres;Port=5432;Database=social_network_test_db;"
-      Properties__SeedData: true
+      Properties__SeedData: "true"
     ports:
       - 5000:5000
     depends_on:

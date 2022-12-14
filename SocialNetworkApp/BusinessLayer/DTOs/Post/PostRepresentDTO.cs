@@ -11,6 +11,7 @@ namespace BusinessLayer.DTOs.Post
 {
     public class PostRepresentDTO
     {
+        public int Id { get; set; }
         public int UserId { get; set; }
         public int PostableId { get; set; }
         public string Title { get; set; }

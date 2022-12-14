@@ -19,7 +19,6 @@ namespace BusinessLayer.Config
             CreateMap<GalleryCreateDTO, Gallery>();
             CreateMap<Photo, PhotoInsertDTO>().ReverseMap();
             CreateMap<Photo, PhotoRepresentDTO>().ReverseMap();
-            CreateMap<Profile, ProfileBasicRepresentDTO>().ReverseMap();
             CreateMap<Gallery, GalleryRepresentDTO>()
                 .ForMember(dest => dest.Profile,
                     opt => opt.MapFrom(src => src.Profile));
@@ -43,6 +42,7 @@ namespace BusinessLayer.Config
             
             /* Post */
             CreateMap<PostCreateDTO, Post>().ReverseMap();
+            CreateMap<Post, PostRepresentDTO>().ReverseMap();
 
             /* User */
             CreateMap<User, UserDTO>()

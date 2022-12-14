@@ -36,7 +36,7 @@ export type Post = {
   title: string;
   content: string;
   createdAt: string;
-  user: User;
+  userId: number;
 };
 
 export type Paginated<TItem> = {

@@ -1,17 +1,17 @@
 ﻿using BusinessLayer.Facades.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace PresentationLayer.Controllers
 {
     [ApiController]
     [Route("[controller]")]
+    [Authorize]
     public class PostsController : ControllerBase
     {
-        private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly IPostFacade _postFacade;
-        public PostsController(IHttpContextAccessor httpContextAccessor, IPostFacade postFacade)
+        public PostsController(IPostFacade postFacade)
         {
-            _httpContextAccessor = httpContextAccessor;
             _postFacade = postFacade;
         }
 
@@ -19,7 +19,7 @@ namespace PresentationLayer.Controllers
         [HttpPut("{postId}/like")]
         public IActionResult GiveLikeToPost(int postId)
         {
-            var username = _httpContextAccessor.HttpContext?.User.Identity?.Name;
+            var username = HttpContext?.User.Identity?.Name;
             if (username == null)
             {
                 return Unauthorized();
@@ -32,7 +32,7 @@ namespace PresentationLayer.Controllers
         [HttpDelete("{postId}/like")]
         public IActionResult DeleteLikeFromPost(int postId)
         {
-            var username = _httpContextAccessor.HttpContext?.User.Identity?.Name;
+            var username = HttpContext?.User.Identity?.Name;
             if (username == null)
             {
                 return Unauthorized();
