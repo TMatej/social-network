@@ -27,7 +27,7 @@ builder.Services.AddCors();
 builder.Services.AddControllers();
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
   .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme,
-    options => { options.Cookie.Name = "auth"; builder.Configuration.Bind("CookieSettings", options); });
+    options => { options.Cookie.Name = "auth"; options.Cookie.SameSite = SameSiteMode.None; builder.Configuration.Bind("CookieSettings", options); });
 
 var app = builder.Build();
 
