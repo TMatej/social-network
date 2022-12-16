@@ -95,7 +95,7 @@ namespace DataAccessLayer
             /* Set One-To-Many relationship */
             modelBuilder.Entity<Gallery>()
                 .HasOne(g => g.Profile)
-                .WithMany(p => p.Galeries)
+                .WithMany(p => p.Galleries)
                 .HasForeignKey(a => a.ProfileId);
 
             modelBuilder.Entity<Photo>()

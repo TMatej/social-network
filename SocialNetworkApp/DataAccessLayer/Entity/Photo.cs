@@ -15,7 +15,10 @@ namespace DataAccessLayer.Entity
         public DateTime CreatedAt { get; set; }
 
         [Required]
-        public string Url { get; set; }
+        public int FileEntityId { get; set; }
+
+        [Required]
+        public FileEntity FileEntity { get; set; }
 
         [ForeignKey(nameof(GalleryId))]
         public Gallery Gallery { get; set; }

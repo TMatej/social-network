@@ -3,10 +3,9 @@ using Microsoft.AspNetCore.Http;
 
 namespace BusinessLayer.Contracts
 {
-    public interface IFileService
+    public interface IFileService : IGenericService<FileEntity>
     {
-
-        public FileEntity saveFile(IFormFile file);
-        public byte[] GetFile(int id);
+        public FileEntity CreateFile(IFormFile file);
+        public FileEntity GetByGuid(Guid guid);
     }
 }

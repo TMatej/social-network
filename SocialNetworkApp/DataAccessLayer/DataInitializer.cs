@@ -8,6 +8,7 @@ namespace DataAccessLayer.Data
     {
         public static void Seed(this ModelBuilder modelBuilder)
         {
+            SeedFileEntities(modelBuilder);
             SeedUsers(modelBuilder);
             SeedProfiles(modelBuilder);
             SeedPosts(modelBuilder);
@@ -17,7 +18,7 @@ namespace DataAccessLayer.Data
             SeedGroupRoles(modelBuilder);
             SeedGroups(modelBuilder);
             SeedGroupMembers(modelBuilder);
-            SeedGaleries(modelBuilder);
+            SeedGalleries(modelBuilder);
             SeedEvents(modelBuilder);
             SeedEventParticipants(modelBuilder);
             SeedConversations(modelBuilder);
@@ -32,14 +33,14 @@ namespace DataAccessLayer.Data
             var attachment = new Attachment
             {
                 Id = 1,
-                Url = "https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png",
+                FileEntityId = 3,
                 MessageId = 1
             };
 
             var another_attachment = new Attachment
             {
                 Id = 2,
-                Url = "https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png",
+                FileEntityId = 4,
                 MessageId = 2
             };
 
@@ -143,7 +144,7 @@ namespace DataAccessLayer.Data
             modelBuilder.Entity<EventParticipant>().HasData(eventParticipant2);
         }
 
-        private static void SeedGaleries(ModelBuilder modelBuilder)
+        private static void SeedGalleries(ModelBuilder modelBuilder)
         {
             var galery = new Gallery
             {
@@ -294,7 +295,7 @@ namespace DataAccessLayer.Data
                 Id = 3,
                 Title = "My first photo",
                 Description = "This is my first photo",
-                Url = "https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png",
+                FileEntityId = 1,
                 GalleryId = 1
             };
 
@@ -303,7 +304,7 @@ namespace DataAccessLayer.Data
                 Id = 4,
                 Title = "My last photo",
                 Description = "This is my last photo... No I didn't die",
-                Url = "https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png",
+                FileEntityId = 2,
                 GalleryId = 1
             };
 
@@ -386,6 +387,47 @@ namespace DataAccessLayer.Data
 
             modelBuilder.Entity<User>().HasData(userJozo);
             modelBuilder.Entity<User>().HasData(namelessUser);
+        }
+
+        private static void SeedFileEntities(ModelBuilder modelBuilder)
+        {
+            var file1 = new FileEntity
+            {
+                Id = 1,
+                Guid = Guid.NewGuid(),
+                Name = "File",
+                Data = new byte[] {},
+            };
+
+            var file2 = new FileEntity
+            {
+                Id = 2,
+                Guid = Guid.NewGuid(),
+                Name = "File",
+                Data = new byte[] {},
+            };
+
+            var file3 = new FileEntity
+            {
+                Id = 3,
+                Guid = Guid.NewGuid(),
+                Name = "File",
+                Data = new byte[] {},
+            };
+
+            var file4 = new FileEntity
+            {
+                Id = 4,
+                Guid = Guid.NewGuid(),
+                Name = "File",
+                Data = new byte[] {},
+            };
+
+            modelBuilder.Entity<FileEntity>().HasData(file1);
+            modelBuilder.Entity<FileEntity>().HasData(file2);
+            modelBuilder.Entity<FileEntity>().HasData(file3);
+            modelBuilder.Entity<FileEntity>().HasData(file4);
+
         }
     }
 }

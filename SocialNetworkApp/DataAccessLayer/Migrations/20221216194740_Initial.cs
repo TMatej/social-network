@@ -1,9 +1,8 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
-
-#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
 
 namespace DataAccessLayer.Migrations
 {
@@ -32,6 +31,7 @@ namespace DataAccessLayer.Migrations
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     Guid = table.Column<Guid>(type: "uuid", nullable: false),
+                    Data = table.Column<byte[]>(type: "bytea", nullable: true),
                     Name = table.Column<string>(type: "text", nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValueSql: "now()"),
                     UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true)
@@ -432,7 +432,33 @@ namespace DataAccessLayer.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Galeries",
+                name: "Likes",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    UserId = table.Column<int>(type: "integer", nullable: false),
+                    PostId = table.Column<int>(type: "integer", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Likes", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Likes_Post_PostId",
+                        column: x => x.PostId,
+                        principalTable: "Post",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Likes_Users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Galleries",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
@@ -444,9 +470,9 @@ namespace DataAccessLayer.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Galeries", x => x.Id);
+                    table.PrimaryKey("PK_Galleries", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Galeries_Profile_ProfileId",
+                        name: "FK_Galleries_Profile_ProfileId",
                         column: x => x.ProfileId,
                         principalTable: "Profile",
                         principalColumn: "Id",
@@ -461,7 +487,7 @@ namespace DataAccessLayer.Migrations
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     EventId = table.Column<int>(type: "integer", nullable: false),
                     UserId = table.Column<int>(type: "integer", nullable: false),
-                    ParticipationTypeId = table.Column<int>(type: "integer", nullable: false),
+                    ParticipationTypeId = table.Column<int>(type: "integer", nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValueSql: "now()")
                 },
                 constraints: table =>
@@ -477,8 +503,7 @@ namespace DataAccessLayer.Migrations
                         name: "FK_EventParticipants_ParticipationTypes_ParticipationTypeId",
                         column: x => x.ParticipationTypeId,
                         principalTable: "ParticipationTypes",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_EventParticipants_Users_UserId",
                         column: x => x.UserId,
@@ -494,11 +519,17 @@ namespace DataAccessLayer.Migrations
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     MessageId = table.Column<int>(type: "integer", nullable: false),
-                    Url = table.Column<string>(type: "text", nullable: false)
+                    FileEntityId = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Attachments", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Attachments_FileEntities_FileEntityId",
+                        column: x => x.FileEntityId,
+                        principalTable: "FileEntities",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Attachments_Messages_MessageId",
                         column: x => x.MessageId,
@@ -515,8 +546,8 @@ namespace DataAccessLayer.Migrations
                     Title = table.Column<string>(type: "character varying(64)", maxLength: 64, nullable: true),
                     Description = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValueSql: "now()"),
-                    Url = table.Column<string>(type: "text", nullable: false),
-                    GaleryId = table.Column<int>(type: "integer", nullable: false)
+                    FileEntityId = table.Column<int>(type: "integer", nullable: false),
+                    GalleryId = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -528,175 +559,23 @@ namespace DataAccessLayer.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Photo_Galeries_GaleryId",
-                        column: x => x.GaleryId,
-                        principalTable: "Galeries",
+                        name: "FK_Photo_FileEntities_FileEntityId",
+                        column: x => x.FileEntityId,
+                        principalTable: "FileEntities",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Photo_Galleries_GalleryId",
+                        column: x => x.GalleryId,
+                        principalTable: "Galleries",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
-            migrationBuilder.InsertData(
-                table: "Commentable",
-                column: "Id",
-                values: new object[]
-                {
-                    1,
-                    2,
-                    3,
-                    4,
-                    5,
-                    6,
-                    7
-                });
-
-            migrationBuilder.InsertData(
-                table: "GroupRoles",
-                columns: new[] { "Id", "Name" },
-                values: new object[] { 1, "Example Role" });
-
-            migrationBuilder.InsertData(
-                table: "ParticipationTypes",
-                columns: new[] { "Id", "Name" },
-                values: new object[] { 1, "Example Type" });
-
-            migrationBuilder.InsertData(
-                table: "Postable",
-                column: "Id",
-                values: new object[]
-                {
-                    1,
-                    2,
-                    3,
-                    4
-                });
-
-            migrationBuilder.InsertData(
-                table: "Users",
-                columns: new[] { "Id", "AvatarId", "Email", "FirstName", "PasswordHash", "Username" },
-                values: new object[,]
-                {
-                    { 1, null, "JozoJeSuper@gmail.com", null, "0123456789abcde0", "jozkoVajda123" },
-                    { 2, null, "cokoloko@gmail.com", null, "0123456789abcde0", "lokomotivatomas123" }
-                });
-
-            migrationBuilder.InsertData(
-                table: "Comment",
-                columns: new[] { "Id", "CommentableId", "Content", "UserId" },
-                values: new object[,]
-                {
-                    { 5, 1, "Some content here!", 1 },
-                    { 6, 3, "This photo is awful!", 1 },
-                    { 7, 5, "This photo is beautifull you little prick!!!", 2 }
-                });
-
-            migrationBuilder.InsertData(
-                table: "Contacts",
-                columns: new[] { "Id", "User1Id", "User2Id" },
-                values: new object[] { 1, 1, 2 });
-
-            migrationBuilder.InsertData(
-                table: "Conversations",
-                columns: new[] { "Id", "UserId" },
-                values: new object[,]
-                {
-                    { 1, 1 },
-                    { 2, 1 }
-                });
-
-            migrationBuilder.InsertData(
-                table: "Group",
-                columns: new[] { "Id", "Description", "Name" },
-                values: new object[,]
-                {
-                    { 3, "This is an example group", "Example Group one" },
-                    { 4, "This is an example group", "Example Group two" }
-                });
-
-            migrationBuilder.InsertData(
-                table: "Post",
-                columns: new[] { "Id", "Content", "PostableId", "Title", "UserId" },
-                values: new object[,]
-                {
-                    { 1, "This is my first post!", 1, "Hello World!", 1 },
-                    { 2, "This is my second post!", 1, "Hello World!", 1 }
-                });
-
-            migrationBuilder.InsertData(
-                table: "Profile",
-                columns: new[] { "Id", "Address_City", "Address_HouseNumber", "Address_PostalCode", "Address_Region", "Address_State", "Address_Street", "DateOfBirth", "Name", "PhoneNumber", "Sex", "UserId" },
-                values: new object[,]
-                {
-                    { 1, "Example City", "Example House number", "Example Postal Code", "Example Region", "Example State", "Example Street", null, null, null, null, 1 },
-                    { 2, "Example City", null, null, null, "Example State", null, null, null, null, null, 2 }
-                });
-
-            migrationBuilder.InsertData(
-                table: "ConversationParticipants",
-                columns: new[] { "Id", "ConversationId", "UserId" },
-                values: new object[,]
-                {
-                    { 1, 1, 1 },
-                    { 2, 1, 2 }
-                });
-
-            migrationBuilder.InsertData(
-                table: "Events",
-                columns: new[] { "Id", "Description", "GroupId", "Title", "UserId" },
-                values: new object[,]
-                {
-                    { 1, "This is an example event for Group 3", 3, "Example Event", 1 },
-                    { 2, "This is an example event without participants for Group 3", 3, "Example Userless Event", 1 }
-                });
-
-            migrationBuilder.InsertData(
-                table: "Galeries",
-                columns: new[] { "Id", "Description", "ProfileId", "Title" },
-                values: new object[,]
-                {
-                    { 1, "This is an example galery", 1, "Example Galery" },
-                    { 2, "This is an example galery without content", 1, "Example Empty Galery" }
-                });
-
-            migrationBuilder.InsertData(
-                table: "GroupMembers",
-                columns: new[] { "Id", "GroupId", "GroupRoleId", "UserId" },
-                values: new object[] { 1, 3, 1, 1 });
-
-            migrationBuilder.InsertData(
-                table: "Messages",
-                columns: new[] { "Id", "AttachmentId", "AuthorId", "Content", "ConversationId" },
-                values: new object[,]
-                {
-                    { 1, null, 1, "I have two attchments!", 1 },
-                    { 2, null, 2, "I am just plain text", 1 }
-                });
-
-            migrationBuilder.InsertData(
+            migrationBuilder.CreateIndex(
+                name: "IX_Attachments_FileEntityId",
                 table: "Attachments",
-                columns: new[] { "Id", "MessageId", "Url" },
-                values: new object[,]
-                {
-                    { 1, 1, "https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png" },
-                    { 2, 2, "https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png" }
-                });
-
-            migrationBuilder.InsertData(
-                table: "EventParticipants",
-                columns: new[] { "Id", "EventId", "ParticipationTypeId", "UserId" },
-                values: new object[,]
-                {
-                    { 1, 1, 1, 1 },
-                    { 2, 1, 1, 2 }
-                });
-
-            migrationBuilder.InsertData(
-                table: "Photo",
-                columns: new[] { "Id", "Description", "GaleryId", "Title", "Url" },
-                values: new object[,]
-                {
-                    { 3, "This is my first photo", 1, "My first photo", "https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png" },
-                    { 4, "This is my last photo... No I didn't die", 1, "My last photo", "https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png" }
-                });
+                column: "FileEntityId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Attachments_MessageId",
@@ -774,8 +653,8 @@ namespace DataAccessLayer.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_Galeries_ProfileId",
-                table: "Galeries",
+                name: "IX_Galleries_ProfileId",
+                table: "Galleries",
                 column: "ProfileId");
 
             migrationBuilder.CreateIndex(
@@ -794,6 +673,16 @@ namespace DataAccessLayer.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Likes_PostId",
+                table: "Likes",
+                column: "PostId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Likes_UserId",
+                table: "Likes",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Messages_AuthorId",
                 table: "Messages",
                 column: "AuthorId");
@@ -804,9 +693,14 @@ namespace DataAccessLayer.Migrations
                 column: "ConversationId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Photo_GaleryId",
+                name: "IX_Photo_FileEntityId",
                 table: "Photo",
-                column: "GaleryId");
+                column: "FileEntityId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Photo_GalleryId",
+                table: "Photo",
+                column: "GalleryId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Post_PostableId",
@@ -821,7 +715,8 @@ namespace DataAccessLayer.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_Profile_UserId",
                 table: "Profile",
-                column: "UserId");
+                column: "UserId",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Roles_Name",
@@ -874,10 +769,10 @@ namespace DataAccessLayer.Migrations
                 name: "GroupMembers");
 
             migrationBuilder.DropTable(
-                name: "Photo");
+                name: "Likes");
 
             migrationBuilder.DropTable(
-                name: "Post");
+                name: "Photo");
 
             migrationBuilder.DropTable(
                 name: "UserRoles");
@@ -895,10 +790,10 @@ namespace DataAccessLayer.Migrations
                 name: "GroupRoles");
 
             migrationBuilder.DropTable(
-                name: "Galeries");
+                name: "Post");
 
             migrationBuilder.DropTable(
-                name: "Commentable");
+                name: "Galleries");
 
             migrationBuilder.DropTable(
                 name: "Roles");
@@ -908,6 +803,9 @@ namespace DataAccessLayer.Migrations
 
             migrationBuilder.DropTable(
                 name: "Group");
+
+            migrationBuilder.DropTable(
+                name: "Commentable");
 
             migrationBuilder.DropTable(
                 name: "Profile");

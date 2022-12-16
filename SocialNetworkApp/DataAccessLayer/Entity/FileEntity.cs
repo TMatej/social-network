@@ -10,6 +10,8 @@ namespace DataAccessLayer.Entity
         [Required]
         public Guid Guid { get; set; }
 
+        public byte[] Data { get; set; }
+
         public string Name { get; set; }
 
         [Required]

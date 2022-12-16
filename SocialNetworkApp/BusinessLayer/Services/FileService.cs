@@ -1,23 +1,23 @@
 ﻿using BusinessLayer.Contracts;
 using DataAccessLayer.Entity;
+using Infrastructure.Query;
 using Infrastructure.Repository;
+using Infrastructure.UnitOfWork;
 using Microsoft.AspNetCore.Http;
-using System.Configuration;
 
 namespace BusinessLayer.Services
 {
-    public class FileService : IFileService
+    public class FileService : GenericService<FileEntity>, IFileService
     {
-        public static string filesPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, ConfigurationManager.AppSettings["filesPath"] ?? "temp/files");
-
         public readonly IRepository<FileEntity> fileRepo;
+        public IQuery<FileEntity> fileQuery;
 
-        public FileService(IRepository<FileEntity> fileRepo)
+        public FileService(IRepository<FileEntity> fileRepo, IUnitOfWork uow) : base(fileRepo, uow)
         {
             this.fileRepo = fileRepo;
         }
 
-        public FileEntity saveFile(IFormFile file)
+        public FileEntity CreateFile(IFormFile file)
         {
             long size = file.Length;
 
@@ -26,26 +26,26 @@ namespace BusinessLayer.Services
                 throw new ArgumentException("file is empty");
             }
 
-            var fileEntity = new FileEntity()
+            using(var ms = new MemoryStream())
             {
-                Name = file.FileName,
-                Guid = Guid.NewGuid(),
-            };
+                file.CopyTo(ms);
+                var fileBytes = ms.ToArray();
 
-            fileRepo.Insert(fileEntity);
+                var fileEntity = new FileEntity
+                {
+                    Data = fileBytes,
+                    Name = file.FileName,
+                    Guid = Guid.NewGuid(),
+                    CreatedAt = DateTime.Now
+                };
 
-            using (var stream = File.Create($"{filesPath}/{fileEntity.Guid}"))
-            {
-                file.CopyTo(stream);
+                return fileEntity;
             }
-
-            return fileEntity;
         }
 
-        public byte[] GetFile(int id)
+        public FileEntity GetByGuid(Guid guid)
         {
-            var file = fileRepo.GetByID(id);
-            return File.ReadAllBytes($"{filesPath}/{file.Guid}");
+          return fileQuery.Where<Guid>(x => x == guid, nameof(FileEntity.Guid)).Execute().Items.FirstOrDefault();
         }
     }
 }
