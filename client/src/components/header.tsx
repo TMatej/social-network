@@ -7,9 +7,11 @@ import { axios } from "api/axios";
 import { useStore } from "store";
 import { FormTextField } from "./input/text-field";
 import { Formik, Form } from "formik";
+import { Avatar } from "./avatar";
 
 export const Header = () => {
-  const setUser = useStore((state) => state.setUser);
+  const user = useStore((store) => store.user);
+  const setUser = useStore((store) => store.setUser);
   const { mutate } = useMutation(() => axios.delete("/sessions"), {
     onSuccess: () => {
       setUser(undefined);
@@ -32,13 +34,7 @@ export const Header = () => {
         </Form>
       </Formik>
       <div className="flex items-center gap-3">
-        <div className="border-2 border-white border-opacity-5 bg-cyan-900 w-10 h-10 rounded-full overflow-hidden">
-          <img
-            className="w-full h-full object-contain"
-            src="https://picsum.photos/200"
-            alt=""
-          />
-        </div>
+        <Avatar user={user} />
         <Button
           leftIcon={<FontAwesomeIcon icon={faSignOut} />}
           onClick={mutate}

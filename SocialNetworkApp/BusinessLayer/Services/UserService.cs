@@ -115,7 +115,7 @@ namespace BusinessLayer.Services
 
         public UserDTO AuthenticateUser(UserLoginDTO userLoginDTO)
         {
-            var user = userQuery.Where<string>(e => e == userLoginDTO.Email, "Email")
+            var user = userQuery.Where<string>(e => e == userLoginDTO.Email, nameof(User.Email))
               .Include("UserRoles")
               .Execute()
               .Items
@@ -125,6 +125,8 @@ namespace BusinessLayer.Services
             {
                 return null;
             }
+
+            Console.WriteLine(user.Username);
 
             var valid = Argon2.Verify(user.PasswordHash, userLoginDTO.Password);
             if (!valid)

@@ -27,6 +27,9 @@ namespace BusinessLayer.Config
                     opt => opt.MapFrom(src => src.Profile));
             CreateMap<Gallery, GalleryWithPhotosRepresentDTO>();
 
+            // File 
+            CreateMap<FileEntity, FileEntityDTO>();
+
             /* Photo */
             CreateMap<Photo, PhotoInsertDTO>().ReverseMap();
             CreateMap<Photo, PhotoRepresentDTO>().ReverseMap();

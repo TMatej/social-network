@@ -47,7 +47,7 @@ export const Profile = () => {
         </div>
         <div className="flex-grow ml-4">
           <span className="text-3xl font-bold">
-            {profile?.name ?? "Unknown user"}
+            {user?.username ?? "Unknown user"}
           </span>
           <div className="flex flex-wrap justify-between items-center">
             <LabeledItem

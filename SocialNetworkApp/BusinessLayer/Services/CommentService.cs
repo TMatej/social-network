@@ -42,9 +42,10 @@ namespace BusinessLayer.Services
         public IEnumerable<Comment> getCommentsForEntity(int entityId, int page = 1, int pageSize = 10)
         {
             return commentQuery
-                .Where<int>(id => id == entityId, "CommentableId")
+                .Where<int>(id => id == entityId, nameof(Comment.CommentableId))
                 .Page(page, pageSize)
                 .OrderBy<DateTime>("CreatedAt")
+                .Include(nameof(Comment.User))
                 .Execute()
                 .Items;
         }

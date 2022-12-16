@@ -20,6 +20,8 @@ import { useOutletContext } from "react-router-dom";
 import { Fragment, useEffect } from "react";
 import { useStore } from "store";
 import { Comments } from "components/comments";
+import { Avatar } from "components/avatar";
+import { format } from "date-fns";
 
 type AddCommentData = {
   content: string;
@@ -89,10 +91,20 @@ const Post = ({ post }: { post: PostType }) => {
   const byLoggedInUser = user?.id === post.userId;
   return (
     <div>
+      <div className="flex gap-4 items-center mb-3">
+        <Avatar user={post.user} />
+        <div>
+          <p className="text-lg font-bold">{post.user.username}</p>
+          <p className="text-sm">
+            {format(new Date(post.createdAt), "dd. MMMM yyyy 'at' HH:mm")}
+          </p>
+        </div>
+      </div>
       <p className="text-lg font-bold">{post.title}</p>
       <p className="whitespace-pre">{post.content}</p>
       <div className="flex gap-2 justify-end">
         <Button
+          variant="outlined"
           onClick={() => likePost()}
           leftIcon={<FontAwesomeIcon icon={faThumbsUp} />}
         >
@@ -100,7 +112,7 @@ const Post = ({ post }: { post: PostType }) => {
         </Button>
         {byLoggedInUser && (
           <Button
-            className="bg-red-500"
+            variant="outlined"
             leftIcon={<FontAwesomeIcon icon={faTrash} />}
             onClick={() => deletePost()}
           >
@@ -108,10 +120,9 @@ const Post = ({ post }: { post: PostType }) => {
           </Button>
         )}
       </div>
-      <div
-        style={{ marginLeft: 20 }}
-        className="border-t border-t-gray-600 mt-4"
-      >
+      <div className="pt-2" />
+      <div style={{ marginLeft: 20 }}>
+        <div className="border-t border-t-gray-600" />
         <Formik<AddCommentData>
           initialValues={{ content: "" }}
           onSubmit={(data, { resetForm }) => {
@@ -122,9 +133,8 @@ const Post = ({ post }: { post: PostType }) => {
           <Form className="flex items-end gap-2 py-2">
             <FormTextField
               name="content"
-              label="Add comment"
               className="flex-grow"
-              placeholder="type your comment here"
+              placeholder="type a comment..."
             />
             <Button
               type="submit"
@@ -205,7 +215,6 @@ export const Wall = () => {
   return (
     <>
       <Paper className="p-4 mt-4">
-        <p className="font-bold text-xl mb-4">Wall</p>
         <Formik<NewPostData>
           initialValues={{ content: "", title: "" }}
           onSubmit={(data, { resetForm }) => {
@@ -217,16 +226,16 @@ export const Wall = () => {
             <FormTextField
               name="title"
               label="Title"
-              placeholder="type title"
+              placeholder="enter a title..."
             />
             <FormTextField
               name="content"
               label="Content"
-              placeholder="type some message"
+              placeholder="enter some content..."
               rows={3}
               className="mt-2"
             />
-            <div className="flex justify-between mt-2">
+            <div className="flex justify-between mt-4">
               <Button>
                 <FontAwesomeIcon icon={faImage} />
               </Button>
@@ -239,6 +248,10 @@ export const Wall = () => {
             </div>
           </Form>
         </Formik>
+      </Paper>
+
+      <Paper className="p-4 mt-4">
+        <p className="font-bold text-xl">Posts</p>
       </Paper>
 
       {posts?.pages.map((page, index) => (

@@ -1,5 +1,6 @@
-import { ReactNode } from "react";
+import { ReactNode, useState } from "react";
 import clsx from "clsx";
+import { animated, useSpring } from "react-spring";
 
 export const Button = ({
   onClick,
@@ -18,19 +19,29 @@ export const Button = ({
   className?: string;
   disabled?: boolean;
   type?: "submit";
-  variant?: "block" | "clear";
+  variant?: "block" | "clear" | "outlined";
 }) => {
+  const [hovered, setHovered] = useState(false);
+  const style = useSpring({
+    scaleX: hovered ? 1.025 : 1,
+  });
+
   return (
-    <button
+    <animated.button
+      style={style}
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
       onClick={onClick}
       disabled={disabled}
       type={type}
       className={clsx(
-        "flex justify-center items-center rounded",
+        "flex justify-center items-center rounded transition-colors",
         {
           "py-1 px-2 bg-cyan-600 disabled:bg-cyan-900 hover:brightness-90":
             variant === "block",
-          "outline-none text-gray-300 py-1": variant === "clear",
+          "outline-none text-gray-300 px-2": variant === "clear",
+          "border py-1 px-2 border-slate-600 hover:bg-slate-600":
+            variant === "outlined",
         },
         className
       )}
@@ -48,6 +59,6 @@ export const Button = ({
         {children}
       </span>
       {rightIcon}
-    </button>
+    </animated.button>
   );
 };
