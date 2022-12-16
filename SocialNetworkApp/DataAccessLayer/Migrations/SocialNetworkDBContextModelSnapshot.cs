@@ -30,33 +30,20 @@ namespace DataAccessLayer.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
+                    b.Property<int>("FileEntityId")
+                        .HasColumnType("integer");
+
                     b.Property<int>("MessageId")
                         .HasColumnType("integer");
 
-                    b.Property<string>("Url")
-                        .IsRequired()
-                        .HasColumnType("text");
-
                     b.HasKey("Id");
+
+                    b.HasIndex("FileEntityId");
 
                     b.HasIndex("MessageId")
                         .IsUnique();
 
                     b.ToTable("Attachments");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            MessageId = 1,
-                            Url = "https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            MessageId = 2,
-                            Url = "https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png"
-                        });
                 });
 
             modelBuilder.Entity("DataAccessLayer.Entity.Commentable", b =>
@@ -95,20 +82,6 @@ namespace DataAccessLayer.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("Conversations");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            UserId = 1
-                        },
-                        new
-                        {
-                            Id = 2,
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            UserId = 1
-                        });
                 });
 
             modelBuilder.Entity("DataAccessLayer.Entity.Event", b =>
@@ -147,26 +120,6 @@ namespace DataAccessLayer.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("Events");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "This is an example event for Group 3",
-                            GroupId = 3,
-                            Title = "Example Event",
-                            UserId = 1
-                        },
-                        new
-                        {
-                            Id = 2,
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "This is an example event without participants for Group 3",
-                            GroupId = 3,
-                            Title = "Example Userless Event",
-                            UserId = 1
-                        });
                 });
 
             modelBuilder.Entity("DataAccessLayer.Entity.FileEntity", b =>
@@ -181,6 +134,9 @@ namespace DataAccessLayer.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp with time zone")
                         .HasDefaultValueSql("now()");
+
+                    b.Property<byte[]>("Data")
+                        .HasColumnType("bytea");
 
                     b.Property<Guid>("Guid")
                         .HasColumnType("uuid");
@@ -227,25 +183,7 @@ namespace DataAccessLayer.Migrations
 
                     b.HasIndex("ProfileId");
 
-                    b.ToTable("Galeries");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "This is an example galery",
-                            ProfileId = 1,
-                            Title = "Example Galery"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "This is an example galery without content",
-                            ProfileId = 1,
-                            Title = "Example Empty Galery"
-                        });
+                    b.ToTable("Galleries");
                 });
 
             modelBuilder.Entity("DataAccessLayer.Entity.GroupRole", b =>
@@ -269,14 +207,6 @@ namespace DataAccessLayer.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("GroupRoles");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Name = "Example Role"
-                        });
                 });
 
             modelBuilder.Entity("DataAccessLayer.Entity.JoinEntity.Contact", b =>
@@ -307,15 +237,6 @@ namespace DataAccessLayer.Migrations
                         .IsUnique();
 
                     b.ToTable("Contacts");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            User1Id = 1,
-                            User2Id = 2
-                        });
                 });
 
             modelBuilder.Entity("DataAccessLayer.Entity.JoinEntity.ConversationParticipant", b =>
@@ -344,22 +265,6 @@ namespace DataAccessLayer.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("ConversationParticipants");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            ConversationId = 1,
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            UserId = 1
-                        },
-                        new
-                        {
-                            Id = 2,
-                            ConversationId = 1,
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            UserId = 2
-                        });
                 });
 
             modelBuilder.Entity("DataAccessLayer.Entity.JoinEntity.EventParticipant", b =>
@@ -378,7 +283,7 @@ namespace DataAccessLayer.Migrations
                     b.Property<int>("EventId")
                         .HasColumnType("integer");
 
-                    b.Property<int>("ParticipationTypeId")
+                    b.Property<int?>("ParticipationTypeId")
                         .HasColumnType("integer");
 
                     b.Property<int>("UserId")
@@ -394,24 +299,6 @@ namespace DataAccessLayer.Migrations
                         .IsUnique();
 
                     b.ToTable("EventParticipants");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            EventId = 1,
-                            ParticipationTypeId = 1,
-                            UserId = 1
-                        },
-                        new
-                        {
-                            Id = 2,
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            EventId = 1,
-                            ParticipationTypeId = 1,
-                            UserId = 2
-                        });
                 });
 
             modelBuilder.Entity("DataAccessLayer.Entity.JoinEntity.GroupMember", b =>
@@ -445,16 +332,6 @@ namespace DataAccessLayer.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("GroupMembers");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            GroupId = 3,
-                            GroupRoleId = 1,
-                            UserId = 1
-                        });
                 });
 
             modelBuilder.Entity("DataAccessLayer.Entity.JoinEntity.UserRole", b =>
@@ -478,6 +355,29 @@ namespace DataAccessLayer.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("UserRoles");
+                });
+
+            modelBuilder.Entity("DataAccessLayer.Entity.Like", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("PostId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PostId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Likes");
                 });
 
             modelBuilder.Entity("DataAccessLayer.Entity.Message", b =>
@@ -513,24 +413,6 @@ namespace DataAccessLayer.Migrations
                     b.HasIndex("ConversationId");
 
                     b.ToTable("Messages");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            AuthorId = 1,
-                            Content = "I have two attchments!",
-                            ConversationId = 1,
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
-                        },
-                        new
-                        {
-                            Id = 2,
-                            AuthorId = 2,
-                            Content = "I am just plain text",
-                            ConversationId = 1,
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
-                        });
                 });
 
             modelBuilder.Entity("DataAccessLayer.Entity.ParticipationType", b =>
@@ -554,14 +436,6 @@ namespace DataAccessLayer.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("ParticipationTypes");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Name = "Example Type"
-                        });
                 });
 
             modelBuilder.Entity("DataAccessLayer.Entity.Postable", b =>
@@ -642,24 +516,6 @@ namespace DataAccessLayer.Migrations
                         .IsUnique();
 
                     b.ToTable("Users");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Email = "JozoJeSuper@gmail.com",
-                            PasswordHash = "0123456789abcde0",
-                            Username = "jozkoVajda123"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Email = "cokoloko@gmail.com",
-                            PasswordHash = "0123456789abcde0",
-                            Username = "lokomotivatomas123"
-                        });
                 });
 
             modelBuilder.Entity("DataAccessLayer.Entity.Comment", b =>
@@ -687,32 +543,6 @@ namespace DataAccessLayer.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("Comment", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 5,
-                            CommentableId = 1,
-                            Content = "Some content here!",
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            UserId = 1
-                        },
-                        new
-                        {
-                            Id = 6,
-                            CommentableId = 3,
-                            Content = "This photo is awful!",
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            UserId = 1
-                        },
-                        new
-                        {
-                            Id = 7,
-                            CommentableId = 5,
-                            Content = "This photo is beautifull you little prick!!!",
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            UserId = 2
-                        });
                 });
 
             modelBuilder.Entity("DataAccessLayer.Entity.Photo", b =>
@@ -728,40 +558,21 @@ namespace DataAccessLayer.Migrations
                         .HasMaxLength(256)
                         .HasColumnType("character varying(256)");
 
-                    b.Property<int>("GaleryId")
+                    b.Property<int>("FileEntityId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("GalleryId")
                         .HasColumnType("integer");
 
                     b.Property<string>("Title")
                         .HasMaxLength(64)
                         .HasColumnType("character varying(64)");
 
-                    b.Property<string>("Url")
-                        .IsRequired()
-                        .HasColumnType("text");
+                    b.HasIndex("FileEntityId");
 
-                    b.HasIndex("GaleryId");
+                    b.HasIndex("GalleryId");
 
                     b.ToTable("Photo", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 3,
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "This is my first photo",
-                            GaleryId = 1,
-                            Title = "My first photo",
-                            Url = "https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png"
-                        },
-                        new
-                        {
-                            Id = 4,
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "This is my last photo... No I didn't die",
-                            GaleryId = 1,
-                            Title = "My last photo",
-                            Url = "https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png"
-                        });
                 });
 
             modelBuilder.Entity("DataAccessLayer.Entity.Post", b =>
@@ -794,26 +605,6 @@ namespace DataAccessLayer.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("Post", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Content = "This is my first post!",
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            PostableId = 1,
-                            Title = "Hello World!",
-                            UserId = 1
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Content = "This is my second post!",
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            PostableId = 1,
-                            Title = "Hello World!",
-                            UserId = 1
-                        });
                 });
 
             modelBuilder.Entity("DataAccessLayer.Entity.Group", b =>
@@ -836,22 +627,6 @@ namespace DataAccessLayer.Migrations
                         .HasColumnType("character varying(64)");
 
                     b.ToTable("Group", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 3,
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "This is an example group",
-                            Name = "Example Group one"
-                        },
-                        new
-                        {
-                            Id = 4,
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "This is an example group",
-                            Name = "Example Group two"
-                        });
                 });
 
             modelBuilder.Entity("DataAccessLayer.Entity.Profile", b =>
@@ -880,32 +655,27 @@ namespace DataAccessLayer.Migrations
                     b.Property<int>("UserId")
                         .HasColumnType("integer");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("UserId")
+                        .IsUnique();
 
                     b.ToTable("Profile", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            UserId = 1
-                        },
-                        new
-                        {
-                            Id = 2,
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            UserId = 2
-                        });
                 });
 
             modelBuilder.Entity("DataAccessLayer.Entity.Attachment", b =>
                 {
+                    b.HasOne("DataAccessLayer.Entity.FileEntity", "FileEntity")
+                        .WithMany()
+                        .HasForeignKey("FileEntityId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("DataAccessLayer.Entity.Message", "Message")
                         .WithOne("Attachment")
                         .HasForeignKey("DataAccessLayer.Entity.Attachment", "MessageId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("FileEntity");
 
                     b.Navigation("Message");
                 });
@@ -943,7 +713,7 @@ namespace DataAccessLayer.Migrations
             modelBuilder.Entity("DataAccessLayer.Entity.Gallery", b =>
                 {
                     b.HasOne("DataAccessLayer.Entity.Profile", "Profile")
-                        .WithMany("Galeries")
+                        .WithMany("Galleries")
                         .HasForeignKey("ProfileId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -999,9 +769,7 @@ namespace DataAccessLayer.Migrations
 
                     b.HasOne("DataAccessLayer.Entity.ParticipationType", "ParticipationType")
                         .WithMany()
-                        .HasForeignKey("ParticipationTypeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ParticipationTypeId");
 
                     b.HasOne("DataAccessLayer.Entity.User", "User")
                         .WithMany("EventParticipants")
@@ -1062,6 +830,25 @@ namespace DataAccessLayer.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("DataAccessLayer.Entity.Like", b =>
+                {
+                    b.HasOne("DataAccessLayer.Entity.Post", "Post")
+                        .WithMany()
+                        .HasForeignKey("PostId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("DataAccessLayer.Entity.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Post");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("DataAccessLayer.Entity.Message", b =>
                 {
                     b.HasOne("DataAccessLayer.Entity.User", "Author")
@@ -1117,9 +904,15 @@ namespace DataAccessLayer.Migrations
 
             modelBuilder.Entity("DataAccessLayer.Entity.Photo", b =>
                 {
-                    b.HasOne("DataAccessLayer.Entity.Gallery", "Galery")
+                    b.HasOne("DataAccessLayer.Entity.FileEntity", "FileEntity")
+                        .WithMany()
+                        .HasForeignKey("FileEntityId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("DataAccessLayer.Entity.Gallery", "Gallery")
                         .WithMany("Photos")
-                        .HasForeignKey("GaleryId")
+                        .HasForeignKey("GalleryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -1129,7 +922,9 @@ namespace DataAccessLayer.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Galery");
+                    b.Navigation("FileEntity");
+
+                    b.Navigation("Gallery");
                 });
 
             modelBuilder.Entity("DataAccessLayer.Entity.Post", b =>
@@ -1175,8 +970,8 @@ namespace DataAccessLayer.Migrations
                         .IsRequired();
 
                     b.HasOne("DataAccessLayer.Entity.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
+                        .WithOne("Profile")
+                        .HasForeignKey("DataAccessLayer.Entity.Profile", "UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -1215,24 +1010,6 @@ namespace DataAccessLayer.Migrations
 
                             b1.WithOwner()
                                 .HasForeignKey("ProfileId");
-
-                            b1.HasData(
-                                new
-                                {
-                                    ProfileId = 1,
-                                    City = "Example City",
-                                    HouseNumber = "Example House number",
-                                    PostalCode = "Example Postal Code",
-                                    Region = "Example Region",
-                                    State = "Example State",
-                                    Street = "Example Street"
-                                },
-                                new
-                                {
-                                    ProfileId = 2,
-                                    City = "Example City",
-                                    State = "Example State"
-                                });
                         });
 
                     b.Navigation("Address");
@@ -1289,6 +1066,8 @@ namespace DataAccessLayer.Migrations
 
                     b.Navigation("GroupMembers");
 
+                    b.Navigation("Profile");
+
                     b.Navigation("UserRoles");
                 });
 
@@ -1299,7 +1078,7 @@ namespace DataAccessLayer.Migrations
 
             modelBuilder.Entity("DataAccessLayer.Entity.Profile", b =>
                 {
-                    b.Navigation("Galeries");
+                    b.Navigation("Galleries");
                 });
 #pragma warning restore 612, 618
         }

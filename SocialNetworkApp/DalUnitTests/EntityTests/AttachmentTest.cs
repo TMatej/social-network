@@ -55,7 +55,13 @@ namespace DalUnitTests.EntityTests
             {
                 db.Attachments.Add(new Attachment
                 {
-                    Url = "https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png",
+                    FileEntity = new FileEntity
+                    {
+                        Id = 1,
+                        Guid = Guid.NewGuid(),
+                        Name = "Photo name",
+                        Data = new byte[] {},
+                    },
                     MessageId = 1
                 });
                 db.SaveChanges();
@@ -73,7 +79,13 @@ namespace DalUnitTests.EntityTests
             {
                 db.Attachments.Add(new Attachment
                 {
-                    Url = "https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png",
+                    FileEntity = new FileEntity
+                    {
+                        Id = 1,
+                        Guid = Guid.NewGuid(),
+                        Name = "Photo name",
+                        Data = new byte[] {},
+                    },
                 });
                 Assert.Throws<DbUpdateException>(() => db.SaveChanges());
             }

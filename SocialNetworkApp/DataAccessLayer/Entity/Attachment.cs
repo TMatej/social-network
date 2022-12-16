@@ -15,6 +15,9 @@ namespace DataAccessLayer.Entity
         public Message Message { get; set; }
 
         [Required]
-        public string Url { get; set; }
+        public int FileEntityId { get; set; }
+
+        [Required]
+        public FileEntity FileEntity { get; set; }
     }
 }

@@ -13,14 +13,12 @@ namespace BusinessLayer.Services
     {
         private IMapper mapper;
         private IPostService postService;
-        private IFileService fileService;
         private IQuery<Profile> profileQuery;
 
-        public ProfileService(IQuery<Profile> profileQuery, IRepository<Profile> repository, IPostService postService, IFileService fileService, IUnitOfWork uow, IMapper mapper) : base(repository, uow)
+        public ProfileService(IQuery<Profile> profileQuery, IRepository<Profile> repository, IPostService postService, IUnitOfWork uow, IMapper mapper) : base(repository, uow)
         {
             this.mapper = mapper;
             this.postService = postService;
-            this.fileService = fileService;
             this.profileQuery = profileQuery;
         }
 

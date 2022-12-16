@@ -56,7 +56,13 @@ namespace DalUnitTests.EntityTests
                 {
                     Title = "My first photo",
                     Description = "This is my first photo",
-                    Url = "https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png",
+                    FileEntity = new FileEntity
+                    {
+                        Id = 99,
+                        Guid = Guid.NewGuid(),
+                        Name = "Photo name",
+                        Data = new byte[] {},
+                    },
                     GalleryId = 1
                 });
                 db.SaveChanges();

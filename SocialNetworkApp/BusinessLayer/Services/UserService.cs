@@ -99,9 +99,9 @@ namespace BusinessLayer.Services
         {
             Guard.Against.Null(userId);
 
-            var file = fileService.saveFile(avatar);
+            var avatarFileEntity = fileService.CreateFile(avatar);
             var user = GetByID(userId);
-            user.AvatarId = file.Id;
+            user.Avatar = avatarFileEntity;
             Update(user);
         }
 
