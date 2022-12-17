@@ -6,7 +6,7 @@ import { useStore } from "store";
 import { Button } from "./button";
 import { useOnClickOutside } from "hooks/use-on-click-outside";
 
-export type DialogProps<TProps extends {}> = TProps & {
+export type DialogProps<TProps extends {} = {}> = TProps & {
   closeDialog: () => void;
 };
 
@@ -38,7 +38,7 @@ export const Dialog = () => {
         ref={ref}
         className="bg-slate-800 rounded p-4 min-w-full sm:min-w-[400px]"
       >
-        <div className="flex justify-between items-center gap-8 ">
+        <div className="flex justify-between items-center gap-8 pb-4">
           <span className="text-xl font-bold">{dialog.title}</span>
           <Button variant="clear" onClick={closeCurrentDialog}>
             <FontAwesomeIcon icon={faClose} />

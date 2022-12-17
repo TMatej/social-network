@@ -12,9 +12,10 @@ namespace BusinessLayer.Services
         public readonly IRepository<FileEntity> fileRepo;
         public IQuery<FileEntity> fileQuery;
 
-        public FileService(IRepository<FileEntity> fileRepo, IUnitOfWork uow) : base(fileRepo, uow)
+        public FileService(IRepository<FileEntity> fileRepo, IQuery<FileEntity> fileQuery, IUnitOfWork uow) : base(fileRepo, uow)
         {
             this.fileRepo = fileRepo;
+            this.fileQuery = fileQuery;
         }
 
         public FileEntity CreateFile(IFormFile file)
@@ -34,9 +35,9 @@ namespace BusinessLayer.Services
                 var fileEntity = new FileEntity
                 {
                     Data = fileBytes,
-                    Name = file.FileName,
                     Guid = Guid.NewGuid(),
-                    CreatedAt = DateTime.Now
+                    Name = file.FileName,
+                    FileType = file.ContentType,
                 };
 
                 return fileEntity;

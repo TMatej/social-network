@@ -1,4 +1,5 @@
 using BusinessLayer.DTOs.Comment;
+using BusinessLayer.DTOs.FileEntity;
 using BusinessLayer.DTOs.Gallery;
 using BusinessLayer.DTOs.Photo;
 using BusinessLayer.DTOs.Post;
@@ -28,7 +29,8 @@ namespace BusinessLayer.Config
             CreateMap<Gallery, GalleryWithPhotosRepresentDTO>();
 
             // File 
-            CreateMap<FileEntity, FileEntityDTO>();
+            CreateMap<FileEntity, FileEntityDTO>().ReverseMap();
+            CreateMap<FileEntity, FileStreamDTO>().ReverseMap();
 
             /* Photo */
             CreateMap<Photo, PhotoInsertDTO>().ReverseMap();

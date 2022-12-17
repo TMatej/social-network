@@ -70,7 +70,9 @@ export const Comments = ({
               <div className="py-2 flex gap-2">
                 <Avatar user={comment.user} />
                 <div className="flex-grow">
-                  <Paper className="p-2 inline-block">{comment.content}</Paper>
+                  <Paper className="px-2 py-1 inline-block">
+                    {comment.content}
+                  </Paper>
                   <p className="text-xs text-slate-300">
                     {format(
                       new Date(comment.createdAt),

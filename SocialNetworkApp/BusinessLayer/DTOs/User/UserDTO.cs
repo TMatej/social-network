@@ -1,4 +1,6 @@
-﻿namespace BusinessLayer.DTOs.User
+﻿using BusinessLayer.DTOs.FileEntity;
+
+namespace BusinessLayer.DTOs.User
 {
     public class UserDTO
     {

@@ -63,6 +63,7 @@ namespace DalUnitTests.EntityTests
                         Guid = Guid.NewGuid(),
                         Name = "Photo name",
                         Data = new byte[] {},
+                        FileType = "image/jpg",
                     },
                     GalleryId = 1
                 });

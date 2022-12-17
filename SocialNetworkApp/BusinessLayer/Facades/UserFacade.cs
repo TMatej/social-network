@@ -3,6 +3,7 @@ using BusinessLayer.Contracts;
 using BusinessLayer.DTOs.User;
 using BusinessLayer.Facades.Interfaces;
 using Infrastructure.UnitOfWork;
+using Microsoft.AspNetCore.Http;
 
 namespace BusinessLayer.Facades
 {
@@ -44,6 +45,12 @@ namespace BusinessLayer.Facades
         {
             userService.Register(userRegisterDTO);
             unitOfWork.Commit();
+        }
+
+        public void UpdateUserAvatar(int userId, IFormFile avatar)
+        {
+          userService.changeAvatar(userId, avatar);
+          unitOfWork.Commit();
         }
     }
 }

@@ -33,6 +33,18 @@ public class UsersController : ControllerBase
         return Ok(profile);
     }
 
+    [HttpPut("{userId}/avatar")]
+    [Authorize]
+    public IActionResult UpdateAvatar(int userId, [FromForm] UpdateUserAvatarDTO updateUserAvatarDTO)
+    {
+        if (userId != int.Parse(HttpContext.User.Identity.Name))
+        {
+            return Unauthorized();
+        }
+        userFacade.UpdateUserAvatar(userId, updateUserAvatarDTO.avatar);
+        return Ok();
+    }
+
     [HttpPatch("{userId}/profile")]
     [Authorize]
     public IActionResult UpdateUserProfile(int userId, [FromBody] ProfileUpdateDTO profileUpdateDTO)

@@ -397,6 +397,7 @@ namespace DataAccessLayer.Data
                 Guid = Guid.NewGuid(),
                 Name = "File",
                 Data = new byte[] {},
+                FileType = "image/jpg",
             };
 
             var file2 = new FileEntity
@@ -405,6 +406,7 @@ namespace DataAccessLayer.Data
                 Guid = Guid.NewGuid(),
                 Name = "File",
                 Data = new byte[] {},
+                FileType = "image/jpg",
             };
 
             var file3 = new FileEntity
@@ -413,6 +415,7 @@ namespace DataAccessLayer.Data
                 Guid = Guid.NewGuid(),
                 Name = "File",
                 Data = new byte[] {},
+                FileType = "image/jpg",
             };
 
             var file4 = new FileEntity
@@ -421,6 +424,7 @@ namespace DataAccessLayer.Data
                 Guid = Guid.NewGuid(),
                 Name = "File",
                 Data = new byte[] {},
+                FileType = "image/jpg",
             };
 
             modelBuilder.Entity<FileEntity>().HasData(file1);

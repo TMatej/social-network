@@ -1,7 +1,7 @@
 export type FileEntity = {
   guid: string;
+  fileType: string;
   name: string;
-  data: string;
 };
 
 export type User = {

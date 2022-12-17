@@ -2,8 +2,19 @@ import { User } from "models";
 import clsx from "clsx";
 import { useNavigate } from "react-router-dom";
 import { Tooltip, useTooltip } from "./tooltip";
+import { baseUrl } from "api";
 
-export const Avatar = ({ user }: { user?: User }) => {
+export const Avatar = ({
+  user,
+  size = "md",
+  onClick,
+  withoutTooltip = false,
+}: {
+  user?: User;
+  size?: "md" | "lg";
+  onClick?: () => void;
+  withoutTooltip?: boolean;
+}) => {
   const navigate = useNavigate();
   const { bind, tooltipProps } = useTooltip();
 
@@ -12,26 +23,42 @@ export const Avatar = ({ user }: { user?: User }) => {
       <button
         {...bind()}
         className={clsx(
-          "border-2 flex-shrink-0 border-white border-opacity-5 bg-cyan-900 w-10 h-10 flex items-center justify-center rounded-full overflow-hidden outline-none"
+          "border-2 flex-shrink-0 border-white border-opacity-5 bg-cyan-900 flex items-center justify-center rounded-full overflow-hidden outline-none",
+          {
+            "w-10 h-10": size === "md",
+            "w-20 h-20": size === "lg",
+          }
         )}
-        onClick={() => navigate(`/profile/${user?.id}/info`)}
+        onClick={() =>
+          onClick ? onClick() : navigate(`/profile/${user?.id}/info`)
+        }
       >
         {user?.avatar ? (
           <img
             className="w-full h-full object-contain"
-            src={user.avatar.data}
+            src={`${baseUrl}/files/${user.avatar.guid}`}
             alt="user avatar"
           />
         ) : (
-          <span className="font-extrabold text-xl cursor-default pointer-events-none">
+          <span
+            className={clsx(
+              "font-extrabold cursor-default pointer-events-none",
+              {
+                "text-xl": size === "md",
+                "text-3xl": size === "lg",
+              }
+            )}
+          >
             {user?.username.charAt(0).toUpperCase() ?? "X"}
           </span>
         )}
       </button>
 
-      <Tooltip {...tooltipProps}>
-        <span className="font-bold">{user?.username}</span>
-      </Tooltip>
+      {!withoutTooltip && (
+        <Tooltip {...tooltipProps}>
+          <span className="font-bold">{user?.username}</span>
+        </Tooltip>
+      )}
     </>
   );
 };
