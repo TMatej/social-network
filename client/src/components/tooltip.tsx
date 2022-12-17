@@ -9,7 +9,7 @@ export const useTooltip = (props?: { toggle?: "hover" | "static" }) => {
   const { toggle = "hover" } = props ?? {};
   const [target, setTarget] = useState<HTMLElement | null>(null);
   const [open, setOpen] = useState(toggle === "static" ? true : false);
-  const timeoutRef = useRef<number>();
+  const timeoutRef = useRef<ReturnType<typeof setTimeout>>();
 
   const bind = useCallback(
     () => ({

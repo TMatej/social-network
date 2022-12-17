@@ -16,7 +16,7 @@ export const AvatarUploadDialog = ({ closeDialog }: DialogProps) => {
   const { user } = useStore((store) => store);
   const showNotification = useStore((store) => store.showNotification);
 
-  const { mutate } = useMutation(
+  const { mutate, isLoading } = useMutation(
     ({ avatar }: AvatarUploadData) => {
       if (!avatar) return Promise.reject();
       const formData = new FormData();
@@ -29,6 +29,7 @@ export const AvatarUploadDialog = ({ closeDialog }: DialogProps) => {
           message: "Avatar uploaded successfully",
           type: "success",
         });
+        closeDialog();
       },
       onError: () => {
         showNotification({
@@ -46,7 +47,7 @@ export const AvatarUploadDialog = ({ closeDialog }: DialogProps) => {
     >
       <Form>
         <FormFileField name="avatar" accept=".jpg,.png,.jpeg" />
-        <Button type="submit" className="w-full mt-4">
+        <Button disabled={isLoading} type="submit" className="w-full mt-4">
           <FontAwesomeIcon icon={faUpload} /> Upload
         </Button>
       </Form>

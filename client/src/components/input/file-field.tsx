@@ -1,4 +1,4 @@
-import { faClose, faUpload, faX } from "@fortawesome/free-solid-svg-icons";
+import { faClose, faUpload } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Button } from "components/button";
 import { useField } from "formik";

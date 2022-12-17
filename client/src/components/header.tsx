@@ -19,7 +19,7 @@ export const Header = () => {
   });
 
   return (
-    <Paper className="!bg-slate-800 sticky top-0 p-2 flex w-full justify-between items-center">
+    <Paper className="!bg-slate-800 sticky z-10 top-0 p-2 flex w-full justify-between items-center">
       <Formik initialValues={{ search: "" }} onSubmit={() => {}}>
         <Form>
           <FormTextField
