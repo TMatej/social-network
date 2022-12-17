@@ -11,6 +11,8 @@ import { Fragment } from "react";
 import { Button } from "./button";
 import { useStore } from "store";
 import { Paper } from "./paper";
+import { Avatar } from "./avatar";
+import { format } from "date-fns";
 
 export const Comments = ({
   entityId,
@@ -65,18 +67,28 @@ export const Comments = ({
         <Fragment key={index}>
           {page.items.map((comment) => (
             <Fragment key={comment.id}>
-              <div className="py-2 flex justify-between items-center">
-                <Paper className="p-2">{comment.content}</Paper>
-                <div className="flex gap-2 items-center">
-                  {user?.id === comment.userId && (
-                    <Button
-                      onClick={() => deleteComment(comment.id)}
-                      className="bg-red-500"
-                    >
-                      <FontAwesomeIcon icon={faTrash} />
-                    </Button>
-                  )}
+              <div className="py-2 flex gap-2">
+                <Avatar user={comment.user} />
+                <div className="flex-grow">
+                  <Paper className="px-2 py-1 inline-block">
+                    {comment.content}
+                  </Paper>
+                  <p className="text-xs text-slate-300">
+                    {format(
+                      new Date(comment.createdAt),
+                      "dd. MMMM yyyy 'at' HH:mm"
+                    )}
+                  </p>
                 </div>
+                {user?.id === comment.userId && (
+                  <Button
+                    variant="outlined"
+                    onClick={() => deleteComment(comment.id)}
+                    className="self-end"
+                  >
+                    <FontAwesomeIcon icon={faTrash} />
+                  </Button>
+                )}
               </div>
               {recurseToLevel < level && (
                 <Comments entityId={comment.id} level={level + 1} />

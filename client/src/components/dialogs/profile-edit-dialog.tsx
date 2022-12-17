@@ -48,7 +48,7 @@ export const ProfileEditDialog = ({
       initialValues={{ ...profile }}
       onSubmit={(data) => updateProfile(data)}
     >
-      <Form className="mt-4 ">
+      <Form>
         <div className="grid grid-cols-2 gap-y-2 gap-x-4">
           <FormTextField name="name" label="Name" />
           <FormTextField name="dateOfBirth" label="Date of birth" />

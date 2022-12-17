@@ -63,6 +63,7 @@ namespace ServiceTests
             postQuery.Where<int>(Arg.Any<Expression<Func<int, bool>>>(), Arg.Any<string>()).Returns(postQuery);
             postQuery.Page(Arg.Any<int>(), Arg.Any<int>()).Returns(postQuery);
             postQuery.OrderBy<DateTime>(Arg.Any<string>()).Returns(postQuery);
+            postQuery.Include(Arg.Any<string>()).Returns(postQuery);
             postQuery.Execute().Returns(new QueryResult<Post>(1, 3, 20, new List<Post>() { post }));
 
             var postService = new PostService(postRepository, uow, postQuery);

@@ -1,6 +1,14 @@
+export type FileEntity = {
+  guid: string;
+  fileType: string;
+  name: string;
+};
+
 export type User = {
   id: number;
+  username: string;
   email: string;
+  avatar?: FileEntity;
   roles: string[];
 };
 
@@ -37,6 +45,7 @@ export type Post = {
   content: string;
   createdAt: string;
   userId: number;
+  user: User;
 };
 
 export type Paginated<TItem> = {
@@ -48,5 +57,7 @@ export type Paginated<TItem> = {
 export type Comment = {
   id: number;
   userId: number;
+  user: User;
   content: string;
+  createdAt: string;
 };

@@ -26,7 +26,7 @@ namespace ServiceTests
         [Test]
         public void GetCommentsForEntityTest()
         {
-            var post = new Comment()
+            var comment = new Comment()
             {
                 Id = 1,
                 Content = "Test",
@@ -35,7 +35,8 @@ namespace ServiceTests
             commentQuery.Where<int>(Arg.Any<Expression<Func<int, bool>>>(), Arg.Any<string>()).Returns(commentQuery);
             commentQuery.Page(Arg.Any<int>(), Arg.Any<int>()).Returns(commentQuery);
             commentQuery.OrderBy<DateTime>(Arg.Any<string>()).Returns(commentQuery);
-            commentQuery.Execute().Returns(new QueryResult<Comment>(1, 3, 20, new List<Comment>() { post }));
+            commentQuery.Include(Arg.Any<string>()).Returns(commentQuery);
+            commentQuery.Execute().Returns(new QueryResult<Comment>(1, 3, 20, new List<Comment>() { comment }));
 
             var commentService = new CommentService(mapper, commentQuery, commentRepo, uow);
             var res = commentService.getCommentsForEntity(44, 3, 20);
@@ -47,7 +48,7 @@ namespace ServiceTests
 
             Assert.That(res, Is.Not.Null);
             Assert.That(res.Count(), Is.EqualTo(1));
-            Assert.That(res.First(), Is.EqualTo(post));
+            Assert.That(res.First(), Is.EqualTo(comment));
         }
     }
 }

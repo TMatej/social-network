@@ -1,4 +1,4 @@
-import { faEdit } from "@fortawesome/free-solid-svg-icons";
+import { faCamera, faEdit } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useQuery } from "@tanstack/react-query";
 import { axios } from "api/axios";
@@ -12,6 +12,8 @@ import { Outlet, useNavigate, useMatch } from "react-router-dom";
 import { useStore } from "store";
 import { Profile as ProfileType } from "models";
 import { ProfileEditDialog } from "components/dialogs/profile-edit-dialog";
+import { Avatar } from "components/avatar";
+import { AvatarUploadDialog } from "components/dialogs/avatar-upload-dialog";
 
 type TabKeys = "info" | "galleries" | "wall" | "friends";
 
@@ -38,23 +40,31 @@ export const Profile = () => {
   return (
     <Container className="p-3">
       <Paper className="p-4 flex gap-4 items-center">
-        <div className="border-2 border-white border-opacity-5 bg-cyan-900 w-32 rounded-full overflow-hidden">
-          <img
-            className="w-full h-full object-contain"
-            src="https://picsum.photos/200"
-            alt=""
-          />
+        <div className="rounded-full relative">
+          <Avatar user={profile.user} size="lg" withoutTooltip />
+          <Button
+            className="!rounded-full absolute -bottom-1 -right-1"
+            onClick={() =>
+              openDialog({
+                Component: AvatarUploadDialog,
+                title: "Upload avatar",
+                props: {},
+              })
+            }
+          >
+            <FontAwesomeIcon icon={faCamera} />
+          </Button>
         </div>
         <div className="flex-grow ml-4">
           <span className="text-3xl font-bold">
-            {profile?.name ?? "Unknown user"}
+            {user?.username ?? "Unknown user"}
           </span>
           <div className="flex flex-wrap justify-between items-center">
             <LabeledItem
               label="Member since"
               item={
                 profile?.createdAt &&
-                format(new Date(profile?.createdAt), "MM/dd/yyyy")
+                format(new Date(profile?.createdAt), "dd. MMMM yyyy")
               }
             />
             {isCurrentUser && (

@@ -33,6 +33,10 @@ namespace BusinessLayer
                 .As<IUserFacade>()
                 .InstancePerLifetimeScope()
                 .OnActivated(e => Console.WriteLine($"Build {e.Instance.GetType().Name}"));
+            containerBuilder.RegisterType<FileFacade>()
+                .As<IFileFacade>()
+                .InstancePerLifetimeScope()
+                .OnActivated(e => Console.WriteLine($"Build {e.Instance.GetType().Name}"));
         }
     }
 }

@@ -1,11 +1,13 @@
 
 namespace BusinessLayer.DTOs.FileEntity
 {
-    public class FileEntityDTO
+    public class FileStreamDTO
     {
         public Guid Guid { get; set; }
 
         public string FileType { get; set; }
+
+        public byte[] Data { get; set; }
 
         public string Name { get; set; }
 

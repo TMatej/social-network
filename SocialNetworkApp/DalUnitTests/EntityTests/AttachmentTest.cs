@@ -61,6 +61,7 @@ namespace DalUnitTests.EntityTests
                         Guid = Guid.NewGuid(),
                         Name = "Photo name",
                         Data = new byte[] {},
+                        FileType = "image/jpg",
                     },
                     MessageId = 1
                 });
@@ -85,6 +86,7 @@ namespace DalUnitTests.EntityTests
                         Guid = Guid.NewGuid(),
                         Name = "Photo name",
                         Data = new byte[] {},
+                        FileType = "image/jpg",
                     },
                 });
                 Assert.Throws<DbUpdateException>(() => db.SaveChanges());

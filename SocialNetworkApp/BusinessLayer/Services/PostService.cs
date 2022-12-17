@@ -20,6 +20,7 @@ namespace BusinessLayer.Services
                 .Where<int>(id => id == entityId, "PostableId")
                 .Page(page, pageSize)
                 .OrderBy<DateTime>("CreatedAt")
+                .Include(nameof(Post.User))
                 .Execute()
                 .Items;
         }

@@ -115,8 +115,9 @@ namespace BusinessLayer.Services
 
         public UserDTO AuthenticateUser(UserLoginDTO userLoginDTO)
         {
-            var user = userQuery.Where<string>(e => e == userLoginDTO.Email, "Email")
-              .Include("UserRoles")
+            var user = userQuery.Where<string>(e => e == userLoginDTO.Email, nameof(User.Email))
+              .Include(nameof(User.UserRoles))
+              .Include(nameof(User.Avatar))
               .Execute()
               .Items
               .FirstOrDefault();
