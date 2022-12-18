@@ -72,7 +72,7 @@ namespace Infrastructure.EFCore.Test
             var query = new EntityFrameworkQuery<User>(dbContext, unitOfWork);
             var username = "thomas";
 
-            query.Where<string>(u => u == username, "Username");
+            query.Where<string>(u => u == username, "Name");
             var result = query.Execute();
 
             Assert.True(result.Items.Count() == 1);
