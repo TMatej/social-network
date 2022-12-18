@@ -47,7 +47,7 @@ namespace ServiceTests
             };
             mapper.Map<Post>(postDTO).Returns(post);
             var profileService = new ProfileService(profileQuery, profileRepository, postService, uow, mapper);
-            profileService.addPost(1, 1, postDTO);
+            profileService.AddPost(1, 1, postDTO);
             postService.Received(1).Insert(post);
         }
 

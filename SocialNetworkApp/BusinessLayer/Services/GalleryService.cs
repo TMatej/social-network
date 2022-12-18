@@ -15,15 +15,18 @@ namespace BusinessLayer.Services
         protected readonly IMapper _mapper;
         protected readonly IRepository<Photo> _photoRepository;
         protected readonly IQuery<Gallery> _galleryQuery;
+        protected readonly IFileService _fileService;
 
         public GalleryService(IRepository<Gallery> repository,
             IRepository<Photo> photoRepository,
             IQuery<Gallery> galleryQuery,
             IMapper mapper,
+            IFileService fileService,
             IUnitOfWork uow) : base(repository, uow)
         {
             _mapper = mapper;
             _photoRepository = photoRepository;
+            _fileService = fileService;
             _galleryQuery = galleryQuery;
         }
 
@@ -51,19 +54,32 @@ namespace BusinessLayer.Services
         {
             var gallery = _galleryQuery
                 .Where<int>(x => x == id, "Id")
-                .Include("Profile", "Photos")
+                .Include(nameof(Gallery.Profile), nameof(Gallery.Photos), $"{nameof(Gallery.Photos)}.{nameof(Photo.FileEntity)}")
                 .Execute();
 
             return _mapper.Map<GalleryRepresentDTO>(gallery.Items.FirstOrDefault());
         }
 
-        public void UploadPhotoToGallery(PhotoInsertDTO photoDTO, int galleryId)
+        public IEnumerable<GalleryRepresentDTO> GetGalleriesByProfileId(int profileId)
+        {
+            var galleries = _galleryQuery
+                .Where<int>(x => x == profileId, nameof(Gallery.ProfileId))
+                .Include(nameof(Gallery.Profile), nameof(Gallery.Photos), $"{nameof(Gallery.Photos)}.{nameof(Photo.FileEntity)}")
+                .Execute();
+
+            return galleries.Items.Select(gallery => _mapper.Map<GalleryRepresentDTO>(gallery));
+        }
+
+        public void UploadPhotoToGallery(PhotoCreateDTO photoDTO, int galleryId)
         {
             Guard.Against.Null(photoDTO);
 
-            var mapped = _mapper.Map<Photo>(photoDTO);
-            mapped.GalleryId = galleryId;
-            _photoRepository.Insert(mapped);
+            var photo = _mapper.Map<Photo>(photoDTO);
+            var file = _fileService.CreateFile(photoDTO.File); 
+
+            photo.GalleryId = galleryId;
+            photo.FileEntity = file;
+            _photoRepository.Insert(photo);
             _uow.Commit();
         }
     }

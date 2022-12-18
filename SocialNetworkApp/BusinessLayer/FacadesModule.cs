@@ -41,6 +41,10 @@ namespace BusinessLayer
                 .As<ISearchFacade>()
                 .InstancePerLifetimeScope()
                 .OnActivated(e => Console.WriteLine($"Build {e.Instance.GetType().Name}"));
+            containerBuilder.RegisterType<GalleryFacade>()
+                .As<IGalleryFacade>()
+                .InstancePerLifetimeScope()
+                .OnActivated(e => Console.WriteLine($"Build {e.Instance.GetType().Name}"));
         }
     }
 }

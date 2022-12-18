@@ -12,5 +12,6 @@ namespace BusinessLayer.Contracts
         public void ChangeAvatar(int userId, IFormFile avatar);
         public IEnumerable<User> FindByName(string name);
         public IEnumerable<User> FindByName(string name, int pageSize, int page);
+        public UserDTO GetByIdDetailed(int userId);
     }
 }

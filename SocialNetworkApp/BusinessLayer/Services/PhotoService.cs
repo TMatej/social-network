@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using BusinessLayer.Contracts;
-using BusinessLayer.DTOs.Photo;
 using DataAccessLayer.Entity;
 using Infrastructure.Repository;
 using Infrastructure.UnitOfWork;
@@ -14,11 +13,6 @@ namespace BusinessLayer.Services
         public PhotoService(IMapper mapper, IRepository<Photo> repository, IUnitOfWork uow) : base(repository, uow)
         {
             this.mapper = mapper;
-        }
-
-        public void UploadPhotoToGallery(PhotoInsertDTO photoDTO)
-        {
-            Insert(mapper.Map<Photo>(photoDTO));
         }
     }
 }

@@ -4,7 +4,6 @@ using BusinessLayer.DTOs.Gallery;
 using BusinessLayer.DTOs.Photo;
 using BusinessLayer.DTOs.Post;
 using BusinessLayer.DTOs.Profile;
-using BusinessLayer.DTOs.Query;
 using BusinessLayer.DTOs.Search;
 using BusinessLayer.DTOs.User;
 using DataAccessLayer.Entity;
@@ -18,9 +17,7 @@ namespace BusinessLayer.Config
         {
             // Gallery 
             CreateMap<Gallery, GalleryBasicRepresentDTO>();
-            CreateMap<GalleryCreateDTO, Gallery>();
-            CreateMap<Photo, PhotoInsertDTO>().ReverseMap();
-            CreateMap<Photo, PhotoRepresentDTO>().ReverseMap();
+            CreateMap<Gallery, GalleryCreateDTO>().ReverseMap();
             CreateMap<Gallery, GalleryRepresentDTO>()
                 .ForMember(dest => dest.Profile,
                     opt => opt.MapFrom(src => src.Profile));
@@ -29,12 +26,16 @@ namespace BusinessLayer.Config
                     opt => opt.MapFrom(src => src.Profile));
             CreateMap<Gallery, GalleryWithPhotosRepresentDTO>();
 
+            // Photo
+            CreateMap<Photo, PhotoCreateDTO>().ReverseMap();
+            CreateMap<Photo, PhotoRepresentDTO>().ReverseMap();
+
             // File 
             CreateMap<FileEntity, FileEntityDTO>().ReverseMap();
             CreateMap<FileEntity, FileStreamDTO>().ReverseMap();
 
             // Photo
-            CreateMap<Photo, PhotoInsertDTO>().ReverseMap();
+            CreateMap<Photo, PhotoCreateDTO>().ReverseMap();
             CreateMap<Photo, PhotoRepresentDTO>().ReverseMap();
             
             // Comment

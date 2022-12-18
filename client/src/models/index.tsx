@@ -31,11 +31,16 @@ export type Profile = {
 };
 
 export type Photo = {
-  url: string;
+  id: number;
+  title: string;
+  description: string;
+  fileEntity: FileEntity;
 };
 
 export type Gallery = {
   id: number;
+  title: string;
+  description: string;
   photos: Photo[];
 };
 
