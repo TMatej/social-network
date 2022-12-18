@@ -63,7 +63,7 @@ namespace BusinessLayer.Services
 
             User user = new User
             {
-                Username = registerDTO.Username,
+                Name = registerDTO.Username,
                 PasswordHash = passwordHash,
                 Email = registerDTO.Email,
                 Profile = profile,
@@ -146,7 +146,7 @@ namespace BusinessLayer.Services
             return query.Page(page,pageSize).Execute().Items;
         }
         private IQuery<User> FindQuery(string name) { 
-            return userQuery.Where<string>(username => username.Contains(name, StringComparison.InvariantCulture), nameof(User.Username));
+            return userQuery.Where<string>(username => username.Contains(name, StringComparison.InvariantCulture), nameof(User.Name));
         }
     }
 }

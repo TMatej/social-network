@@ -24,7 +24,7 @@ namespace DataAccessLayer.Entity
         [Required]
         [MinLength(4)]
         [MaxLength(64)]
-        public string Title { get; set; }
+        public string Name { get; set; }
 
         [Required]
         [MinLength(4)]

@@ -16,14 +16,14 @@ namespace DalUnitTests.EntityTests
 
                 db.Users.Add(new User
                 {
-                    Username = "ben",
+                    Name = "ben",
                     Email = "ben@gmail.com",
                     PasswordHash = "aaafht3x"
                 });
 
                 db.Users.Add(new User
                 {
-                    Username = "john",
+                    Name = "john",
                     Email = "john@gmail.com",
                     PasswordHash = "51df6545ecvd"
                 });

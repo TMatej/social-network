@@ -105,7 +105,7 @@ namespace DataAccessLayer.Data
                 Id = 1,
                 UserId = 1,
                 GroupId = groupId,
-                Title = "Example Event",
+                Name = "Example Event",
                 Description = $"This is an example event for Group {groupId}",
             };
 
@@ -114,7 +114,7 @@ namespace DataAccessLayer.Data
                 Id = 2,
                 UserId = 1,
                 GroupId = groupId,
-                Title = "Example Userless Event",
+                Name = "Example Userless Event",
                 Description = $"This is an example event without participants for Group {groupId}",
             };
 
@@ -372,7 +372,7 @@ namespace DataAccessLayer.Data
             var userJozo = new User
             {
                 Id = 1,
-                Username = "jozkoVajda123",
+                Name = "jozkoVajda123",
                 PasswordHash = "0123456789abcde0",
                 Email = "JozoJeSuper@gmail.com",
             };
@@ -380,7 +380,7 @@ namespace DataAccessLayer.Data
             var namelessUser = new User
             {
                 Id = 2,
-                Username = "lokomotivatomas123",
+                Name = "lokomotivatomas123",
                 Email = "cokoloko@gmail.com",
                 PasswordHash = "0123456789abcde0"
             };

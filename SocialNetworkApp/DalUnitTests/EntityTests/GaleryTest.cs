@@ -15,7 +15,7 @@ namespace DalUnitTests.EntityTests
                 db.Database.EnsureCreated();
                 db.Users.Add(new User
                 {
-                    Username = "ben",
+                    Name = "ben",
                     Email = "ben@gmail.com",
                     PasswordHash = "aaafht3x"
                 });

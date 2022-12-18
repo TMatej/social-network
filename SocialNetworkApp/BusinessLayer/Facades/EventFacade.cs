@@ -30,7 +30,7 @@ namespace BusinessLayer.Facades
                 Description = eventCreateDTO.Description,
                 GroupId = eventCreateDTO.Group.Id,
                 UserId = eventCreateDTO.User.Id,
-                Title = eventCreateDTO.Title
+                Name = eventCreateDTO.Title
             };
             eventService.Insert(_event);
         }
