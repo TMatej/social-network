@@ -60,7 +60,7 @@ namespace BusinessLayer.Services
 
         private IQuery<Event> FindQuery(string name)
         {
-            return eventQuery.Where<string>(name => name.Contains(name, StringComparison.CurrentCultureIgnoreCase), nameof(Event.Name));
+            return eventQuery.Where<string>(n => n.Contains(name, StringComparison.CurrentCultureIgnoreCase), nameof(Event.Name));
         }
 
         public IEnumerable<Event> Find(string name, int pageSize, int page)
