@@ -55,7 +55,8 @@ namespace ServiceTests
             };
             var result = new QueryResult<GroupMember>(1, 1, 1, new List<GroupMember> { mockGroup.GroupMembers.First() });
             var queryWithResult = MockQuery.CreateMockQueryWithResult(result);
-            var groupService = new GroupService(queryWithResult, groupRepository, groupMemberRepository, uow);
+            var mockGroupQuery = Substitute.For<IQuery<Group>>();
+            var groupService = new GroupService(queryWithResult, mockGroupQuery, groupRepository, groupMemberRepository, uow);
             groupService.RemoveFromGroup(user.Id, mockGroup.Id);
             groupMemberRepository.Received().Delete(Arg.Is<GroupMember>(x => x.UserId == user.Id && x.GroupId == mockGroup.Id));
             uow.Received().Commit();

@@ -12,11 +12,13 @@ namespace BusinessLayer.Services
 
         readonly IRepository<GroupMember> groupMemberRepository;
         readonly IQuery<GroupMember> groupMemberQuery;
+        readonly IQuery<Group> groupQuery;
 
-        public GroupService(IQuery<GroupMember> groupMemberQuery, IRepository<Group> repository, IRepository<GroupMember> groupMemberRepository, IUnitOfWork uow) : base(repository, uow)
+        public GroupService(IQuery<GroupMember> groupMemberQuery, IQuery<Group> groupQuery, IRepository<Group> repository, IRepository<GroupMember> groupMemberRepository, IUnitOfWork uow) : base(repository, uow)
         {
             this.groupMemberRepository = groupMemberRepository;
             this.groupMemberQuery = groupMemberQuery;
+            this.groupQuery = groupQuery;
         }
         public void AddToGroup(int groupId, int userId, int roleId)
         {
@@ -28,6 +30,22 @@ namespace BusinessLayer.Services
             };
             groupMemberRepository.Insert(groupMember);
             _uow.Commit();
+        }
+
+        public IEnumerable<Group> FindByName(string name)
+        {
+            var query = FindQuery(name);
+            return query.Execute().Items;
+        }
+
+        public IEnumerable<Group> FindByName(string name, int pageSize, int page)
+        {
+            var query = FindQuery(name);
+            return query.Page(page, pageSize).Execute().Items;
+        }
+        private IQuery<Group> FindQuery(string name)
+        {
+            return groupQuery.Where<string>(grpname => grpname.Contains(name, StringComparison.InvariantCulture), nameof(Group.Name));
         }
         public bool RemoveFromGroup(int userId, int groupId)
         {

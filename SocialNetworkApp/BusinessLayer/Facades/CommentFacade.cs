@@ -1,16 +1,9 @@
 ﻿using AutoMapper;
 using BusinessLayer.Contracts;
 using BusinessLayer.DTOs.Comment;
-using BusinessLayer.DTOs.Event;
 using BusinessLayer.Facades.Interfaces;
 using DataAccessLayer.Entity;
-using Infrastructure.Query;
-using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace BusinessLayer.Facades
 {

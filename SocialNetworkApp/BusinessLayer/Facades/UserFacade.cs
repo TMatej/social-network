@@ -49,7 +49,7 @@ namespace BusinessLayer.Facades
 
         public void UpdateUserAvatar(int userId, IFormFile avatar)
         {
-          userService.changeAvatar(userId, avatar);
+          userService.ChangeAvatar(userId, avatar);
           unitOfWork.Commit();
         }
     }

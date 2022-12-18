@@ -19,7 +19,7 @@ namespace DalUnitTests.EntityTests
 
                 db.Users.Add(new User
                 {
-                    Username = "ben",
+                    Name = "ben",
                     Email = "ben@gmail.com",
                     PasswordHash = "aaafht3x"
                 });

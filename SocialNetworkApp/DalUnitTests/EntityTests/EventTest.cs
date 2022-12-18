@@ -16,7 +16,7 @@ namespace DalUnitTests.EntityTests
 
                 db.Users.Add(new User
                 {
-                    Username = "ben",
+                    Name = "ben",
                     Email = "ben@gmail.com",
                     PasswordHash = "aaafht3x"
                 });
@@ -49,7 +49,7 @@ namespace DalUnitTests.EntityTests
                 {
                     UserId = 1,
                     GroupId = 1,
-                    Title = "Example Event",
+                    Name = "Example Event",
                     Description = "This is an example event",
                 });
                 db.SaveChanges();
@@ -67,7 +67,7 @@ namespace DalUnitTests.EntityTests
             {
                 db.Events.Add(new Event
                 {
-                    Title = "Example Event",
+                    Name = "Example Event",
                     Description = "This is an example event",
                 });
                 Assert.Throws<DbUpdateException>(() => db.SaveChanges());
@@ -82,7 +82,7 @@ namespace DalUnitTests.EntityTests
                 {
                     UserId = 1,
                     GroupId = 2,
-                    Title = new String('l', 1000),
+                    Name = new String('l', 1000),
                     Description = new String('l', 1000),
                 });
                 Assert.Throws<DbUpdateException>(() => db.SaveChanges());

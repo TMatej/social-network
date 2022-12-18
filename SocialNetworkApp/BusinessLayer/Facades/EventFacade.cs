@@ -30,7 +30,7 @@ namespace BusinessLayer.Facades
                 Description = eventCreateDTO.Description,
                 GroupId = eventCreateDTO.Group.Id,
                 UserId = eventCreateDTO.User.Id,
-                Title = eventCreateDTO.Title
+                Name = eventCreateDTO.Title
             };
             eventService.Insert(_event);
         }
@@ -56,7 +56,7 @@ namespace BusinessLayer.Facades
 
         public IEnumerable<EventRepresentDTO> FindByName(string name)
         {
-            var events = eventService.FindByName(name);
+            var events = eventService.Find(name);
             return events.Select(e => mapper.Map<EventRepresentDTO>(e));
         }
 

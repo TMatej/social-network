@@ -10,7 +10,7 @@ namespace DataAccessLayer.Entity
 
         [Required]
         [MaxLength(64)]
-        public string Username { get; set; }
+        public string Name { get; set; }
 
         [Required]
         [MaxLength(1024)]

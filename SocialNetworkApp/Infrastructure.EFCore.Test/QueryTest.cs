@@ -21,37 +21,37 @@ namespace Infrastructure.EFCore.Test
 
             dbContext.Users.Add(new User
             {
-                Username = "ben",
+                Name = "ben",
                 Email = "ben@gmail.com",
                 PasswordHash = "aaafht3x"
             });
             dbContext.Users.Add(new User
             {
-                Username = "thomas",
+                Name = "thomas",
                 Email = "thomas@gmail.com",
                 PasswordHash = "541dremnb4"
             });
             dbContext.Users.Add(new User
             {
-                Username = "bob",
+                Name = "bob",
                 Email = "bob@gmail.com",
                 PasswordHash = "6sdf198ve2"
             });
             dbContext.Users.Add(new User
             {
-                Username = "john",
+                Name = "john",
                 Email = "john@gmail.com",
                 PasswordHash = "51df6545ecvd"
             });
             dbContext.Users.Add(new User
             {
-                Username = "peter",
+                Name = "peter",
                 Email = "peter@gmail.com",
                 PasswordHash = "5e21e65ver"
             });
             dbContext.Users.Add(new User
             {
-                Username = "bradley",
+                Name = "bradley",
                 Email = "bradley@gmail.com",
                 PasswordHash = "21ef5evc7"
             });
@@ -72,11 +72,11 @@ namespace Infrastructure.EFCore.Test
             var query = new EntityFrameworkQuery<User>(dbContext, unitOfWork);
             var username = "thomas";
 
-            query.Where<string>(u => u == username, "Username");
+            query.Where<string>(u => u == username, "Name");
             var result = query.Execute();
 
             Assert.True(result.Items.Count() == 1);
-            Assert.True(result.Items.First().Username == username);
+            Assert.True(result.Items.First().Name == username);
         }
 
         [Test]
