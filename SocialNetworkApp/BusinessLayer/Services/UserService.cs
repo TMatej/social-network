@@ -95,7 +95,7 @@ namespace BusinessLayer.Services
             _uow.Commit();
         }
 
-        public void changeAvatar(int userId, IFormFile avatar)
+        public void ChangeAvatar(int userId, IFormFile avatar)
         {
             Guard.Against.Null(userId);
 
@@ -134,6 +134,19 @@ namespace BusinessLayer.Services
             }
 
             return mapper.Map<UserDTO>(user);
+        }
+
+        public IEnumerable<User> FindByName(string name) {
+            var query = FindQuery(name);
+            return query.Execute().Items;
+        }
+        public IEnumerable<User> FindByName(string name,int pageSize, int page)
+        {
+            var query = FindQuery(name);
+            return query.Page(page,pageSize).Execute().Items;
+        }
+        private IQuery<User> FindQuery(string name) { 
+            return userQuery.Where<string>(username => username.Contains(name, StringComparison.InvariantCulture), nameof(User.Username));
         }
     }
 }

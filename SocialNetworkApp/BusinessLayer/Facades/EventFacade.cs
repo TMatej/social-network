@@ -56,7 +56,7 @@ namespace BusinessLayer.Facades
 
         public IEnumerable<EventRepresentDTO> FindByName(string name)
         {
-            var events = eventService.FindByName(name);
+            var events = eventService.Find(name);
             return events.Select(e => mapper.Map<EventRepresentDTO>(e));
         }
 

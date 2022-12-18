@@ -4,6 +4,7 @@ using DataAccessLayer.Entity.JoinEntity;
 using Infrastructure.Query;
 using Infrastructure.Repository;
 using Infrastructure.UnitOfWork;
+using System.Drawing.Printing;
 
 namespace BusinessLayer.Services
 {
@@ -25,11 +26,6 @@ namespace BusinessLayer.Services
             var executed = query.Execute();
             var items = executed.Items;
             return items;
-        }
-
-        public IEnumerable<Event> FindByName(string name)
-        {
-            return eventQuery.Where<string>(name => name.Contains(name, StringComparison.CurrentCultureIgnoreCase), nameof(Event.Title)).Execute().Items;
         }
 
         public IEnumerable<Event> FindByGroup(Group group)
@@ -60,6 +56,23 @@ namespace BusinessLayer.Services
                 return true;
             }
             return false;
+        }
+
+        private IQuery<Event> FindQuery(string name)
+        {
+            return eventQuery.Where<string>(name => name.Contains(name, StringComparison.CurrentCultureIgnoreCase), nameof(Event.Title)).Execute().Items;
+        }
+
+        public IEnumerable<Event> Find(string name, int pageSize, int page)
+        {
+            var query = FindQuery(name);
+            return query.Page(page, pageSize).Execute().Items;
+        }
+
+        public IEnumerable<Event> Find(string name)
+        {
+            var query = FindQuery(name);
+            return query.Execute().Items;
         }
     }
 }

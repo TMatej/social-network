@@ -9,6 +9,8 @@ namespace BusinessLayer.Contracts
         public void Register(UserRegisterDTO registerDTO);
         public void AddContacts(int userId, List<int> contactIds);
         public UserDTO AuthenticateUser(UserLoginDTO userLoginDTO);
-        public void changeAvatar(int userId, IFormFile avatar);
+        public void ChangeAvatar(int userId, IFormFile avatar);
+        public IEnumerable<User> FindByName(string name);
+        public IEnumerable<User> FindByName(string name, int pageSize, int page);
     }
 }

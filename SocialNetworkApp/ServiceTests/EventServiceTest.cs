@@ -102,7 +102,7 @@ namespace ServiceTests
         public void FindByTitle()
         {
             var eventService = new EventService(eventQuery, participantQuery, eventRepository, participantRepository, uow);
-            eventService.FindByName("Test");
+            eventService.Find("Test");
             eventQuery.Received().Where(Arg.Any<Expression<Func<string, bool>>>(), "Title");
             eventQuery.Received().Execute();
         }
