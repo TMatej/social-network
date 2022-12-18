@@ -1,4 +1,5 @@
 using DataAccessLayer.Entity.JoinEntity;
+using Infrastructure.Query;
 using Infrastructure.Repository;
 using Infrastructure.UnitOfWork;
 
@@ -9,6 +10,7 @@ namespace ServiceTests
         Contact contact;
         IRepository<Contact> repo;
         IUnitOfWork uow;
+        IQuery<Contact> query;
         [SetUp]
         public void Setup()
         {
@@ -19,12 +21,13 @@ namespace ServiceTests
             };
             repo = Substitute.For<IRepository<Contact>>();
             uow = Substitute.For<IUnitOfWork>();
+            query = Substitute.For<IQuery<Contact>>();
         }
 
         [Test]
         public void Insert()
         {
-            var contactService = new ContactService(repo, uow);
+            var contactService = new ContactService(repo, query, uow);
             contactService.Insert(contact);
 
             repo.Received(1).Insert(contact);
