@@ -63,7 +63,7 @@ namespace BusinessLayer.Services
 
             User user = new User
             {
-                Name = registerDTO.Username,
+                Username = registerDTO.Username,
                 PasswordHash = passwordHash,
                 Email = registerDTO.Email,
                 Profile = profile,
@@ -138,15 +138,15 @@ namespace BusinessLayer.Services
 
         public IEnumerable<User> FindByName(string name) {
             var query = FindQuery(name);
-            return query.Execute().Items;
+            return query.Include(nameof(User.Avatar)).Execute().Items;
         }
         public IEnumerable<User> FindByName(string name,int pageSize, int page)
         {
             var query = FindQuery(name);
-            return query.Page(page,pageSize).Execute().Items;
+            return query.Include(nameof(User.Avatar)).Page(page,pageSize).Execute().Items;
         }
         private IQuery<User> FindQuery(string name) { 
-            return userQuery.Where<string>(username => username.Contains(name, StringComparison.InvariantCulture), nameof(User.Name));
+            return userQuery.Where<string>(username => username.ToLower().Contains(name.ToLower()), nameof(User.Username));
         }
     }
 }

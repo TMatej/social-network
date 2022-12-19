@@ -1,14 +1,7 @@
 ﻿using AutoMapper;
 using BusinessLayer.Contracts;
-using BusinessLayer.DTOs.Event;
-using BusinessLayer.DTOs.Group;
 using BusinessLayer.DTOs.Search;
-using BusinessLayer.DTOs.User;
 using BusinessLayer.Facades.Interfaces;
-using DataAccessLayer;
-using DataAccessLayer.Entity;
-using Microsoft.EntityFrameworkCore.Diagnostics;
-using Microsoft.Extensions.Logging;
 
 namespace BusinessLayer.Facades
 {
@@ -30,64 +23,37 @@ namespace BusinessLayer.Facades
         public IEnumerable<SearchResultDTO> FindAll(string name, int pageSize, int page)
         {
             var events = eventService.Find(name);
-            var eventsDTO = events.Select(e => mapper.Map<EventRepresentDTO>(e)) as List<SearchableDTO>;
+            var eventsDTO = events.Select(e => mapper.Map<SearchResultDTO>(e));
 
             var users = userService.FindByName(name);
-            var usersDTO = users.Select(u => mapper.Map<UserDTO>(u)) as List<SearchableDTO>;
+            var usersDTO = users.Select(u => mapper.Map<SearchResultDTO>(u));
 
             var groups = groupService.FindByName(name);
-            var groupsDTO = groups.Select(g => mapper.Map<GroupRepresentDTO>(g)) as List<SearchableDTO>;
+            var groupsDTO = groups.Select(g => mapper.Map<SearchResultDTO>(g));
 
             var joined = eventsDTO.Concat(usersDTO).Concat(groupsDTO);
 
-            var start = pageSize * page;
+            var start = pageSize * (page - 1);
 
-            var paginated = joined.Skip(start).Take(pageSize);
-
-            var dtos = paginated.Select(p => new SearchResultDTO()
-            {
-                searchable = p,
-                type = p.GetType(),
-            });
-
-            return dtos;
+            return joined.Skip(start).Take(pageSize);
         }
 
         public IEnumerable<SearchResultDTO> FindEvent(string name, int pageSize, int page)
         {
             var events = eventService.Find(name, pageSize, page);
-            var eventsDTO = events.Select(e => mapper.Map<EventRepresentDTO>(e)) as List<SearchableDTO>;
-            var dtos = eventsDTO.Select(p => new SearchResultDTO()
-            {
-                searchable = p,
-                type = p.GetType(),
-            });
-            return dtos;
+            return events.Select(e => mapper.Map<SearchResultDTO>(e));
         }
 
         public IEnumerable<SearchResultDTO> FindGroup(string name, int pageSize, int page)
         {
             var groups = groupService.FindByName(name, pageSize, page);
-            var eventsDTO = groups.Select(e => mapper.Map<GroupRepresentDTO>(e)) as List<SearchableDTO>;
-            var dtos = eventsDTO.Select(p => new SearchResultDTO()
-            {
-                searchable = p,
-                type = p.GetType(),
-            });
-            return dtos;
+            return groups.Select(e => mapper.Map<SearchResultDTO>(e));
         }
 
         public IEnumerable<SearchResultDTO> FindUser(string name, int pageSize, int page)
         {
             var users = userService.FindByName(name, pageSize, page);
-            var usersDTO = users.Select(u => mapper.Map<UserDTO>(u)) as List<SearchableDTO>;
-            var dtos = usersDTO.Select(p => new SearchResultDTO()
-            {
-                searchable = p,
-                type = p.GetType(),
-            });
-            return dtos;
+            return users.Select(u => mapper.Map<SearchResultDTO>(u));
         }
-
     }
 }

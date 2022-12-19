@@ -36,19 +36,19 @@ namespace ServiceTests
             mockParticipant1 = new User()
             {
                 Id = 1,
-                Name = "Participant1",
+                Username = "Participant1",
                 Contacts = new List<Contact>() { new Contact() { User1Id = 1, User2Id = 3 } }
             };
             mockParticipant2 = new User()
             {
                 Id = 3,
-                Name = "Participant2",
+                Username = "Participant2",
 
             };
             mockCreator = new User()
             {
                 Id = 2,
-                Name = "Creator",
+                Username = "Creator",
 
             };
             mockEventParticipant1 = new EventParticipant()
@@ -71,7 +71,7 @@ namespace ServiceTests
             mockEvent = new Event()
             {
                 Id = 1,
-                Name = "Test",
+                Title = "Test",
                 Description = "Test",
                 UserId = 2,
                 User = mockCreator,
@@ -103,7 +103,7 @@ namespace ServiceTests
         {
             var eventService = new EventService(eventQuery, participantQuery, eventRepository, participantRepository, uow);
             eventService.Find("Test");
-            eventQuery.Received().Where(Arg.Any<Expression<Func<string, bool>>>(), "Name");
+            eventQuery.Received().Where(Arg.Any<Expression<Func<string, bool>>>(), nameof(Event.Title));
             eventQuery.Received().Execute();
         }
 

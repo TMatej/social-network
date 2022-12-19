@@ -1,5 +1,4 @@
 ﻿using DataAccessLayer.Entity;
-using Infrastructure.Query;
 
 namespace BusinessLayer.Contracts
 {

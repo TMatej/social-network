@@ -1,6 +1,4 @@
-﻿using BusinessLayer.DTOs.Comment;
-using BusinessLayer.DTOs.Search;
-using BusinessLayer.Facades;
+﻿using BusinessLayer.DTOs.Search;
 using BusinessLayer.Facades.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using PresentationLayer.Models;
@@ -20,8 +18,8 @@ namespace PresentationLayer.Controllers
 
         ///search/users?username={username}&page={page}&size={size}
 
-        [HttpGet("search/users")]
-        public IActionResult SearchUsers(string name, int page, int size)
+        [HttpGet("users")]
+        public IActionResult SearchUsers(string name, int page = 1, int size = 10)
         {
             var users = searchFacade.FindUser(name, size, page);
             var paginated = new Paginated<SearchResultDTO>()
@@ -36,8 +34,8 @@ namespace PresentationLayer.Controllers
 
         ///search/events?name={name}&page={page}&size={size}
 
-        [HttpGet("search/events")]
-        public IActionResult SearchEvents(string name, int page, int size)
+        [HttpGet("events")]
+        public IActionResult SearchEvents(string name, int page = 1, int size = 10)
         {
             var events = searchFacade.FindEvent(name,size,page);
             var paginated = new Paginated<SearchResultDTO>()
@@ -51,8 +49,8 @@ namespace PresentationLayer.Controllers
 
         ///search/groups?name={name}&page={page}&size={size}
 
-        [HttpGet]
-        public IActionResult SearchGroups(string name, int page, int size)
+        [HttpGet("groups")]
+        public IActionResult SearchGroups(string name, int page = 1, int size = 10)
         {
             var groups = searchFacade.FindGroup(name,size,page);
             var paginated = new Paginated<SearchResultDTO>()
@@ -67,7 +65,7 @@ namespace PresentationLayer.Controllers
         ///search?value={value}&page={page}&size={size}
 
         [HttpGet]
-        public IActionResult SearchAll(string name, int page, int size)
+        public IActionResult SearchAll(string name, int page = 1, int size = 10)
         {
             var all = searchFacade.FindAll(name, size, page);
             var paginated = new Paginated<SearchResultDTO>()

@@ -45,7 +45,7 @@ namespace BusinessLayer.Services
         }
         private IQuery<Group> FindQuery(string name)
         {
-            return groupQuery.Where<string>(grpname => grpname.Contains(name, StringComparison.InvariantCulture), nameof(Group.Name));
+            return groupQuery.Where<string>(grpname => grpname.ToLower().Contains(name.ToLower()), nameof(Group.Name));
         }
         public bool RemoveFromGroup(int userId, int groupId)
         {

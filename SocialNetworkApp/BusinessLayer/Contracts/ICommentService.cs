@@ -1,6 +1,5 @@
 ﻿using BusinessLayer.DTOs.Comment;
 using DataAccessLayer.Entity;
-using Infrastructure.Query;
 
 namespace BusinessLayer.Contracts
 {

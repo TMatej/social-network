@@ -1,6 +1,5 @@
 using BusinessLayer.DTOs.User;
 using Microsoft.AspNetCore.Mvc;
-using PresentationLayer.Models;
 using BusinessLayer.Facades.Interfaces;
 using BusinessLayer.DTOs.Profile;
 using Microsoft.AspNetCore.Authorization;

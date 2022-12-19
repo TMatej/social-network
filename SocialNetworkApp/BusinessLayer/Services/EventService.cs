@@ -4,7 +4,6 @@ using DataAccessLayer.Entity.JoinEntity;
 using Infrastructure.Query;
 using Infrastructure.Repository;
 using Infrastructure.UnitOfWork;
-using System.Drawing.Printing;
 
 namespace BusinessLayer.Services
 {
@@ -60,7 +59,7 @@ namespace BusinessLayer.Services
 
         private IQuery<Event> FindQuery(string name)
         {
-            return eventQuery.Where<string>(n => n.Contains(name, StringComparison.CurrentCultureIgnoreCase), nameof(Event.Name));
+            return eventQuery.Where<string>(n => n.ToLower().Contains(name.ToLower()), nameof(Event.Title));
         }
 
         public IEnumerable<Event> Find(string name, int pageSize, int page)
