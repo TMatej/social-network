@@ -5,7 +5,7 @@ namespace BusinessLayer.Contracts
 {
     public interface IProfileService : IGenericService<Profile>
     {
-        public void addPost(int profileId, int userId, PostCreateDTO postDTO);
-        public Profile getByUserId(int userId);
+        public void AddPost(int profileId, int userId, PostCreateDTO postDTO);
+        public Profile GetByUserId(int userId);
     }
 }

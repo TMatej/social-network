@@ -22,7 +22,7 @@ namespace BusinessLayer.Services
             this.profileQuery = profileQuery;
         }
 
-        public void addPost(int profileId, int userId, PostCreateDTO postDTO)
+        public void AddPost(int profileId, int userId, PostCreateDTO postDTO)
         {
             Post post = mapper.Map<Post>(postDTO);
             post.UserId = userId;
@@ -31,7 +31,7 @@ namespace BusinessLayer.Services
             postService.Insert(post);
         }
 
-        public Profile getByUserId(int userId)
+        public Profile GetByUserId(int userId)
         {
             var profile = profileQuery.Where<int>(id => id == userId, "UserId").Include(nameof(Profile.User), $"{nameof(Profile.User)}.{nameof(User.Avatar)}").Execute().Items.FirstOrDefault();
 

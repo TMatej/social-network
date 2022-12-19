@@ -148,5 +148,17 @@ namespace BusinessLayer.Services
         private IQuery<User> FindQuery(string name) { 
             return userQuery.Where<string>(username => username.ToLower().Contains(name.ToLower()), nameof(User.Username));
         }
+
+        public UserDTO GetByIdDetailed(int userId)
+        {
+            var user = userQuery.Where<int>(id => id == userId, nameof(User.Id))
+              .Include(nameof(User.UserRoles))
+              .Include(nameof(User.Avatar))
+              .Execute()
+              .Items
+              .FirstOrDefault();
+
+            return mapper.Map<UserDTO>(user);
+        }
     }
 }

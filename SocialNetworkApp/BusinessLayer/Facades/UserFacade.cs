@@ -22,7 +22,7 @@ namespace BusinessLayer.Facades
 
         public UserDTO GetUserFromCookieAuthId(int id)
         {
-            var user = userService.GetByID(id);
+            var user = userService.GetByIdDetailed(id);
             if (user == null)
             {
                 throw new UnauthorizedAccessException();

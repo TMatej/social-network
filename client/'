@@ -13,12 +13,10 @@ export const Galleries = () => {
   const { profile } = useOutletContext<{ profile: Profile }>();
   const openDialog = useStore((state) => state.openDialog);
   const user = useStore((state) => state.user);
-  const { data: galleries } = useQuery(
-    ["profiles", profile.id, "galleries"],
-    () =>
-      axios
-        .get<Gallery[]>(`/profiles/${profile.id}/galleries`)
-        .then((res) => res.data)
+  const { data: galleries } = useQuery(["galleries"], () =>
+    axios
+      .get<Gallery[]>(`/profiles/${profile.id}/galleries`)
+      .then((res) => res.data)
   );
   const isCurrentUser = user?.id === profile?.user?.id;
 
@@ -47,15 +45,13 @@ export const Galleries = () => {
           <NavLink
             to={`./${gallery.id}`}
             key={gallery.id}
-            className="w-full border-white border-opacity-5 rounded overflow-hidden"
+            className="w-full border-2 border-white border-opacity-5 rounded overflow-hidden"
           >
-            <Paper className="p-2 h-full flex flex-col">
-              <p className="pb-2 text-white text-lg text-center border-b border-b-slate-600">
+            <Paper className="p-2">
+              <p className="mb-2 text-white text-lg text-center">
                 {gallery.title}
               </p>
-              <p className="p-2 text-slate-300 text-center flex-grow flex items-center justify-center">
-                {gallery.description || "No description"}
-              </p>
+              <p className="p-2 border-slate-300">{gallery.description}</p>
             </Paper>
           </NavLink>
         ))}

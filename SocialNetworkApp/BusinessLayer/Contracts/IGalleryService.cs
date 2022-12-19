@@ -6,9 +6,10 @@ namespace BusinessLayer.Contracts
 {
     public interface IGalleryService : IGenericService<Gallery>
     {
-        void UploadPhotoToGallery(PhotoInsertDTO photoDTO, int galleryId);
+        void UploadPhotoToGallery(PhotoCreateDTO photoDTO, int galleryId);
         GalleryWithPhotosRepresentDTO GetByIdWithPhotos(int id);
         GalleryWithProfileRepresentDTO GetByIdWithProfile(int id);
         GalleryRepresentDTO GetByIdDetailed(int id);
+        public IEnumerable<GalleryRepresentDTO> GetGalleriesByProfileId(int profileId);
     }
 }
