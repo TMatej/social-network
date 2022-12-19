@@ -5,6 +5,7 @@ using BusinessLayer.DTOs.Photo;
 using BusinessLayer.DTOs.Post;
 using BusinessLayer.DTOs.Profile;
 using BusinessLayer.DTOs.Query;
+using BusinessLayer.DTOs.Search;
 using BusinessLayer.DTOs.User;
 using DataAccessLayer.Entity;
 
@@ -15,7 +16,7 @@ namespace BusinessLayer.Config
 
         public MappingProfile()
         {
-            /* Gallery */
+            // Gallery 
             CreateMap<Gallery, GalleryBasicRepresentDTO>();
             CreateMap<GalleryCreateDTO, Gallery>();
             CreateMap<Photo, PhotoInsertDTO>().ReverseMap();
@@ -32,29 +33,45 @@ namespace BusinessLayer.Config
             CreateMap<FileEntity, FileEntityDTO>().ReverseMap();
             CreateMap<FileEntity, FileStreamDTO>().ReverseMap();
 
-            /* Photo */
+            // Photo
             CreateMap<Photo, PhotoInsertDTO>().ReverseMap();
             CreateMap<Photo, PhotoRepresentDTO>().ReverseMap();
             
-            /* Comment */
+            // Comment
             CreateMap<Comment, CommentCreateDTO>().ReverseMap();
             CreateMap<Comment, CommentEditDTO>().ReverseMap();
             CreateMap<Comment, CommentRepresentDTO>().ReverseMap();
             CreateMap<Comment, CommentBasicRepresentDTO>().ReverseMap();
             
-            /* Profile */
+            // Profile 
             CreateMap<DataAccessLayer.Entity.Profile, ProfileBasicRepresentDTO>().ReverseMap();      
             
-            /* Post */
+            // Post 
             CreateMap<PostCreateDTO, Post>().ReverseMap();
             CreateMap<Post, PostRepresentDTO>().ReverseMap();
 
             // Address
             CreateMap<Address, AddressDTO>().ReverseMap();
 
-            /* User */
+            // User 
             CreateMap<User, UserDTO>()
               .ForMember(x => x.Roles, opt => opt.MapFrom(x => x.UserRoles.Select(r => r.Role.Name)))
+              .ReverseMap();
+            CreateMap<User, SearchResultDTO>()
+              .ForMember(x => x.Type, opt => opt.MapFrom(x => x.GetType().Name))
+              .ForMember(x => x.Name, opt => opt.MapFrom(x => x.Username))
+              .ForMember(x => x.Image, opt => opt.MapFrom(x => x.Avatar))
+              .ReverseMap();
+
+            // Group
+            CreateMap<Group, SearchResultDTO>()
+              .ForMember(x => x.Type, opt => opt.MapFrom(x => x.GetType().Name))
+              .ReverseMap();
+
+            // Event
+            CreateMap<Event, SearchResultDTO>()
+              .ForMember(x => x.Type, opt => opt.MapFrom(x => x.GetType().Name))
+              .ForMember(x => x.Name, opt => opt.MapFrom(x => x.Title))
               .ReverseMap();
         }
     }

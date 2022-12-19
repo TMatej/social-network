@@ -5,12 +5,6 @@ using BusinessLayer.DTOs.Group;
 using BusinessLayer.DTOs.User;
 using BusinessLayer.Facades.Interfaces;
 using DataAccessLayer.Entity;
-using Microsoft.EntityFrameworkCore.Diagnostics;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BusinessLayer.Facades
 {
@@ -30,7 +24,7 @@ namespace BusinessLayer.Facades
                 Description = eventCreateDTO.Description,
                 GroupId = eventCreateDTO.Group.Id,
                 UserId = eventCreateDTO.User.Id,
-                Name = eventCreateDTO.Title
+                Title = eventCreateDTO.Title
             };
             eventService.Insert(_event);
         }

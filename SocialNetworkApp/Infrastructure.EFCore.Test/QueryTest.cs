@@ -21,37 +21,37 @@ namespace Infrastructure.EFCore.Test
 
             dbContext.Users.Add(new User
             {
-                Name = "ben",
+                Username = "ben",
                 Email = "ben@gmail.com",
                 PasswordHash = "aaafht3x"
             });
             dbContext.Users.Add(new User
             {
-                Name = "thomas",
+                Username = "thomas",
                 Email = "thomas@gmail.com",
                 PasswordHash = "541dremnb4"
             });
             dbContext.Users.Add(new User
             {
-                Name = "bob",
+                Username = "bob",
                 Email = "bob@gmail.com",
                 PasswordHash = "6sdf198ve2"
             });
             dbContext.Users.Add(new User
             {
-                Name = "john",
+                Username = "john",
                 Email = "john@gmail.com",
                 PasswordHash = "51df6545ecvd"
             });
             dbContext.Users.Add(new User
             {
-                Name = "peter",
+                Username = "peter",
                 Email = "peter@gmail.com",
                 PasswordHash = "5e21e65ver"
             });
             dbContext.Users.Add(new User
             {
-                Name = "bradley",
+                Username = "bradley",
                 Email = "bradley@gmail.com",
                 PasswordHash = "21ef5evc7"
             });
@@ -76,7 +76,7 @@ namespace Infrastructure.EFCore.Test
             var result = query.Execute();
 
             Assert.True(result.Items.Count() == 1);
-            Assert.True(result.Items.First().Name == username);
+            Assert.True(result.Items.First().Username == username);
         }
 
         [Test]

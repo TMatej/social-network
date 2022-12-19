@@ -1,7 +1,5 @@
 ﻿using BusinessLayer.DTOs.Event;
-using BusinessLayer.DTOs.Group;
 using BusinessLayer.Facades.Interfaces;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace PresentationLayer.Controllers

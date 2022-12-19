@@ -23,14 +23,14 @@ namespace Infrastructure.EFCore.Test
 
             dbContext.Users.Add(new User
             {
-                Name = "ben",
+                Username = "ben",
                 Email = "ben@gmail.com",
                 PasswordHash = "aaafht3x"
             });
 
             dbContext.Users.Add(new User
             {
-                Name = "john",
+                Username = "john",
                 Email = "john@gmail.com",
                 PasswordHash = "51df6545ecvd"
             });
@@ -52,7 +52,7 @@ namespace Infrastructure.EFCore.Test
 
             repository.Insert(new User
             {
-                Name = "thomas",
+                Username = "thomas",
                 Email = "thomas@gmail.com",
                 PasswordHash = "541dremnb4"
             });
@@ -62,7 +62,7 @@ namespace Infrastructure.EFCore.Test
             var countAfter = dbContext.Users.Count();
             Assert.IsTrue(countAfter == countBefore + 1);
 
-            var user = dbContext.Users.Where(u => u.Name == "thomas");
+            var user = dbContext.Users.Where(u => u.Username == "thomas");
             Assert.IsNotNull(user);
         }
 
@@ -78,7 +78,7 @@ namespace Infrastructure.EFCore.Test
         [Test]
         public void GetByIdTest()
         {
-            var user = dbContext.Users.Where(u => u.Name == "ben").First();
+            var user = dbContext.Users.Where(u => u.Username == "ben").First();
             var found = repository.GetByID(user.Id);
 
             Assert.That(found, Is.EqualTo(user));
@@ -87,24 +87,24 @@ namespace Infrastructure.EFCore.Test
         [Test]
         public void DeleteTest()
         {
-            var user = dbContext.Users.Where(u => u.Name == "ben").First();
+            var user = dbContext.Users.Where(u => u.Username == "ben").First();
             repository.Delete(user.Id);
             dbContext.SaveChanges();
 
-            var count = dbContext.Users.Where(u => u.Name == "ben").Count();
+            var count = dbContext.Users.Where(u => u.Username == "ben").Count();
             Assert.True(count == 0);
         }
 
         [Test]
         public void UpdateTest()
         {
-            var user = dbContext.Users.Where(u => u.Name == "ben").First();
+            var user = dbContext.Users.Where(u => u.Username == "ben").First();
 
-            user.Name = "theNewBen";
+            user.Username = "theNewBen";
             repository.Update(user);
             dbContext.SaveChanges();
 
-            var count = dbContext.Users.Where(u => u.Name == "theNewBen").Count();
+            var count = dbContext.Users.Where(u => u.Username == "theNewBen").Count();
             Assert.That(count == 1);
         }
     }

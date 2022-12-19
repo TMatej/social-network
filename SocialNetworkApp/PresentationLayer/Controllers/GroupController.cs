@@ -1,9 +1,4 @@
-﻿using BusinessLayer.DTOs.User;
-using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using System.Security.Claims;
+﻿using Microsoft.AspNetCore.Mvc;
 using BusinessLayer.DTOs.Group;
 using BusinessLayer.Facades.Interfaces;
 

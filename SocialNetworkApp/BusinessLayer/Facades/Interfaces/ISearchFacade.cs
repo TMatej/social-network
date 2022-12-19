@@ -1,13 +1,4 @@
-﻿using BusinessLayer.DTOs.Event;
-using BusinessLayer.DTOs.Group;
-using BusinessLayer.DTOs.Search;
-using BusinessLayer.DTOs.User;
-using DataAccessLayer.Entity;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using BusinessLayer.DTOs.Search;
 
 namespace BusinessLayer.Facades.Interfaces
 {
