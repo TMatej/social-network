@@ -60,18 +60,13 @@ namespace ServiceTests
                 Content = "Test",
             };
 
-            postQuery.Where<int>(Arg.Any<Expression<Func<int, bool>>>(), Arg.Any<string>()).Returns(postQuery);
-            postQuery.Page(Arg.Any<int>(), Arg.Any<int>()).Returns(postQuery);
-            postQuery.OrderBy<DateTime>(Arg.Any<string>()).Returns(postQuery);
-            postQuery.Include(Arg.Any<string>()).Returns(postQuery);
-            postQuery.Execute().Returns(new QueryResult<Post>(1, 3, 20, new List<Post>() { post }));
-
+            var postQuery = MockQuery.CreateMockQueryWithResult<Post>(new QueryResult<Post>(1, 3, 20 , new List<Post> { post }));
             var postService = new PostService(postRepository, uow, postQuery);
             var res = postService.getPostsForEntity(44, 3, 20);
 
-            postQuery.Received(1).Where<int>(Arg.Any<Expression<Func<int, bool>>>(), "PostableId");
+            postQuery.Received(1).Where<int>(Arg.Any<Expression<Func<int, bool>>>(), nameof(Post.PostableId));
             postQuery.Received(1).Page(3, 20);
-            postQuery.Received(1).OrderBy<DateTime>("CreatedAt");
+            postQuery.Received(1).OrderBy<DateTime>(nameof(Post.CreatedAt));
             postQuery.Received(1).Execute();
 
             Assert.That(res, Is.Not.Null);
