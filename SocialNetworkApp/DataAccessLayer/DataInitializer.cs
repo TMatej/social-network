@@ -372,7 +372,7 @@ namespace DataAccessLayer.Data
             var userJozo = new User
             {
                 Id = 1,
-                Name = "jozkoVajda123",
+                Username = "jozkoVajda123",
                 PasswordHash = "0123456789abcde0",
                 Email = "JozoJeSuper@gmail.com",
             };
@@ -380,7 +380,7 @@ namespace DataAccessLayer.Data
             var namelessUser = new User
             {
                 Id = 2,
-                Name = "lokomotivatomas123",
+                Username = "lokomotivatomas123",
                 Email = "cokoloko@gmail.com",
                 PasswordHash = "0123456789abcde0"
             };

@@ -4,6 +4,7 @@ using DataAccessLayer.Entity.JoinEntity;
 using Infrastructure.Query;
 using Infrastructure.Repository;
 using Infrastructure.UnitOfWork;
+using System.Net.Http.Headers;
 
 namespace BusinessLayer.Services
 {
@@ -17,6 +18,9 @@ namespace BusinessLayer.Services
 
         public void AddContact(int userId, int addedContactUserId)
         {
+            if (userId == addedContactUserId) {
+                throw new ArgumentException($"{nameof(userId)} can not be equal to {nameof(addedContactUserId)}");
+            }
             var contact = new Contact()
             {
                 User1Id = userId,

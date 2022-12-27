@@ -36,19 +36,19 @@ namespace ServiceTests
             mockParticipant1 = new User()
             {
                 Id = 1,
-                Name = "Participant1",
+                Username = "Participant1",
                 Contacts = new List<Contact>() { new Contact() { User1Id = 1, User2Id = 3 } }
             };
             mockParticipant2 = new User()
             {
                 Id = 3,
-                Name = "Participant2",
+                Username = "Participant2",
 
             };
             mockCreator = new User()
             {
                 Id = 2,
-                Name = "Creator",
+                Username = "Creator",
 
             };
             mockEventParticipant1 = new EventParticipant()

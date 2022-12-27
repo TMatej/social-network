@@ -30,7 +30,7 @@ namespace DalUnitTests.EntityTests
         {
             using (var db = new SocialNetworkDBContext("social-network-test-db"))
             {
-                db.Users.Add(new User { Name = "lokomotiva123", Email = "cokoloko@gmail.com", PasswordHash = "0123456789abcde0" });
+                db.Users.Add(new User { Username = "lokomotiva123", Email = "cokoloko@gmail.com", PasswordHash = "0123456789abcde0" });
                 db.SaveChanges();
 
                 var user = db.Users.FirstOrDefault();
@@ -43,7 +43,7 @@ namespace DalUnitTests.EntityTests
         {
             using (var db = new SocialNetworkDBContext("social-network-test-db"))
             {
-                db.Users.Add(new User { Name = "lokomotiva123" });
+                db.Users.Add(new User { Username = "lokomotiva123" });
 
                 Assert.Throws<DbUpdateException>(() => db.SaveChanges());
             }
@@ -53,9 +53,9 @@ namespace DalUnitTests.EntityTests
         {
             using (var db = new SocialNetworkDBContext("social-network-test-db"))
             {
-                db.Users.Add(new User { Name = "lokomotiva123", Email = "cokoloko@gmail.com", PasswordHash = "0123456789abcde0" });
+                db.Users.Add(new User { Username = "lokomotiva123", Email = "cokoloko@gmail.com", PasswordHash = "0123456789abcde0" });
 
-                db.Users.Add(new User { Name = "lokomotiva123", Email = "cokolokojine@gmail.com", PasswordHash = "ffffffffffff" });
+                db.Users.Add(new User { Username = "lokomotiva123", Email = "cokolokojine@gmail.com", PasswordHash = "ffffffffffff" });
 
                 Assert.Throws<DbUpdateException>(() => db.SaveChanges());
             }
@@ -65,7 +65,7 @@ namespace DalUnitTests.EntityTests
         {
             using (var db = new SocialNetworkDBContext("social-network-test-db"))
             {
-                db.Users.Add(new User { Name = new String('l', 100), Email = new String('l', 500), PasswordHash = "0" });
+                db.Users.Add(new User { Username = new String('l', 100), Email = new String('l', 500), PasswordHash = "0" });
 
 
                 Assert.Throws<DbUpdateException>(() => db.SaveChanges());

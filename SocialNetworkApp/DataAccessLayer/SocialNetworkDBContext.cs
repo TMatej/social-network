@@ -74,7 +74,7 @@ namespace DataAccessLayer
         {
             /* Unique names for users */
             modelBuilder.Entity<User>()
-                .HasIndex(u => u.Name)
+                .HasIndex(u => u.Username)
                 .IsUnique();
 
             modelBuilder.Entity<EventParticipant>()

@@ -15,6 +15,12 @@ namespace BusinessLayer.Facades
         readonly IContactService contactService;
         readonly IMapper mapper;
 
+        public ContactFacade(IContactService contactService, IMapper mapper)
+        {
+            this.contactService = contactService;
+            this.mapper = mapper;
+        }
+
         public void AddContact(int userId, int addedContactUserId)
         {
             contactService.AddContact(userId, addedContactUserId);
