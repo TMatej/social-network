@@ -42,7 +42,9 @@ namespace BusinessLayer
                 .InstancePerLifetimeScope()
                 .OnActivated(e => Console.WriteLine($"Build {e.Instance.GetType().Name}"));
             containerBuilder.RegisterType<GalleryFacade>()
-                .As<IGalleryFacade>()
+                .As<IGalleryFacade>();
+            containerBuilder.RegisterType<ContactFacade>()
+                .As<IContactFacade>()
                 .InstancePerLifetimeScope()
                 .OnActivated(e => Console.WriteLine($"Build {e.Instance.GetType().Name}"));
         }
