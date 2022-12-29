@@ -8,6 +8,7 @@ import { Outlet } from "react-router-dom";
 import { Button } from "./button";
 import { Header } from "./header";
 import { Paper } from "./paper";
+import { Sidebar } from "./sidebar";
 import { Spinner } from "./spinner";
 
 const fallbackRender = ({ error, resetErrorBoundary }: FallbackProps) => {
@@ -44,21 +45,26 @@ export const Layout = () => {
     <div className="h-full flex flex-col">
       <Header />
       <div className="flex-grow">
-        <QueryErrorResetBoundary>
-          {({ reset }) => (
-            <ErrorBoundary onReset={reset} fallbackRender={fallbackRender}>
-              <Suspense
-                fallback={
-                  <div className="h-full w-full flex items-center justify-center">
-                    <Spinner />
-                  </div>
-                }
-              >
-                <Outlet />
-              </Suspense>
-            </ErrorBoundary>
-          )}
-        </QueryErrorResetBoundary>
+        <div className="flex h-full">
+          <Sidebar />
+          <div className="flex-grow">
+            <QueryErrorResetBoundary>
+              {({ reset }) => (
+                <ErrorBoundary onReset={reset} fallbackRender={fallbackRender}>
+                  <Suspense
+                    fallback={
+                      <div className="h-full w-full flex items-center justify-center">
+                        <Spinner />
+                      </div>
+                    }
+                  >
+                    <Outlet />
+                  </Suspense>
+                </ErrorBoundary>
+              )}
+            </QueryErrorResetBoundary>
+          </div>
+        </div>
       </div>
     </div>
   );

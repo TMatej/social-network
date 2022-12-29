@@ -8,10 +8,12 @@ import { useStore } from "store";
 import { FormTextField } from "./input/text-field";
 import { Formik, Form } from "formik";
 import { Avatar } from "./avatar";
+import { useNavigate } from "react-router-dom";
 
 export const Header = () => {
   const user = useStore((store) => store.user);
   const setUser = useStore((store) => store.setUser);
+  const navigate = useNavigate();
   const { mutate } = useMutation(() => axios.delete("/sessions"), {
     onSuccess: () => {
       setUser(undefined);
@@ -19,8 +21,11 @@ export const Header = () => {
   });
 
   return (
-    <Paper className="!bg-slate-800 sticky z-10 top-0 p-2 flex w-full justify-between items-center">
-      <Formik initialValues={{ search: "" }} onSubmit={() => {}}>
+    <Paper className="!rounded-none !bg-slate-800 sticky z-10 top-0 p-2 flex w-full justify-between items-center">
+      <Formik
+        initialValues={{ search: "" }}
+        onSubmit={({ search }) => navigate(`/search?q=${search}`)}
+      >
         <Form>
           <FormTextField
             className="flex-grow"

@@ -13,6 +13,7 @@ import { Galleries } from "./profile/galleries";
 import { Gallery } from "./profile/gallery";
 import { Wall } from "./profile/wall";
 import { Friends } from "./profile/friends";
+import { Search } from "./search";
 
 export const Router = () => {
   const user = useStore((state) => state.user);
@@ -44,6 +45,7 @@ export const Router = () => {
       <Routes>
         {user ? (
           <Route element={<Layout />}>
+            <Route path="search" element={<Search />} />
             <Route path="profile/:id" element={<Profile />}>
               <Route path="info" element={<Info />} />
               <Route path="galleries" element={<Galleries />} />

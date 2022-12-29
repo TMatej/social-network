@@ -66,3 +66,12 @@ export type Comment = {
   content: string;
   createdAt: string;
 };
+
+export type SearchResult = {
+  type: "User" | "Event" | "Group";
+  id: number;
+  name: string;
+  description?: string;
+  image?: FileEntity;
+  createdAt?: string;
+};

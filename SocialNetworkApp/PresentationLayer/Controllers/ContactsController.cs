@@ -1,17 +1,15 @@
-﻿using BusinessLayer.DTOs.Search;
-using BusinessLayer.Facades.Interfaces;
+﻿using BusinessLayer.Facades.Interfaces;
 using Microsoft.AspNetCore.Mvc;
-using PresentationLayer.Models;
 
 namespace PresentationLayer.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class ContactController : ControllerBase
+    public class ContactsController : ControllerBase
     {
         readonly IContactFacade contactFacade;
 
-        public ContactController(IContactFacade contactFacade)
+        public ContactsController(IContactFacade contactFacade)
         {
             this.contactFacade = contactFacade;
         }

@@ -10,7 +10,7 @@ export const Avatar = ({
   onClick,
   withoutTooltip = false,
 }: {
-  user?: User;
+  user?: Pick<User, "id" | "username" | "avatar">;
   size?: "md" | "lg";
   onClick?: () => void;
   withoutTooltip?: boolean;
