@@ -70,6 +70,10 @@ namespace BusinessLayer
                 .As<IEventService>()
                 .InstancePerLifetimeScope()
                 .OnActivated(e => Console.WriteLine($"Build {e.Instance.GetType().Name}"));
+            containerBuilder.RegisterType<MessagesService>()
+                .As<IMessagesService>()
+                .InstancePerLifetimeScope()
+                .OnActivated(e => Console.WriteLine($"Build {e.Instance.GetType().Name}"));
             containerBuilder.RegisterInstance(new Mapper(new MapperConfiguration(expression => expression.AddProfile<MappingProfile>())))
                 .As<IMapper>()
                 .SingleInstance()

@@ -261,7 +261,6 @@ namespace DataAccessLayer.Data
             {
                 Id = 1,
                 Content = "I have two attchments!",
-                ConversationId = 1,
                 AuthorId = 1,
             };
 
@@ -269,7 +268,6 @@ namespace DataAccessLayer.Data
             {
                 Id = 2,
                 Content = "I am just plain text",
-                ConversationId = 1,
                 AuthorId = 2,
             };
 

@@ -50,7 +50,6 @@ namespace DalUnitTests.EntityTests
                 db.Messages.Add(new Message
                 {
                     Content = "Hello World!",
-                    ConversationId = 1,
                     AuthorId = 1,
                 });
                 db.SaveChanges();

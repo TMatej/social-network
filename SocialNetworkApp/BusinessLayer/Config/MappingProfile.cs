@@ -1,6 +1,7 @@
 using BusinessLayer.DTOs.Comment;
 using BusinessLayer.DTOs.FileEntity;
 using BusinessLayer.DTOs.Gallery;
+using BusinessLayer.DTOs.Message;
 using BusinessLayer.DTOs.Photo;
 using BusinessLayer.DTOs.Post;
 using BusinessLayer.DTOs.Profile;
@@ -74,6 +75,11 @@ namespace BusinessLayer.Config
               .ForMember(x => x.Type, opt => opt.MapFrom(x => x.GetType().Name))
               .ForMember(x => x.Name, opt => opt.MapFrom(x => x.Title))
               .ReverseMap();
+
+            // Message
+            CreateMap<Message, MessageCreateDTO>().ReverseMap();
+            CreateMap<Message, MessageRepresentDTO>().ReverseMap();
+
         }
     }
 }
