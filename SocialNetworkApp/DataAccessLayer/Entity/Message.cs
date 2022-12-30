@@ -8,10 +8,10 @@ namespace DataAccessLayer.Entity
         public int Id { get; set; }
 
         [Required]
-        public int ConversationId { get; set; }
+        public int ReceiverId { get; set; }
 
         [Required]
-        public Conversation Conversation { get; set; }
+        public User Receiver { get; set; }
 
         [Required]
         public int AuthorId { get; set; }

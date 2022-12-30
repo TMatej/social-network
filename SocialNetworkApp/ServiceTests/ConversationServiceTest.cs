@@ -46,7 +46,7 @@ namespace ServiceTests
         {
             var conversationService = new ConversationService(conversationRepo, conversationParticipantRepo, messageRepo, uow);
             conversationService.postMessage(1, 2, "content", null);
-            messageRepo.Received().Insert(Arg.Is<Message>(x => x.AuthorId == 1 && x.ConversationId == 2 && x.Content == "content"));
+            messageRepo.Received().Insert(Arg.Is<Message>(x => x.AuthorId == 1 && x.Content == "content"));
             uow.Received().Commit();
         }
 

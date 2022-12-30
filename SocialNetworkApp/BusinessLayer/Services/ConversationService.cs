@@ -57,7 +57,6 @@ namespace BusinessLayer.Services
             var message = new Message()
             {
                 AuthorId = userId,
-                ConversationId = conversationId,
                 Content = content,
             };
 
