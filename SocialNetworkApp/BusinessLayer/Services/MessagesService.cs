@@ -29,7 +29,7 @@ namespace BusinessLayer.Services
         {
             var recres = query.Where<int>(id => id == userId, nameof(Message.ReceiverId)).Include(nameof(Message.Author)).Include(nameof(Message.Receiver)).Execute().Items;
             var sendres = query.Where<int>(id => id == userId, nameof(Message.AuthorId)).Include(nameof(Message.Receiver)).Include(nameof(Message.Author)).Execute().Items;
-            var res = recres.Concat(sendres);
+            var res = recres.Concat(sendres).OrderByDescending(usr => usr.CreatedAt);
             var receivers = res.Select(msg => msg.Receiver);
             var senders = res.Select(msg => msg.Author);
             var users = receivers.Concat(senders);
