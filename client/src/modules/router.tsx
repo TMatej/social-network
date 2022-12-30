@@ -12,12 +12,13 @@ import { Info } from "./profile/info";
 import { Galleries } from "./profile/galleries";
 import { Gallery } from "./profile/gallery";
 import { Wall } from "./profile/wall";
-import { Friends } from "./profile/friends";
 import { Search } from "./search";
+import { ProfileFollowing } from "./profile/following";
 
 export const Router = () => {
   const user = useStore((state) => state.user);
   const setUser = useStore((state) => state.setUser);
+  const setFollowing = useStore((state) => state.setFollowing);
   const { isLoading, isFetchedAfterMount } = useQuery(
     ["user"],
     () => axios.get<User>("/sessions"),
@@ -27,6 +28,19 @@ export const Router = () => {
       },
       retry: false,
       suspense: false,
+    }
+  );
+
+  useQuery(
+    ["contacts", user?.id],
+    () => axios.get<User[]>(`/contacts/${user?.id}`),
+    {
+      onSuccess: ({ data }) => {
+        setFollowing(data);
+      },
+      retry: false,
+      suspense: false,
+      enabled: !!user?.id,
     }
   );
 
@@ -47,12 +61,20 @@ export const Router = () => {
           <Route element={<Layout />}>
             <Route path="search" element={<Search />} />
             <Route path="profile/:id" element={<Profile />}>
+              <Route index path="" element={<Wall />} />
               <Route path="info" element={<Info />} />
               <Route path="galleries" element={<Galleries />} />
               <Route path="galleries/:galleryId" element={<Gallery />} />
-              <Route path="wall" element={<Wall />} />
-              <Route path="friends" element={<Friends />} />
+              <Route path="following" element={<ProfileFollowing />} />
             </Route>
+            <Route
+              path="login"
+              element={<Navigate to={`/profile/${user.id}`} />}
+            />
+            <Route
+              path="signup"
+              element={<Navigate to={`/profile/${user.id}`} />}
+            />
           </Route>
         ) : (
           <>

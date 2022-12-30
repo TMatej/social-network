@@ -30,7 +30,10 @@ export const Search = () => {
   return (
     <Container className="p-3">
       <div className="flex flex-col gap-3">
-        <span className="text-2xl font-bold">Search results</span>
+        <span className="text-2xl font-bold">
+          Search results for{" "}
+          <span className="text-slate-300">"{search.get("q")}"</span>:
+        </span>
         {results?.pages.map((page, index) => (
           <Fragment key={index}>
             {page.items.map((result) => (
@@ -45,7 +48,10 @@ export const Search = () => {
                   />
                 )}
                 <div>
-                  <NavLink to="" className="text-xl font-bold mb-2">
+                  <NavLink
+                    to={result.type === "User" ? `/profile/${result.id}` : ""}
+                    className="text-xl font-bold mb-2"
+                  >
                     {result.name}
                   </NavLink>
                   <div className="flex gap-4">

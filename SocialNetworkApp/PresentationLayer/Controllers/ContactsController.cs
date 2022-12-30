@@ -14,7 +14,7 @@ namespace PresentationLayer.Controllers
             this.contactFacade = contactFacade;
         }
 
-        //GET /contact/{id}/
+        //GET /contacts/{id}/
         [HttpGet("{id}")]
         public IActionResult GetContact(int id)
         {
@@ -22,7 +22,7 @@ namespace PresentationLayer.Controllers
             return Ok(users);
         }
 
-        //PUT /contact/{id}/friends?targetUserId={targetUserId}
+        //PUT /contacts/{id}/friends?targetUserId={targetUserId}
         [HttpPut("{id}/friends")]
         public IActionResult AddContact(int id, int targetUserId)
         {
@@ -30,7 +30,7 @@ namespace PresentationLayer.Controllers
             return Ok();
         }
 
-        //DELETE /contact/{id}/friends?targetUserId={targetUserId}
+        //DELETE /contacts/{id}/friends?targetUserId={targetUserId}
         [HttpDelete("{id}/friends")]
         public IActionResult DeleteFriend(int id, int targetUserId)
         {

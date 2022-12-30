@@ -260,8 +260,8 @@ export const Wall = () => {
             <p className="text-center text-gray-300 my-4">no more posts</p>
           )}
           {page.items.map((post) => (
-            <Paper key={index} className="p-4 mt-4">
-              <Post key={post.id} post={post} />
+            <Paper key={post.id} className="p-4 mt-4">
+              <Post post={post} />
             </Paper>
           ))}
         </Fragment>

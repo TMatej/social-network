@@ -44,26 +44,24 @@ export const Layout = () => {
   return (
     <div className="h-full flex flex-col">
       <Header />
-      <div className="flex-grow">
-        <div className="flex h-full">
-          <Sidebar />
-          <div className="flex-grow">
-            <QueryErrorResetBoundary>
-              {({ reset }) => (
-                <ErrorBoundary onReset={reset} fallbackRender={fallbackRender}>
-                  <Suspense
-                    fallback={
-                      <div className="h-full w-full flex items-center justify-center">
-                        <Spinner />
-                      </div>
-                    }
-                  >
-                    <Outlet />
-                  </Suspense>
-                </ErrorBoundary>
-              )}
-            </QueryErrorResetBoundary>
-          </div>
+      <div className="mt-16 flex">
+        <Sidebar />
+        <div className="flex-grow">
+          <QueryErrorResetBoundary>
+            {({ reset }) => (
+              <ErrorBoundary onReset={reset} fallbackRender={fallbackRender}>
+                <Suspense
+                  fallback={
+                    <div className="h-full w-full flex items-center justify-center">
+                      <Spinner />
+                    </div>
+                  }
+                >
+                  <Outlet />
+                </Suspense>
+              </ErrorBoundary>
+            )}
+          </QueryErrorResetBoundary>
         </div>
       </div>
     </div>

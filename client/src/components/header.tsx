@@ -13,18 +13,23 @@ import { useNavigate } from "react-router-dom";
 export const Header = () => {
   const user = useStore((store) => store.user);
   const setUser = useStore((store) => store.setUser);
+  const setFollowing = useStore((state) => state.setFollowing);
   const navigate = useNavigate();
   const { mutate } = useMutation(() => axios.delete("/sessions"), {
     onSuccess: () => {
       setUser(undefined);
+      setFollowing(undefined);
     },
   });
 
   return (
-    <Paper className="!rounded-none !bg-slate-800 sticky z-10 top-0 p-2 flex w-full justify-between items-center">
+    <Paper className="fixed h-16 !rounded-none !bg-slate-800 z-10 p-2 flex w-full justify-between items-center">
       <Formik
         initialValues={{ search: "" }}
-        onSubmit={({ search }) => navigate(`/search?q=${search}`)}
+        onSubmit={({ search }, { resetForm }) => {
+          navigate(`/search?q=${search}`);
+          resetForm();
+        }}
       >
         <Form>
           <FormTextField

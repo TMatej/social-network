@@ -24,7 +24,7 @@ export const Login = () => {
     {
       onSuccess: ({ data: user }) => {
         setUser(user);
-        navigate(`/profile/${user.id}/info`);
+        navigate(`/profile/${user.id}`);
         showNotification({
           message: "successfully logged in",
           type: "success",

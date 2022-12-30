@@ -10,3 +10,16 @@ a {
 * {
   margin: 0;
 }
+
+body {
+  --header-height: 3.5rem;
+}
+
+.content {
+  top: var(--header-height);
+  min-height: calc(100% - var(--header-height));
+}
+
+.header {
+  height: var(--header-height);
+}

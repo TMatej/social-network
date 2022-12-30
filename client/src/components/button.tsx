@@ -11,6 +11,7 @@ export const Button = ({
   className,
   type,
   variant = "block",
+  animate = true,
 }: {
   children?: ReactNode;
   leftIcon?: ReactNode;
@@ -20,10 +21,12 @@ export const Button = ({
   disabled?: boolean;
   type?: "submit";
   variant?: "block" | "clear" | "outlined";
+  animate?: boolean;
 }) => {
   const [hovered, setHovered] = useState(false);
   const style = useSpring({
     scaleX: hovered ? 1.025 : 1,
+    cancel: !animate,
   });
 
   return (
