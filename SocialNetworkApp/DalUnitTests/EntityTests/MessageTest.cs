@@ -25,6 +25,14 @@ namespace DalUnitTests.EntityTests
                 });
                 db.SaveChanges();
 
+                db.Users.Add(new User
+                {
+                    Username = "ten",
+                    Email = "ten@gmail.com",
+                    PasswordHash = "aaafht3x"
+                });
+                db.SaveChanges();
+
                 db.Conversations.Add(new Conversation
                 {
                     UserId = 1
@@ -51,6 +59,7 @@ namespace DalUnitTests.EntityTests
                 {
                     Content = "Hello World!",
                     AuthorId = 1,
+                    ReceiverId = 2
                 });
                 db.SaveChanges();
 
