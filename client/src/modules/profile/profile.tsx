@@ -20,6 +20,7 @@ import { ProfileEditDialog } from "components/dialogs/profile-edit-dialog";
 import { Avatar } from "components/avatar";
 import { AvatarUploadDialog } from "components/dialogs/avatar-upload-dialog";
 import { useIsFollowing } from "hooks/use-is-following";
+import { useFollowActions } from "modules/following";
 
 type TabKeys = "info" | "galleries" | "wall" | "following";
 
@@ -28,59 +29,20 @@ export const Profile = () => {
   const { tabKey = "wall" } = useMatch("/profile/:id/:tabKey/*")?.params ?? {};
   const navigate = useNavigate();
   const user = useStore((store) => store.user);
-  const showNotification = useStore((store) => store.showNotification);
   const openDialog = useStore((store) => store.openDialog);
-  const queryClient = useQueryClient();
   const { data: profile } = useQuery(["profile", id], () =>
     axios.get<ProfileType>(`/users/${id}/profile`).then((res) => res.data)
   );
 
   const isFollowing = useIsFollowing();
   const follows = isFollowing(profile?.user.id);
-
-  const { mutate: followUser } = useMutation(
-    () =>
-      axios.put(
-        `/contacts/${user?.id}/friends?targetUserId=${profile?.user.id}`
-      ),
-    {
-      onSuccess: () => {
-        showNotification({
-          message: "User succesfully followed",
-          type: "success",
-        });
-        queryClient.invalidateQueries(["contacts", user?.id]);
-      },
-      onError: () => {
-        showNotification({ message: "User follow failed", type: "error" });
-      },
-    }
-  );
-
-  const { mutate: unfollowUser } = useMutation(
-    () =>
-      axios.delete(
-        `/contacts/${user?.id}/friends?targetUserId=${profile?.user.id}`
-      ),
-    {
-      onSuccess: () => {
-        showNotification({
-          message: "User succesfully unfollowed",
-          type: "success",
-        });
-        queryClient.invalidateQueries(["contacts", user?.id]);
-      },
-      onError: () => {
-        showNotification({ message: "User unfollow failed", type: "error" });
-      },
-    }
-  );
+  const { follow, unfollow } = useFollowActions();
 
   const isCurrentUser = profile?.user.id === user?.id;
 
   if (!profile) {
     return (
-      <Container>
+      <Container className="p-3">
         <Paper className="p-3">Profile does not exist</Paper>
       </Container>
     );
@@ -91,18 +53,20 @@ export const Profile = () => {
       <Paper className="p-4 flex gap-4 items-center">
         <div className="rounded-full relative">
           <Avatar user={profile.user} size="lg" withoutTooltip />
-          <Button
-            className="!rounded-full absolute -bottom-1 -right-1"
-            onClick={() =>
-              openDialog({
-                Component: AvatarUploadDialog,
-                title: "Upload avatar",
-                props: {},
-              })
-            }
-          >
-            <FontAwesomeIcon icon={faCamera} />
-          </Button>
+          {isCurrentUser && (
+            <Button
+              className="!rounded-full absolute -bottom-1 -right-1"
+              onClick={() =>
+                openDialog({
+                  Component: AvatarUploadDialog,
+                  title: "Upload avatar",
+                  props: {},
+                })
+              }
+            >
+              <FontAwesomeIcon icon={faCamera} />
+            </Button>
+          )}
         </div>
         <div className="flex-grow ml-4">
           <span className="text-3xl font-bold">
@@ -135,7 +99,7 @@ export const Profile = () => {
             {!isCurrentUser && !follows && (
               <Button
                 leftIcon={<FontAwesomeIcon icon={faUserPlus} />}
-                onClick={followUser}
+                onClick={() => follow(profile.user.id)}
               >
                 Follow
               </Button>
@@ -143,7 +107,7 @@ export const Profile = () => {
             {!isCurrentUser && follows && (
               <Button
                 leftIcon={<FontAwesomeIcon icon={faUserMinus} />}
-                onClick={unfollowUser}
+                onClick={() => unfollow(profile.user.id)}
               >
                 Unfollow
               </Button>

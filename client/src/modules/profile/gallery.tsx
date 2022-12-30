@@ -1,4 +1,9 @@
-import { faAdd, faArrowLeft, faTrash } from "@fortawesome/free-solid-svg-icons";
+import {
+  faAdd,
+  faArrowLeft,
+  faEye,
+  faTrash,
+} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Button } from "components/button";
@@ -10,6 +15,7 @@ import { axios } from "api/axios";
 import { AddPhotoDialog } from "components/dialogs/add-photo-dialog";
 import { baseUrl } from "api";
 import { useMemo } from "react";
+import { PhotoDialog } from "components/dialogs/photo-dialog";
 
 export const Gallery = () => {
   const queryClient = useQueryClient();
@@ -88,14 +94,28 @@ export const Gallery = () => {
               src={`${baseUrl}/files/${photo?.fileEntity?.guid}`}
               alt="gallery photo"
             />
-            {isCurrentUser && (
-              <Button className="!bg-red-500 absolute right-2 bottom-2">
-                <FontAwesomeIcon
-                  icon={faTrash}
-                  onClick={() => deletePhoto(photo.id)}
-                />
+            <div className="absolute right-2 bottom-2 flex items-center gap-2">
+              <Button
+                variant="outlined"
+                onClick={() =>
+                  openDialog({
+                    Component: PhotoDialog,
+                    title: photo.title,
+                    props: { guid: photo.fileEntity.guid },
+                  })
+                }
+              >
+                <FontAwesomeIcon icon={faEye} />
               </Button>
-            )}
+              {isCurrentUser && (
+                <Button
+                  variant="outlined"
+                  onClick={() => deletePhoto(photo.id)}
+                >
+                  <FontAwesomeIcon className="text-red-500" icon={faTrash} />
+                </Button>
+              )}
+            </div>
           </Paper>
         ))}
       </div>

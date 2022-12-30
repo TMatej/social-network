@@ -1,6 +1,7 @@
 import {
   faIdCard,
   faMessage,
+  faPeopleGroup,
   faUserFriends,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -14,7 +15,7 @@ export const Sidebar = () => {
   const user = useStore((store) => store.user);
 
   return (
-    <Paper className="sticky h-[calc(100vh-theme(spacing.16))] top-16 border-t !rounded-none border-t-slate-900 p-4 min-w-[350px]">
+    <Paper className="sticky h-[calc(100vh-theme(spacing.16))] top-16 border-t !rounded-none border-t-slate-900 p-4 min-w-[300px]">
       <NavItem
         to={`/profile/${user?.id}`}
         icon={<FontAwesomeIcon icon={faIdCard} />}
@@ -29,6 +30,11 @@ export const Sidebar = () => {
         to={`/chat`}
         icon={<FontAwesomeIcon icon={faMessage} />}
         label="Chat"
+      />
+      <NavItem
+        to={`/groups`}
+        icon={<FontAwesomeIcon icon={faPeopleGroup} />}
+        label="Groups"
       />
     </Paper>
   );

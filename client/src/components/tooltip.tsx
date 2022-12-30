@@ -70,7 +70,7 @@ export const Tooltip = ({
             onMouseLeave={() => setHovering(false)}
             className={clsx(
               classes.tooltip,
-              "bg-slate-800 p-2 rounded border border-slate-600"
+              "z-40 bg-slate-800 p-2 rounded border border-slate-600"
             )}
             ref={setContainer}
             style={{ ...style, ...styles.popper }}

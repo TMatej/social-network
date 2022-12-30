@@ -29,9 +29,7 @@ export const Avatar = ({
             "w-20 h-20": size === "lg",
           }
         )}
-        onClick={() =>
-          onClick ? onClick() : navigate(`/profile/${user?.id}/info`)
-        }
+        onClick={() => (onClick ? onClick() : navigate(`/profile/${user?.id}`))}
       >
         {user?.avatar ? (
           <img

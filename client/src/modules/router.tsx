@@ -14,6 +14,8 @@ import { Gallery } from "./profile/gallery";
 import { Wall } from "./profile/wall";
 import { Search } from "./search";
 import { ProfileFollowing } from "./profile/following";
+import { Chat } from "./chat";
+import { Following } from "./following";
 
 export const Router = () => {
   const user = useStore((state) => state.user);
@@ -60,6 +62,12 @@ export const Router = () => {
         {user ? (
           <Route element={<Layout />}>
             <Route path="search" element={<Search />} />
+
+            <Route path="chat" element={<Chat />} />
+            <Route path="chat/:id" element={<Chat />} />
+
+            <Route path="following" element={<Following />} />
+
             <Route path="profile/:id" element={<Profile />}>
               <Route index path="" element={<Wall />} />
               <Route path="info" element={<Info />} />
@@ -67,6 +75,7 @@ export const Router = () => {
               <Route path="galleries/:galleryId" element={<Gallery />} />
               <Route path="following" element={<ProfileFollowing />} />
             </Route>
+
             <Route
               path="login"
               element={<Navigate to={`/profile/${user.id}`} />}
