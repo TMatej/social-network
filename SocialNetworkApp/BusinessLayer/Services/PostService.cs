@@ -19,7 +19,7 @@ namespace BusinessLayer.Services
             return postQuery
                 .Where<int>(id => id == entityId, "PostableId")
                 .Page(page, pageSize)
-                .OrderBy<DateTime>("CreatedAt")
+                .OrderBy<DateTime>("CreatedAt", false)
                 .Include(nameof(Post.User), $"{nameof(Post.User)}.{nameof(User.Avatar)}")
                 .Execute()
                 .Items;

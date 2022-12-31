@@ -1,3 +1,4 @@
+import clsx from "clsx";
 import { useField } from "formik";
 import { ReactNode } from "react";
 
@@ -14,6 +15,8 @@ type TextFieldProps = {
   type?: "text" | "password";
   after?: ReactNode;
   rows?: number;
+  disabled?: boolean;
+  errorVariant?: "text" | "outline";
 };
 
 export const TextField = ({
@@ -27,6 +30,8 @@ export const TextField = ({
   type = "text",
   after,
   rows,
+  disabled,
+  errorVariant = "text",
 }: TextFieldProps) => {
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -42,7 +47,15 @@ export const TextField = ({
             {label}:
           </span>
         )}
-        <div className="rounded bg-white bg-opacity-5 p-1 w-full flex">
+        <div
+          className={clsx(
+            "rounded border border-transparent box-border bg-white bg-opacity-5 p-1 w-full flex",
+            {
+              "!border-red-500 border-opacity-50":
+                errorVariant === "outline" && error,
+            }
+          )}
+        >
           {rows ? (
             <textarea
               className="px-1 bg-transparent outline-none w-full"
@@ -50,6 +63,7 @@ export const TextField = ({
               value={value}
               onChange={handleChange}
               placeholder={placeholder}
+              disabled={disabled}
               rows={rows}
             />
           ) : (
@@ -58,6 +72,7 @@ export const TextField = ({
               name={name}
               type={type}
               value={value}
+              disabled={disabled}
               onChange={handleChange}
               placeholder={placeholder}
             />
@@ -65,7 +80,9 @@ export const TextField = ({
           {after}
         </div>
       </label>
-      {error && <span className="text-sm text-red-500">{error}</span>}
+      {error && errorVariant === "text" && (
+        <span className="text-sm text-red-500">{error}</span>
+      )}
     </div>
   );
 };

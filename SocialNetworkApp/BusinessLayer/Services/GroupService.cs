@@ -1,5 +1,6 @@
 ﻿using BusinessLayer.Contracts;
 using DataAccessLayer.Entity;
+using DataAccessLayer.Entity.Enum;
 using DataAccessLayer.Entity.JoinEntity;
 using Infrastructure.Query;
 using Infrastructure.Repository;
@@ -20,13 +21,13 @@ namespace BusinessLayer.Services
             this.groupMemberQuery = groupMemberQuery;
             this.groupQuery = groupQuery;
         }
-        public void AddToGroup(int groupId, int userId, int roleId)
+        public void AddToGroup(int groupId, int userId)
         {
             var groupMember = new GroupMember
             {
                 GroupId = groupId,
                 UserId = userId,
-                GroupRoleId = roleId
+                GroupRole = GroupRole.Member,
             };
             groupMemberRepository.Insert(groupMember);
             _uow.Commit();
@@ -57,6 +58,18 @@ namespace BusinessLayer.Services
                 return true;
             }
             return false;
+        }
+
+        public Group? GetByIdDetailed(int id) {
+          return groupQuery.Where<int>(x => x == id, nameof(Group.Id))
+            .Include(nameof(Group.GroupMembers), $"{nameof(Group.GroupMembers)}.{nameof(GroupMember.User)}")
+            .Execute().Items.FirstOrDefault();
+        }
+
+        public IEnumerable<Group> FindGroupsForUser(int userId) {
+          return groupMemberQuery.Where<int>(x => x == userId, nameof(GroupMember.UserId))
+            .Include(nameof(GroupMember.Group), $"{nameof(GroupMember.Group)}.{nameof(Group.GroupMembers)}", $"{nameof(GroupMember.Group)}.{nameof(Group.GroupMembers)}.{nameof(GroupMember.User)}")
+            .Execute().Items.Select(x => x.Group);
         }
     }
 }

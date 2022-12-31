@@ -1,7 +1,9 @@
 ﻿using BusinessLayer.DTOs.Event;
 using BusinessLayer.DTOs.Message;
+using BusinessLayer.DTOs.User;
 using BusinessLayer.Facades.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using PresentationLayer.Models;
 
 namespace PresentationLayer.Controllers
 {
@@ -28,14 +30,22 @@ namespace PresentationLayer.Controllers
         public IActionResult GetMessages(int id, int page = 1, int size = 10)
         {
             var contacts = messageFacade.GetDirectMessagesContacts(id, page, size);
-            return Ok(contacts);
+            return Ok(new Paginated<UserDTO>() {
+                Items = contacts,
+                Page = page,
+                Size = size,
+            });
         }
         ///messages?user1Id={user1Id}&user2Id={user2Id}&page={page}&size={size}
         [HttpGet("messages")]
         public IActionResult GetMessagesBetween(int user1Id, int user2Id, int page = 1, int size = 10)
         {
             var messages = messageFacade.GetDirectMessagesBetween(user1Id, user2Id, page, size);
-            return Ok(messages);
+            return Ok(new Paginated<MessageRepresentDTO>() {
+                Items = messages,
+                Page = page,
+                Size = size,
+            });
         }
 
 

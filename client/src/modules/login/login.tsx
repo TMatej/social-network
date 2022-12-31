@@ -9,11 +9,17 @@ import { Paper } from "components/paper";
 import { axios } from "api/axios";
 import { useStore } from "store";
 import { User } from "models";
+import * as yup from "yup";
 
 type LoginFormData = {
   email: string;
   password: string;
 };
+
+const schema = yup.object().shape({
+  email: yup.string().email().min(3).required(),
+  password: yup.string().min(4).required(),
+});
 
 export const Login = () => {
   const setUser = useStore((state) => state.setUser);
@@ -24,7 +30,7 @@ export const Login = () => {
     {
       onSuccess: ({ data: user }) => {
         setUser(user);
-        navigate(`/profile/${user.id}/info`);
+        navigate(`/profile/${user.id}`);
         showNotification({
           message: "successfully logged in",
           type: "success",
@@ -41,6 +47,7 @@ export const Login = () => {
 
   return (
     <Formik<LoginFormData>
+      validationSchema={schema}
       initialValues={{
         email: "ciza@gmail.com",
         password: "ciza",

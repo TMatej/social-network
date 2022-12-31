@@ -6,11 +6,15 @@ import create, { StateCreator } from "zustand";
 type AuthSlice = {
   user?: User;
   setUser: (user: User | undefined) => void;
+  following?: User[];
+  setFollowing: (following: User[] | undefined) => void;
 };
 
 const createAuthSlice: StateCreator<AuthSlice> = (set) => ({
   user: undefined,
   setUser: (user) => set({ user }),
+  following: undefined,
+  setFollowing: (following) => set({ following }),
 });
 
 export type NotificationType = {

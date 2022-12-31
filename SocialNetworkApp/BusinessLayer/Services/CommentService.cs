@@ -45,7 +45,7 @@ namespace BusinessLayer.Services
                 .Where<int>(id => id == entityId, nameof(Comment.CommentableId))
                 .Page(page, pageSize)
                 .OrderBy<DateTime>("CreatedAt")
-                .Include(nameof(Comment.User))
+                .Include(nameof(Comment.User), $"{nameof(Comment.User)}.{nameof(User.Avatar)}")
                 .Execute()
                 .Items;
         }

@@ -26,6 +26,7 @@
     "react-router-dom": "^6.4.3",
     "react-spring": "^9.5.5",
     "uuid": "^9.0.0",
+    "yup": "^0.32.11",
     "zustand": "^4.1.4"
   },
   "devDependencies": {

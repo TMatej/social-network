@@ -10,7 +10,7 @@ import { FormTextField } from "components/input/text-field";
 import { Paper } from "components/paper";
 import { Form, Formik } from "formik";
 import { axios } from "api/axios";
-import { Paginated, Post as PostType, Profile } from "models";
+import { Group, Paginated, Post as PostType } from "models";
 import { useOutletContext } from "react-router-dom";
 import { Fragment } from "react";
 import { useStore } from "store";
@@ -29,15 +29,15 @@ const schema = yup.object().shape({
 });
 
 export const Wall = () => {
-  const { profile } = useOutletContext<{ profile: Profile }>();
+  const { group } = useOutletContext<{ group: Group }>();
   const queryClient = useQueryClient();
   const showNotification = useStore((state) => state.showNotification);
   const user = useStore((state) => state.user);
   const { mutate: addPost } = useMutation(
     (data: NewPostData) =>
-      axios.post<PostType>(`/profiles/${profile.id}/posts`, {
+      axios.post<PostType>(`/groups/${group.id}/posts`, {
         ...data,
-        postableId: profile?.id,
+        postableId: group?.id,
         userId: user?.id,
       }),
     {
@@ -48,21 +48,21 @@ export const Wall = () => {
         }),
       onError: () =>
         showNotification({ message: "Adding post failed", type: "error" }),
-      onSettled: () =>
-        queryClient.invalidateQueries(["profiles", profile.id, "posts"]),
+      onSettled: () => queryClient.invalidateQueries(["groups", group.id]),
     }
   );
+
   const {
     data: posts,
     isFetching,
     fetchNextPage,
     hasNextPage,
   } = useInfiniteQuery({
-    queryKey: ["profiles", profile.id, "posts"],
+    queryKey: ["groups", group.id, "posts"],
     queryFn: ({ pageParam = 1 }) =>
       axios
         .get<Paginated<PostType>>(
-          `/profiles/${profile.id}/posts?page=${pageParam}&size=5`
+          `/groups/${group.id}/posts?page=${pageParam}&size=5`
         )
         .then((res) => res.data),
     getNextPageParam: (data) => (data.items.length ? data.page + 1 : undefined),

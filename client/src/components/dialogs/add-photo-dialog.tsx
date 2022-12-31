@@ -9,6 +9,15 @@ import { FormTextField } from "components/input/text-field";
 import { Form, Formik } from "formik";
 import { Gallery, Profile } from "models";
 import { useStore } from "store";
+import * as yup from "yup";
+
+const schema = yup
+  .object()
+  .shape({
+    file: yup.mixed().required(),
+    title: yup.string().min(3).required(),
+    description: yup.string().min(3).required(),
+  });
 
 type AddPhotoData = {
   title: string;
@@ -53,6 +62,7 @@ export const AddPhotoDialog = ({
 
   return (
     <Formik<AddPhotoData>
+      validationSchema={schema}
       initialValues={{ file: undefined, title: "", description: "" }}
       onSubmit={(data) => mutate(data)}
     >

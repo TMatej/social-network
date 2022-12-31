@@ -21,7 +21,6 @@ namespace DataAccessLayer
         public DbSet<Gallery> Galleries { get; set; }
         public DbSet<Group> Groups { get; set; }
         public DbSet<GroupMember> GroupMembers { get; set; }
-        public DbSet<GroupRole> GroupRoles { get; set; }
         public DbSet<Message> Messages { get; set; }
         public DbSet<ParticipationType> ParticipationTypes { get; set; }
         public DbSet<Photo> Photos { get; set; }
@@ -236,10 +235,6 @@ namespace DataAccessLayer
                 .HasDefaultValueSql("now()");
 
             modelBuilder.Entity<GroupMember>()
-                .Property(u => u.CreatedAt)
-                .HasDefaultValueSql("now()");
-
-            modelBuilder.Entity<GroupRole>()
                 .Property(u => u.CreatedAt)
                 .HasDefaultValueSql("now()");
 

@@ -1,6 +1,7 @@
 using BusinessLayer.DTOs.Comment;
 using BusinessLayer.DTOs.FileEntity;
 using BusinessLayer.DTOs.Gallery;
+using BusinessLayer.DTOs.Group;
 using BusinessLayer.DTOs.Message;
 using BusinessLayer.DTOs.Photo;
 using BusinessLayer.DTOs.Post;
@@ -8,6 +9,7 @@ using BusinessLayer.DTOs.Profile;
 using BusinessLayer.DTOs.Search;
 using BusinessLayer.DTOs.User;
 using DataAccessLayer.Entity;
+using DataAccessLayer.Entity.JoinEntity;
 
 namespace BusinessLayer.Config
 {
@@ -69,6 +71,10 @@ namespace BusinessLayer.Config
             CreateMap<Group, SearchResultDTO>()
               .ForMember(x => x.Type, opt => opt.MapFrom(x => x.GetType().Name))
               .ReverseMap();
+            CreateMap<Group, GroupRepresentDTO>().ForMember(x => x.GroupMembers, opt => opt.MapFrom(x => x.GroupMembers)).ReverseMap();
+            
+            // GroupMember
+            CreateMap<GroupMember, GroupMembershipDTO>().ReverseMap();
 
             // Event
             CreateMap<Event, SearchResultDTO>()

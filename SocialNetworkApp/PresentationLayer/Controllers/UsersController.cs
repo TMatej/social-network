@@ -53,6 +53,18 @@ public class UsersController : ControllerBase
         return Ok(profile);
     }
 
+    [HttpGet("{userId}/groups")]
+    [Authorize]
+    public IActionResult GetUserGroups(int userId)
+    {
+        if (userId != int.Parse(HttpContext.User.Identity.Name))
+        {
+            return Unauthorized();
+        }
+        var groups = userFacade.GetGroupsForUser(userId);
+        return Ok(groups);
+    }
+
     [HttpPut("{userId}/avatar")]
     [Authorize]
     public IActionResult UpdateAvatar(int userId, [FromForm] UpdateUserAvatarDTO updateUserAvatarDTO)

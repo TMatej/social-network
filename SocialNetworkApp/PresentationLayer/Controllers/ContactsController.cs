@@ -1,22 +1,20 @@
-﻿using BusinessLayer.DTOs.Search;
-using BusinessLayer.Facades.Interfaces;
+﻿using BusinessLayer.Facades.Interfaces;
 using Microsoft.AspNetCore.Mvc;
-using PresentationLayer.Models;
 
 namespace PresentationLayer.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class ContactController : ControllerBase
+    public class ContactsController : ControllerBase
     {
         readonly IContactFacade contactFacade;
 
-        public ContactController(IContactFacade contactFacade)
+        public ContactsController(IContactFacade contactFacade)
         {
             this.contactFacade = contactFacade;
         }
 
-        //GET /contact/{id}/
+        //GET /contacts/{id}/
         [HttpGet("{id}")]
         public IActionResult GetContact(int id)
         {
@@ -24,7 +22,7 @@ namespace PresentationLayer.Controllers
             return Ok(users);
         }
 
-        //PUT /contact/{id}/friends?targetUserId={targetUserId}
+        //PUT /contacts/{id}/friends?targetUserId={targetUserId}
         [HttpPut("{id}/friends")]
         public IActionResult AddContact(int id, int targetUserId)
         {
@@ -32,7 +30,7 @@ namespace PresentationLayer.Controllers
             return Ok();
         }
 
-        //DELETE /contact/{id}/friends?targetUserId={targetUserId}
+        //DELETE /contacts/{id}/friends?targetUserId={targetUserId}
         [HttpDelete("{id}/friends")]
         public IActionResult DeleteFriend(int id, int targetUserId)
         {

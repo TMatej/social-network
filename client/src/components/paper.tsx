@@ -4,12 +4,19 @@ import { ReactNode } from "react";
 export const Paper = ({
   children,
   className,
+  onClick,
 }: {
   children?: ReactNode;
   className?: string;
+  onClick?: () => void;
 }) => {
   return (
-    <div className={clsx("bg-white bg-opacity-5 rounded", className)}>
+    <div
+      onClick={onClick}
+      className={clsx("bg-white bg-opacity-5 rounded", className, {
+        "cursor-pointer": !!onClick,
+      })}
+    >
       {children}
     </div>
   );

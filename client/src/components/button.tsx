@@ -11,6 +11,7 @@ export const Button = ({
   className,
   type,
   variant = "block",
+  animate = true,
 }: {
   children?: ReactNode;
   leftIcon?: ReactNode;
@@ -20,10 +21,12 @@ export const Button = ({
   disabled?: boolean;
   type?: "submit";
   variant?: "block" | "clear" | "outlined";
+  animate?: boolean;
 }) => {
   const [hovered, setHovered] = useState(false);
   const style = useSpring({
     scaleX: hovered ? 1.025 : 1,
+    cancel: !animate,
   });
 
   return (
@@ -37,10 +40,10 @@ export const Button = ({
       className={clsx(
         "flex justify-center items-center rounded transition-colors",
         {
-          "py-1 px-2 bg-cyan-600 disabled:bg-cyan-900 hover:brightness-90":
+          "py-1 px-2 bg-cyan-600 disabled:bg-cyan-900 enabled:hover:brightness-90":
             variant === "block",
           "outline-none text-gray-300 px-2": variant === "clear",
-          "border py-1 px-2 border-slate-600 hover:bg-slate-600":
+          "border py-1 px-2 border-slate-600 enabled:hover:bg-slate-600":
             variant === "outlined",
         },
         className

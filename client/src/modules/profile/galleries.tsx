@@ -18,7 +18,10 @@ export const Galleries = () => {
     () =>
       axios
         .get<Gallery[]>(`/profiles/${profile.id}/galleries`)
-        .then((res) => res.data)
+        .then((res) => res.data),
+    {
+      suspense: false,
+    }
   );
   const isCurrentUser = user?.id === profile?.user?.id;
 

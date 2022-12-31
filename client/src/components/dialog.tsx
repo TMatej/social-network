@@ -5,6 +5,7 @@ import { createPortal } from "react-dom";
 import { useStore } from "store";
 import { Button } from "./button";
 import { useOnClickOutside } from "hooks/use-on-click-outside";
+import { animated, useTransition } from "react-spring";
 
 export type DialogProps<TProps extends {} = {}> = TProps & {
   closeDialog: () => void;
@@ -30,23 +31,38 @@ export const Dialog = () => {
 
   useOnClickOutside(ref, closeCurrentDialog);
 
-  if (!dialog) return null;
+  const transition = useTransition(dialog, {
+    from: { y: -40, opacity: 0 },
+    enter: { y: 0, opacity: 1 },
+    leave: { y: 40, opacity: 0 },
+  });
 
-  return createPortal(
-    <div className="fixed left-0 top-0 w-full h-full bg-black bg-opacity-25 p-4 flex items-center justify-center">
-      <div
-        ref={ref}
-        className="bg-slate-800 rounded p-4 min-w-full sm:min-w-[400px]"
-      >
-        <div className="flex justify-between items-center gap-8 pb-4">
-          <span className="text-xl font-bold">{dialog.title}</span>
-          <Button variant="clear" onClick={closeCurrentDialog}>
-            <FontAwesomeIcon icon={faClose} />
-          </Button>
-        </div>
-        <dialog.Component {...dialog.props} closeDialog={closeCurrentDialog} />
-      </div>
-    </div>,
-    document.body
+  return transition(({ y, opacity }, dialog) =>
+    createPortal(
+      dialog && (
+        <animated.div
+          style={{ opacity }}
+          className="z-30 fixed left-0 top-0 w-full h-full bg-black bg-opacity-40 p-4 sm:p-12 flex items-center justify-center"
+        >
+          <animated.div
+            style={{ y }}
+            ref={ref}
+            className="bg-slate-800 rounded p-4 min-w-full max-h-full sm:min-w-[400px] flex flex-col"
+          >
+            <div className="flex justify-between items-center gap-8 pb-4">
+              <span className="text-xl font-bold">{dialog.title}</span>
+              <Button variant="clear" onClick={closeCurrentDialog}>
+                <FontAwesomeIcon size="lg" icon={faClose} />
+              </Button>
+            </div>
+            <dialog.Component
+              {...dialog.props}
+              closeDialog={closeCurrentDialog}
+            />
+          </animated.div>
+        </animated.div>
+      ),
+      document.body
+    )
   );
 };

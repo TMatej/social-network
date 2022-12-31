@@ -1,4 +1,5 @@
 ﻿using DataAccessLayer.Entity;
+using DataAccessLayer.Entity.Enum;
 using DataAccessLayer.Entity.JoinEntity;
 using Infrastructure.Query;
 using Infrastructure.Repository;
@@ -24,7 +25,7 @@ namespace ServiceTests
             {
                 GroupId = 1,
                 UserId = 1,
-                GroupRoleId = 1
+                GroupRole = GroupRole.Author,
             };
             var mockGroupMembers = new List<GroupMember>
             {

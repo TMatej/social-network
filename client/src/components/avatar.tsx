@@ -10,7 +10,7 @@ export const Avatar = ({
   onClick,
   withoutTooltip = false,
 }: {
-  user?: User;
+  user?: Pick<User, "id" | "username" | "avatar">;
   size?: "md" | "lg";
   onClick?: () => void;
   withoutTooltip?: boolean;
@@ -29,9 +29,7 @@ export const Avatar = ({
             "w-20 h-20": size === "lg",
           }
         )}
-        onClick={() =>
-          onClick ? onClick() : navigate(`/profile/${user?.id}/info`)
-        }
+        onClick={() => (onClick ? onClick() : navigate(`/profile/${user?.id}`))}
       >
         {user?.avatar ? (
           <img

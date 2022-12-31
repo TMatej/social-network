@@ -1,4 +1,9 @@
-import { faCamera, faEdit } from "@fortawesome/free-solid-svg-icons";
+import {
+  faCamera,
+  faEdit,
+  faUserMinus,
+  faUserPlus,
+} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useQuery } from "@tanstack/react-query";
 import { axios } from "api/axios";
@@ -14,12 +19,14 @@ import { Profile as ProfileType } from "models";
 import { ProfileEditDialog } from "components/dialogs/profile-edit-dialog";
 import { Avatar } from "components/avatar";
 import { AvatarUploadDialog } from "components/dialogs/avatar-upload-dialog";
+import { useIsFollowing } from "hooks/use-is-following";
+import { useFollowActions } from "modules/following";
 
-type TabKeys = "info" | "galleries" | "wall" | "friends";
+type TabKeys = "info" | "galleries" | "wall" | "following";
 
 export const Profile = () => {
-  const match = useMatch("/profile/:id/:tabKey/*");
-  const { id, tabKey } = match?.params ?? {};
+  const { id } = useMatch("/profile/:id/*")?.params ?? {};
+  const { tabKey = "wall" } = useMatch("/profile/:id/:tabKey/*")?.params ?? {};
   const navigate = useNavigate();
   const user = useStore((store) => store.user);
   const openDialog = useStore((store) => store.openDialog);
@@ -27,11 +34,15 @@ export const Profile = () => {
     axios.get<ProfileType>(`/users/${id}/profile`).then((res) => res.data)
   );
 
+  const isFollowing = useIsFollowing();
+  const follows = isFollowing(profile?.user.id);
+  const { follow, unfollow } = useFollowActions();
+
   const isCurrentUser = profile?.user.id === user?.id;
 
   if (!profile) {
     return (
-      <Container>
+      <Container className="p-3">
         <Paper className="p-3">Profile does not exist</Paper>
       </Container>
     );
@@ -42,22 +53,24 @@ export const Profile = () => {
       <Paper className="p-4 flex gap-4 items-center">
         <div className="rounded-full relative">
           <Avatar user={profile.user} size="lg" withoutTooltip />
-          <Button
-            className="!rounded-full absolute -bottom-1 -right-1"
-            onClick={() =>
-              openDialog({
-                Component: AvatarUploadDialog,
-                title: "Upload avatar",
-                props: {},
-              })
-            }
-          >
-            <FontAwesomeIcon icon={faCamera} />
-          </Button>
+          {isCurrentUser && (
+            <Button
+              className="!rounded-full absolute -bottom-1 -right-1"
+              onClick={() =>
+                openDialog({
+                  Component: AvatarUploadDialog,
+                  title: "Upload avatar",
+                  props: {},
+                })
+              }
+            >
+              <FontAwesomeIcon icon={faCamera} />
+            </Button>
+          )}
         </div>
         <div className="flex-grow ml-4">
           <span className="text-3xl font-bold">
-            {user?.username ?? "Unknown user"}
+            {profile.user?.username ?? "Unknown user"}
           </span>
           <div className="flex flex-wrap justify-between items-center">
             <LabeledItem
@@ -83,6 +96,22 @@ export const Profile = () => {
                 Edit
               </Button>
             )}
+            {!isCurrentUser && !follows && (
+              <Button
+                leftIcon={<FontAwesomeIcon icon={faUserPlus} />}
+                onClick={() => follow(profile.user.id)}
+              >
+                Follow
+              </Button>
+            )}
+            {!isCurrentUser && follows && (
+              <Button
+                leftIcon={<FontAwesomeIcon icon={faUserMinus} />}
+                onClick={() => unfollow(profile.user.id)}
+              >
+                Unfollow
+              </Button>
+            )}
           </div>
         </div>
       </Paper>
@@ -90,13 +119,15 @@ export const Profile = () => {
         <Tabs
           tabKey={tabKey}
           handleTabChange={(tabKey) =>
-            navigate(`/profile/${id}/${tabKey}`, { relative: "path" })
+            tabKey === "wall"
+              ? navigate(`/profile/${id}`)
+              : navigate(`/profile/${id}/${tabKey}`)
           }
         >
+          <Tab<TabKeys> tabKey="wall" label="Wall" />
           <Tab<TabKeys> tabKey="info" label="Information" />
           <Tab<TabKeys> tabKey="galleries" label="Gallery" />
-          <Tab<TabKeys> tabKey="wall" label="Wall" />
-          <Tab<TabKeys> tabKey="friends" label="Friends" />
+          <Tab<TabKeys> tabKey="following" label="Following" />
         </Tabs>
       </Paper>
 
