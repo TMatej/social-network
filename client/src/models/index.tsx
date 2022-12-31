@@ -75,3 +75,14 @@ export type SearchResult = {
   image?: FileEntity;
   createdAt?: string;
 };
+
+export type Message = {
+  id: number;
+  receiverId: number;
+  receiver: User;
+  authorId: number;
+  author: User;
+  content: string;
+  createdAt: string;
+  attachmentId?: number;
+};

@@ -15,7 +15,7 @@ export const Sidebar = () => {
   const user = useStore((store) => store.user);
 
   return (
-    <Paper className="sticky h-[calc(100vh-theme(spacing.16))] top-16 border-t !rounded-none border-t-slate-900 p-4 min-w-[300px]">
+    <Paper className="sticky h-[calc(100vh-theme(spacing.16))] top-16 border-t !rounded-none border-t-slate-900 p-4 min-w-[200px] md:min-w-[250px]">
       <NavItem
         to={`/profile/${user?.id}`}
         icon={<FontAwesomeIcon icon={faIdCard} />}
