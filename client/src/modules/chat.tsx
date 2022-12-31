@@ -12,25 +12,27 @@ import { Container } from "components/container";
 import { FormTextField } from "components/input/text-field";
 import { Paper } from "components/paper";
 import { Formik, Form } from "formik";
-import { useIsInView } from "hooks/use-is-in-view";
+import { useViewIntersection } from "hooks/use-view-intersection";
 import { Message, Paginated, User } from "models";
-import { Fragment, useEffect, useMemo, useRef } from "react";
+import { Fragment, useMemo, useRef } from "react";
 import { NavLink, useParams } from "react-router-dom";
 import { useStore } from "store";
+import * as yup from "yup";
 
 type SendMessageData = {
   content: string;
 };
 
+const schema = yup.object().shape({
+  content: yup.string().required(),
+});
+
 export const Chat = () => {
-  const following = useStore((store) => store.following);
   const user = useStore((store) => store.user);
   const queryClient = useQueryClient();
   const { id } = useParams<{ id: string }>();
   const container = useRef<HTMLDivElement>(null);
   const bottomTarget = useRef<HTMLDivElement>(null);
-  const topTarget = useRef<HTMLDivElement>(null);
-  const topTargetInView = useIsInView(topTarget);
 
   const {
     data: messages,
@@ -60,11 +62,10 @@ export const Chat = () => {
     }
   );
 
-  useEffect(() => {
-    if (!topTargetInView || isFetching || !hasNextPage) return;
-
-    fetchNextPage();
-  }, [topTargetInView, isFetching]);
+  const { ref: topTarget } = useViewIntersection<HTMLDivElement>({
+    enabled: !isFetching && hasNextPage,
+    onInView: () => fetchNextPage(),
+  });
 
   const { mutate: sendMessage } = useMutation(
     ({ content }: SendMessageData) =>
@@ -123,6 +124,7 @@ export const Chat = () => {
               <div ref={topTarget} />
             </div>
             <Formik<SendMessageData>
+              validationSchema={schema}
               initialValues={{ content: "" }}
               onSubmit={(data) => sendMessage(data)}
             >
@@ -132,6 +134,7 @@ export const Chat = () => {
                   disabled={!id}
                   name="content"
                   placeholder="type message"
+                  errorVariant="outline"
                 />
                 <Button disabled={!id} variant="outlined" type="submit">
                   Submit
@@ -167,8 +170,6 @@ const ChatItem = ({ user }: { user: User }) => {
 const Contacts = () => {
   const user = useStore((store) => store.user);
   const following = useStore((store) => store.following);
-  const bottomTarget = useRef<HTMLDivElement>(null);
-  const bottomTargetInView = useIsInView(bottomTarget);
   const {
     data: users,
     fetchNextPage,
@@ -186,11 +187,10 @@ const Contacts = () => {
     suspense: false,
   });
 
-  useEffect(() => {
-    if (!bottomTargetInView || isFetching || !hasNextPage) return;
-
-    fetchNextPage();
-  }, [bottomTarget, isFetching]);
+  const { ref: bottomTarget } = useViewIntersection<HTMLDivElement>({
+    enabled: !isFetching && hasNextPage,
+    onInView: () => fetchNextPage(),
+  });
 
   const userIdToIsInContacts = useMemo<Record<number, boolean>>(() => {
     return (

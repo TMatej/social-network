@@ -6,6 +6,12 @@ import { Form, Formik } from "formik";
 import { FormTextField } from "components/input/text-field";
 import { Button } from "components/button";
 import { useStore } from "store";
+import * as yup from "yup";
+
+const schema = yup.object().shape({
+  title: yup.string().min(3).required(),
+  description: yup.string().min(3).required(),
+});
 
 type AddGalleryDialogProps = {
   profile: Profile;
@@ -46,6 +52,7 @@ export const AddGalleryDialog = ({
   return (
     <Formik<AddGalleryData>
       initialValues={{ title: "", description: "" }}
+      validationSchema={schema}
       onSubmit={(data) => mutate(data)}
     >
       <Form>

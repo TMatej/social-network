@@ -14,10 +14,15 @@ import { useStore } from "store";
 import { Comments } from "components/comments";
 import { Avatar } from "components/avatar";
 import { format } from "date-fns";
+import * as yup from "yup";
 
 type AddCommentData = {
   content: string;
 };
+
+const schema = yup.object().shape({
+  content: yup.string().min(3).required(),
+});
 
 export const Post = ({ post }: { post: PostType }) => {
   const user = useStore((state) => state.user);
@@ -120,6 +125,7 @@ export const Post = ({ post }: { post: PostType }) => {
         <div className="border-t border-t-gray-600" />
         <Formik<AddCommentData>
           initialValues={{ content: "" }}
+          validationSchema={schema}
           onSubmit={(data, { resetForm }) => {
             addComment(data);
             resetForm();

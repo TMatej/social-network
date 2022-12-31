@@ -1,9 +1,4 @@
-import {
-  faImage,
-  faPaperPlane,
-  faThumbsUp,
-  faTrash,
-} from "@fortawesome/free-solid-svg-icons";
+import { faPaperPlane } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   useInfiniteQuery,
@@ -15,16 +10,23 @@ import { FormTextField } from "components/input/text-field";
 import { Paper } from "components/paper";
 import { Form, Formik } from "formik";
 import { axios } from "api/axios";
-import { Group, Paginated, Post as PostType, Profile } from "models";
+import { Group, Paginated, Post as PostType } from "models";
 import { useOutletContext } from "react-router-dom";
-import { Fragment, useEffect } from "react";
+import { Fragment } from "react";
 import { useStore } from "store";
 import { Post } from "components/post";
+import * as yup from "yup";
+import { useViewIntersection } from "hooks/use-view-intersection";
 
 type NewPostData = {
   content: string;
   title: string;
 };
+
+const schema = yup.object().shape({
+  content: yup.string().min(3).max(524).required(),
+  title: yup.string().min(3).max(20).required(),
+});
 
 export const Wall = () => {
   const { group } = useOutletContext<{ group: Group }>();
@@ -52,7 +54,7 @@ export const Wall = () => {
 
   const {
     data: posts,
-    isFetchingNextPage,
+    isFetching,
     fetchNextPage,
     hasNextPage,
   } = useInfiniteQuery({
@@ -67,26 +69,16 @@ export const Wall = () => {
     suspense: false,
   });
 
-  useEffect(() => {
-    const listener = () => {
-      if (
-        window.innerHeight + window.scrollY >=
-          document.body.offsetHeight - 100 &&
-        !isFetchingNextPage &&
-        hasNextPage
-      ) {
-        fetchNextPage();
-      }
-    };
-
-    addEventListener("scroll", listener);
-    return () => removeEventListener("scroll", listener);
-  }, [hasNextPage, fetchNextPage, isFetchingNextPage]);
+  const { ref: bottomTarget } = useViewIntersection<HTMLDivElement>({
+    enabled: !isFetching && hasNextPage,
+    onInView: () => fetchNextPage(),
+  });
 
   return (
     <>
       <Paper className="p-4 mt-4">
         <Formik<NewPostData>
+          validationSchema={schema}
           initialValues={{ content: "", title: "" }}
           onSubmit={(data, { resetForm }) => {
             addPost(data);
@@ -139,6 +131,8 @@ export const Wall = () => {
           ))}
         </Fragment>
       ))}
+
+      <div ref={bottomTarget} />
     </>
   );
 };

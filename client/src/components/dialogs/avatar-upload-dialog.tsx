@@ -7,10 +7,13 @@ import { DialogProps } from "components/dialog";
 import { FormFileField } from "components/input/file-field";
 import { Form, Formik } from "formik";
 import { useStore } from "store";
+import * as yup from "yup";
 
 type AvatarUploadData = {
   avatar?: File;
 };
+
+const schema = yup.object().shape({ avatar: yup.mixed().required() });
 
 export const AvatarUploadDialog = ({ closeDialog }: DialogProps) => {
   const { user } = useStore((store) => store);
@@ -43,6 +46,7 @@ export const AvatarUploadDialog = ({ closeDialog }: DialogProps) => {
   return (
     <Formik<AvatarUploadData>
       initialValues={{ avatar: undefined }}
+      validationSchema={schema}
       onSubmit={(data) => mutate(data)}
     >
       <Form>

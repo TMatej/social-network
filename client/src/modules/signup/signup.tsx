@@ -9,6 +9,7 @@ import { Paper } from "components/paper";
 import { NavLink, useNavigate } from "react-router-dom";
 import { axios } from "api/axios";
 import { useStore } from "store";
+import * as yup from "yup";
 
 type SignupFormData = {
   username: string;
@@ -16,6 +17,16 @@ type SignupFormData = {
   password: string;
   repeatPassword: string;
 };
+
+const schema = yup.object().shape({
+  username: yup.string().min(3).required(),
+  email: yup.string().email().min(3).required(),
+  password: yup.string().min(4).required(),
+  repeatPassword: yup
+    .string()
+    .oneOf([yup.ref("password"), null], "passwords must match")
+    .min(4),
+});
 
 export const Signup = () => {
   const navigate = useNavigate();
@@ -47,6 +58,7 @@ export const Signup = () => {
         password: "ciza",
         repeatPassword: "ciza",
       }}
+      validationSchema={schema}
       onSubmit={(data) => mutate(data)}
     >
       <Form className="h-full">

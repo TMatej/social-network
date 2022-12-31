@@ -5,6 +5,12 @@ import { Form, Formik } from "formik";
 import { FormTextField } from "components/input/text-field";
 import { Button } from "components/button";
 import { useStore } from "store";
+import * as yup from "yup";
+
+const schema = yup.object().shape({
+  name: yup.string().min(3).required(),
+  description: yup.string().min(3).required(),
+});
 
 type AddGroupData = {
   name: string;
@@ -38,6 +44,7 @@ export const AddGroupDialog = ({ closeDialog }: DialogProps) => {
   return (
     <Formik<AddGroupData>
       initialValues={{ name: "", description: "" }}
+      validationSchema={schema}
       onSubmit={(data) => mutate(data)}
     >
       <Form>
