@@ -49,8 +49,8 @@ export const Login = () => {
     <Formik<LoginFormData>
       validationSchema={schema}
       initialValues={{
-        email: "ciza@gmail.com",
-        password: "ciza",
+        email: "",
+        password: "",
       }}
       onSubmit={(data) => mutate(data)}
     >

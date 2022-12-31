@@ -53,10 +53,10 @@ export const Signup = () => {
   return (
     <Formik<SignupFormData>
       initialValues={{
-        username: "ciza",
-        email: "ciza@gmail.com",
-        password: "ciza",
-        repeatPassword: "ciza",
+        username: "",
+        email: "",
+        password: "",
+        repeatPassword: "",
       }}
       validationSchema={schema}
       onSubmit={(data) => mutate(data)}
