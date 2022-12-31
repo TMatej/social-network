@@ -3,6 +3,7 @@
 ## Overview
 Here comes app overview.  
 A semestral project for PV179 course at FI MUNI.
+Deployed and available on [https://social-network-7dc31dpgp-ciza99.vercel.app](https://social-network-7dc31dpgp-ciza99.vercel.app).
 
 
 ## Basic login name and credentials 
