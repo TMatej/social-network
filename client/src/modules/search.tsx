@@ -49,7 +49,13 @@ export const Search = () => {
                 )}
                 <div>
                   <NavLink
-                    to={result.type === "User" ? `/profile/${result.id}` : ""}
+                    to={
+                      result.type === "User"
+                        ? `/profile/${result.id}`
+                        : result.type === "Group"
+                        ? `/groups/${result.id}`
+                        : "."
+                    }
                     className="text-xl font-bold mb-2"
                   >
                     {result.name}

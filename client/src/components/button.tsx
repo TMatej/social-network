@@ -40,10 +40,10 @@ export const Button = ({
       className={clsx(
         "flex justify-center items-center rounded transition-colors",
         {
-          "py-1 px-2 bg-cyan-600 disabled:bg-cyan-900 hover:brightness-90":
+          "py-1 px-2 bg-cyan-600 disabled:bg-cyan-900 enabled:hover:brightness-90":
             variant === "block",
           "outline-none text-gray-300 px-2": variant === "clear",
-          "border py-1 px-2 border-slate-600 hover:bg-slate-600":
+          "border py-1 px-2 border-slate-600 enabled:hover:bg-slate-600":
             variant === "outlined",
         },
         className

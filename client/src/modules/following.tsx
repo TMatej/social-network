@@ -5,7 +5,7 @@ import { NavLink } from "react-router-dom";
 import { Avatar } from "components/avatar";
 import { useStore } from "store";
 import { Container } from "components/container";
-import { faClose, faCross } from "@fortawesome/free-solid-svg-icons";
+import { faClose } from "@fortawesome/free-solid-svg-icons";
 import { Button } from "components/button";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useMemo } from "react";

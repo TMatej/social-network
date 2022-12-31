@@ -86,3 +86,12 @@ export type Message = {
   createdAt: string;
   attachmentId?: number;
 };
+
+export type Group = {
+  id: string;
+  name: string;
+  description: string;
+  groupMembers: {
+    user: User
+  }[]
+};

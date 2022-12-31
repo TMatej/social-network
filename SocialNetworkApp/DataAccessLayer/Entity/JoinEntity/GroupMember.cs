@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using DataAccessLayer.Entity.Enum;
 
 namespace DataAccessLayer.Entity.JoinEntity
 {
@@ -20,10 +21,6 @@ namespace DataAccessLayer.Entity.JoinEntity
         [ForeignKey(nameof(UserId))]
         public User User { get; set; }
 
-        [Required]
-        public int GroupRoleId { get; set; }
-
-        [ForeignKey(nameof(GroupRoleId))]
         public GroupRole GroupRole { get; set; }
 
         [Required]

@@ -129,10 +129,11 @@ export const Chat = () => {
               <Form className="mt-4 flex gap-2 items-center">
                 <FormTextField
                   className="flex-grow"
+                  disabled={!id}
                   name="content"
                   placeholder="type message"
                 />
-                <Button variant="outlined" type="submit">
+                <Button disabled={!id} variant="outlined" type="submit">
                   Submit
                 </Button>
               </Form>

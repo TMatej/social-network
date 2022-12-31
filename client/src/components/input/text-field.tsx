@@ -14,6 +14,7 @@ type TextFieldProps = {
   type?: "text" | "password";
   after?: ReactNode;
   rows?: number;
+  disabled?: boolean;
 };
 
 export const TextField = ({
@@ -27,6 +28,7 @@ export const TextField = ({
   type = "text",
   after,
   rows,
+  disabled,
 }: TextFieldProps) => {
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -50,6 +52,7 @@ export const TextField = ({
               value={value}
               onChange={handleChange}
               placeholder={placeholder}
+              disabled={disabled}
               rows={rows}
             />
           ) : (
@@ -58,6 +61,7 @@ export const TextField = ({
               name={name}
               type={type}
               value={value}
+              disabled={disabled}
               onChange={handleChange}
               placeholder={placeholder}
             />

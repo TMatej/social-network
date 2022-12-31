@@ -1,4 +1,5 @@
 ﻿using DataAccessLayer.Entity;
+using DataAccessLayer.Entity.Enum;
 using DataAccessLayer.Entity.JoinEntity;
 using Microsoft.EntityFrameworkCore;
 
@@ -15,7 +16,6 @@ namespace DataAccessLayer.Data
             SeedPhotos(modelBuilder);
             SeedParticipationTypes(modelBuilder);
             SeedMessages(modelBuilder);
-            SeedGroupRoles(modelBuilder);
             SeedGroups(modelBuilder);
             SeedGroupMembers(modelBuilder);
             SeedGalleries(modelBuilder);
@@ -239,20 +239,9 @@ namespace DataAccessLayer.Data
                    Id = 1,
                    GroupId = 3,
                    UserId = 1,
-                   GroupRoleId = 1,
+                   GroupRole = GroupRole.Author,
                }
                );
-        }
-
-        private static void SeedGroupRoles(ModelBuilder modelBuilder)
-        {
-            var groupRole = new GroupRole
-            {
-                Id = 1,
-                Name = "Example Role"
-            };
-
-            modelBuilder.Entity<GroupRole>().HasData(groupRole);
         }
 
         private static void SeedMessages(ModelBuilder modelBuilder)

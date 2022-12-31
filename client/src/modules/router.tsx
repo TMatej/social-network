@@ -11,11 +11,16 @@ import { User } from "models";
 import { Info } from "./profile/info";
 import { Galleries } from "./profile/galleries";
 import { Gallery } from "./profile/gallery";
-import { Wall } from "./profile/wall";
+import { Wall as ProfileWall } from "./profile/wall";
 import { Search } from "./search";
 import { ProfileFollowing } from "./profile/following";
 import { Chat } from "./chat";
 import { Following } from "./following";
+import { Groups } from "./groups";
+import { Group } from "./group/group";
+import { Members } from "./group/members";
+import { Wall as GroupWall } from "./group/wall";
+import { Events } from "./group/events";
 
 export const Router = () => {
   const user = useStore((state) => state.user);
@@ -68,8 +73,15 @@ export const Router = () => {
 
             <Route path="following" element={<Following />} />
 
+            <Route path="groups" element={<Groups />} />
+            <Route path="groups/:id" element={<Group />}>
+              <Route index path="" element={<GroupWall />} />
+              <Route path="members" element={<Members />} />
+              <Route path="events" element={<Events />} />
+            </Route>
+
             <Route path="profile/:id" element={<Profile />}>
-              <Route index path="" element={<Wall />} />
+              <Route index path="" element={<ProfileWall />} />
               <Route path="info" element={<Info />} />
               <Route path="galleries" element={<Galleries />} />
               <Route path="galleries/:galleryId" element={<Gallery />} />

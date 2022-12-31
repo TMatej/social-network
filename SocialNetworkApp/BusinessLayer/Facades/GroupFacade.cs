@@ -3,6 +3,8 @@ using BusinessLayer.Contracts;
 using BusinessLayer.DTOs.Group;
 using BusinessLayer.Facades.Interfaces;
 using DataAccessLayer.Entity;
+using DataAccessLayer.Entity.Enum;
+using DataAccessLayer.Entity.JoinEntity;
 
 namespace BusinessLayer.Facades
 {
@@ -17,13 +19,20 @@ namespace BusinessLayer.Facades
             _mapper = mapper;
         }
 
-        public void CreateGroup(GroupCreateDTO groupCreateDTO)
+        public void CreateGroup(GroupCreateDTO groupCreateDTO, int creatorId)
         {
+            var groupMember = new GroupMember() {
+              UserId = creatorId,
+              GroupRole = GroupRole.Author, 
+            };
+
             var group = new Group
             {
                 Name = groupCreateDTO.Name,
                 Description = groupCreateDTO.Description,
+                GroupMembers = new List<GroupMember>() { groupMember }
             };
+
             _groupService.Insert(group);
         }
 
@@ -33,14 +42,14 @@ namespace BusinessLayer.Facades
             _groupService.Update(group);
         }
 
-        public void DeleteGroup(GroupRepresentDTO groupRepresentDTO)
+        public void DeleteGroup(int groupId)
         {
-            _groupService.Delete(groupRepresentDTO.Id);
+            _groupService.Delete(groupId);
         }
 
         public void AddToGroup(GroupMembershipDTO groupMembershipDTO)
         {
-            _groupService.AddToGroup(groupMembershipDTO.GroupId, groupMembershipDTO.UserId, groupMembershipDTO.MembershipTypeId);
+            _groupService.AddToGroup(groupMembershipDTO.GroupId, groupMembershipDTO.UserId);
         }
 
         public bool RemoveFromGroup(GroupMembershipDTO groupMembershipDTO)
@@ -50,9 +59,14 @@ namespace BusinessLayer.Facades
 
         public GroupRepresentDTO? GetGroup(int id)
         {
-            var group = _groupService.GetByID(id);
+            var group = _groupService.GetByIdDetailed(id);
             
            return group==null ? null : _mapper.Map<GroupRepresentDTO>(group);
+        }
+
+        public IEnumerable<GroupRepresentDTO> GetGroupsForUser(int userId)
+        {
+            return _groupService.FindGroupsForUser(userId).Select(x => _mapper.Map<GroupRepresentDTO>(x));
         }
     }
 }
