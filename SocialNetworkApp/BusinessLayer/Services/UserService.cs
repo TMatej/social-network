@@ -160,5 +160,16 @@ namespace BusinessLayer.Services
 
             return mapper.Map<UserDTO>(user);
         }
+
+        public IEnumerable<UserDTO> GetAllUsersPaginated(int page, int size)
+        {
+            var user = userQuery.Page(page, size)
+              .Include(nameof(User.UserRoles))
+              .Include(nameof(User.Avatar))
+              .Execute()
+              .Items;
+
+            return mapper.Map<IEnumerable<UserDTO>>(user);
+        }
     }
 }

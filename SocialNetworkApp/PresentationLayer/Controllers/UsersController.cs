@@ -25,6 +25,27 @@ public class UsersController : ControllerBase
         userFacade.Register(userRegisterDTO);
     }
 
+    ///users?page={page}&size={size}
+    [HttpGet]
+    [Authorize]
+    public IActionResult GetAllUsers(int page = 1, int size = 10)
+    {
+        var users = userFacade.GetAllUsersPaginated(page, size);
+        return Ok(users);
+    }
+
+    [HttpDelete("{userId}")]
+    [Authorize]
+    public IActionResult DeleteUser(int userId)
+    {
+        if (userId != int.Parse(HttpContext.User.Identity.Name))
+        {
+            return Unauthorized();
+        }
+        userFacade.DeleteUser(userId);
+        return Ok();
+    }
+
     [HttpGet("{userId}/profile")]
     public IActionResult GetUserProfile(int userId)
     {
