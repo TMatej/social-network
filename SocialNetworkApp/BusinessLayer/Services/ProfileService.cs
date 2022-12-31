@@ -33,7 +33,7 @@ namespace BusinessLayer.Services
 
         public Profile GetByUserId(int userId)
         {
-            var profile = profileQuery.Where<int>(id => id == userId, "UserId").Include(nameof(Profile.User), $"{nameof(Profile.User)}.{nameof(User.Avatar)}").Execute().Items.FirstOrDefault();
+            var profile = profileQuery.Where<int>(id => id == userId, nameof(Profile.UserId)).Include(nameof(Profile.User), $"{nameof(Profile.User)}.{nameof(User.Avatar)}").Execute().Items.FirstOrDefault();
 
             if (profile == null)
             {

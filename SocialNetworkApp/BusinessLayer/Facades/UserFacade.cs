@@ -52,5 +52,16 @@ namespace BusinessLayer.Facades
           userService.ChangeAvatar(userId, avatar);
           unitOfWork.Commit();
         }
+
+        public IEnumerable<UserDTO> GetAllUsersPaginated(int page, int size)
+        {
+            return userService.GetAllUsersPaginated(page, size);
+        }
+
+        public void DeleteUser(int userId)
+        {
+            userService.Delete(userId);
+            //no need for "unitOfWork.Commit();" as its implicitly done in GenericService
+        }
     }
 }
