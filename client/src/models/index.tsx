@@ -88,10 +88,12 @@ export type Message = {
 };
 
 export type Group = {
-  id: string;
+  id: number;
   name: string;
   description: string;
   groupMembers: {
-    user: User
-  }[]
+    user: User;
+    groupId: number;
+    groupRole: number;
+  }[];
 };

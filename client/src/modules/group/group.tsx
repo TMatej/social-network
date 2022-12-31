@@ -13,6 +13,11 @@ import { LabeledItem } from "components/labeled-item";
 
 type TabKeys = "wall" | "members";
 
+const groupRoleToNumber = {
+  author: 0,
+  member: 1,
+};
+
 export const Group = () => {
   const { id } = useMatch("/groups/:id/*")?.params ?? {};
   const { tabKey = "wall" } = useMatch("/groups/:id/:tabKey/*")?.params ?? {};
@@ -45,7 +50,9 @@ export const Group = () => {
   );
 
   const isCreator = group?.groupMembers.some(
-    (member) => member.user.id === user?.id
+    (member) =>
+      member.user.id === user?.id &&
+      member.groupRole === groupRoleToNumber["author"]
   );
 
   if (!group) {
