@@ -249,8 +249,9 @@ namespace DataAccessLayer.Data
             var message = new Message
             {
                 Id = 1,
-                Content = "I have two attchments!",
+                Content = "I have two attachments!",
                 AuthorId = 1,
+                ReceiverId = 2
             };
 
             var message_without_attachment = new Message
@@ -258,6 +259,7 @@ namespace DataAccessLayer.Data
                 Id = 2,
                 Content = "I am just plain text",
                 AuthorId = 2,
+                ReceiverId = 1
             };
 
             modelBuilder.Entity<Message>().HasData(message);

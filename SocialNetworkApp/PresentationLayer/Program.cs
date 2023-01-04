@@ -16,7 +16,7 @@ builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory())
       containerBuilder.RegisterModule(new EFCoreModule());
       containerBuilder.RegisterModule(new DALModule 
       { 
-          ConnectionString = builder.Configuration.GetConnectionString("DefaultConnection"),
+          ConnectionString = builder.Configuration.GetConnectionString("mssql"),
           SeedData = builder.Configuration.GetSection("Properties").GetValue<bool>("SeedData")
       });
       containerBuilder.RegisterModule(new ServicesModule());
@@ -30,17 +30,19 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
 
 var app = builder.Build();
 
-/* NOT VERY SAFE - probably find better way */
-using (var serviceScope = app.Services.GetRequiredService<IServiceScopeFactory>().CreateScope())
+// this should be used only in DEV mode. PROD mode should use sql scripts for db creating and population.
+using (var serviceScope = app.Services.CreateScope())
 {
-    var context = serviceScope.ServiceProvider.GetService<SocialNetworkDBContext>();
-    context.Database.Migrate();
+    var context = serviceScope.ServiceProvider.GetRequiredService<SocialNetworkDBContext>();
+    context.Database.EnsureDeleted();
+    context.Database.EnsureCreated();
+    //context.Database.Migrate();
 }
-    
 
 if (app.Environment.IsDevelopment())
 {
     app.UseDeveloperExceptionPage();
+    
 }
 
 app.UseStaticFiles();
@@ -48,7 +50,7 @@ app.UseRouting();
 app.UseCors(builder => {
   builder
     .SetIsOriginAllowedToAllowWildcardSubdomains()
-    .WithOrigins("http://localhost:5173", "https://*.vercel.app")
+    .WithOrigins("http://localhost:3000", "https://*.vercel.app")
     .AllowCredentials()
     .AllowAnyHeader()
     .AllowAnyMethod();

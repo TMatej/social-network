@@ -25,7 +25,7 @@ spec:
         env:      
         - name: Properties__SeedData
           value: "true"                                                             
-        - name: ConnectionStrings__DefaultConnection
+        - name: ConnectionStrings__postgres
           # valueFrom:
           #   secretKeyRef:
           #     name: snas-postgres-db-secret
@@ -34,9 +34,10 @@ spec:
             secretKeyRef:
               name: snas-postgres-cluster-db-secret
               key: connectionString
-          # valueFrom:
-          #   secretKeyRef:
-          #     name: snas-mssql-db-secret
-          #     key: connectionString
+        - name: ConnectionStrings__mssql
+          valueFrom:
+            secretKeyRef:
+              name: snas-mssql-db-secret
+              key: connectionString
       imagePullSecrets:
       - name: github-registry-access-token

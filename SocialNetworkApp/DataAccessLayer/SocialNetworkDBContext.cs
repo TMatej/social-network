@@ -54,7 +54,8 @@ namespace DataAccessLayer
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder
-                .UseNpgsql(connectionString)
+                .UseSqlServer(connectionString)
+                //.UseNpgsql(connectionString)
                 // logging of SQL commands into console
                 /*
                 .UseLoggerFactory(LoggerFactory.Create(
@@ -187,7 +188,13 @@ namespace DataAccessLayer
             modelBuilder.Entity<Comment>()
                 .HasOne(c => c.Commentable)
                 .WithMany(c => c.Comments)
-                .HasForeignKey(c => c.CommentableId);
+                .HasForeignKey(c => c.CommentableId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Like>()
+                .HasOne(l => l.Post)
+                .WithMany()
+                .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<FileEntity>()
                 .HasIndex(f => f.Guid)
@@ -200,67 +207,67 @@ namespace DataAccessLayer
             // Set default values for timestamps
             modelBuilder.Entity<Comment>()
                 .Property(u => u.CreatedAt)
-                .HasDefaultValueSql("now()");
+                .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
             modelBuilder.Entity<Contact>()
                 .Property(u => u.CreatedAt)
-                .HasDefaultValueSql("now()");
+                .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
             modelBuilder.Entity<Conversation>()
                 .Property(u => u.CreatedAt)
-                .HasDefaultValueSql("now()");
+                .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
             modelBuilder.Entity<ConversationParticipant>()
                 .Property(u => u.CreatedAt)
-                .HasDefaultValueSql("now()");
+                .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
             modelBuilder.Entity<Event>()
                 .Property(u => u.CreatedAt)
-                .HasDefaultValueSql("now()");
+                .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
             modelBuilder.Entity<FileEntity>()
                 .Property(u => u.CreatedAt)
-                .HasDefaultValueSql("now()");
+                .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
             modelBuilder.Entity<EventParticipant>()
                 .Property(u => u.CreatedAt)
-                .HasDefaultValueSql("now()");
+                .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
             modelBuilder.Entity<Gallery>()
                 .Property(u => u.CreatedAt)
-                .HasDefaultValueSql("now()");
+                .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
             modelBuilder.Entity<Group>()
                 .Property(u => u.CreatedAt)
-                .HasDefaultValueSql("now()");
+                .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
             modelBuilder.Entity<GroupMember>()
                 .Property(u => u.CreatedAt)
-                .HasDefaultValueSql("now()");
+                .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
             modelBuilder.Entity<Message>()
                 .Property(u => u.CreatedAt)
-                .HasDefaultValueSql("now()");
+                .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
             modelBuilder.Entity<ParticipationType>()
                 .Property(u => u.CreatedAt)
-                .HasDefaultValueSql("now()");
+                .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
             modelBuilder.Entity<Photo>()
                 .Property(u => u.CreatedAt)
-                .HasDefaultValueSql("now()");
+                .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
             modelBuilder.Entity<Post>()
                 .Property(u => u.CreatedAt)
-                .HasDefaultValueSql("now()");
+                .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
             modelBuilder.Entity<Profile>()
                 .Property(u => u.CreatedAt)
-                .HasDefaultValueSql("now()");
+                .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
             modelBuilder.Entity<User>()
                 .Property(u => u.CreatedAt)
-                .HasDefaultValueSql("now()");
+                .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
             if (seedData) modelBuilder.Seed();
 
