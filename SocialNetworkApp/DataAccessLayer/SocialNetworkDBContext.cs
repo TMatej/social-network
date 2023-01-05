@@ -40,9 +40,10 @@ namespace DataAccessLayer
             var userName = Environment.GetEnvironmentVariable("POSTGRES_USER") ?? "postgres";
             var password = Environment.GetEnvironmentVariable("POSTGRES_PASSWORD") ?? "postgres";
             var port = Environment.GetEnvironmentVariable("POSTGRES_PORT") ?? "5432";
+            var mssqlport = Environment.GetEnvironmentVariable("PORT") ?? "1433";
 
             //connectionString = $"Host={host};Username={userName};Password={password};Port={port};Database={database};";
-            connectionString = $"Server=localhost,1433;Database={database};User Id=SA;Password=mySuper!password9;MultipleActiveResultSets=true;TrustServerCertificate=True;";
+            connectionString = $"Server=localhost,{mssqlport};Database={database};User Id=SA;Password=mySuper!password9;MultipleActiveResultSets=true;TrustServerCertificate=True;";
             seedData = false;
         }
 
