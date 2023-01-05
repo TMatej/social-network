@@ -65,7 +65,7 @@ namespace DalUnitTests.EntityTests
                 {
                     FileEntity = new FileEntity
                     {
-                        Id = 1,
+                        //Id = 1,
                         Guid = Guid.NewGuid(),
                         Name = "Photo name",
                         Data = new byte[] {},
