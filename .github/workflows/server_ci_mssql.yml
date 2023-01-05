@@ -57,7 +57,7 @@ jobs:
           SA_PASSWORD: ${{ secrets.TEST_PASSWORD }}
           ACCEPT_EULA: 'Y'
         ports:
-          - ${{env.PORT}}:1433
+          - 1401:1433
 
     steps:
       - name: Check out code
