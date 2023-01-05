@@ -49,6 +49,7 @@ jobs:
     
     env:
       PORT: 1433
+      HOST: mssql
       
     services:
       mssql:
