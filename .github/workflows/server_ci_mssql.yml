@@ -46,6 +46,10 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 5
     container: mcr.microsoft.com/dotnet/sdk:6.0
+    
+    env:
+      PORT: 1433
+      HOST: mssql
       
     services:
       mssql:
