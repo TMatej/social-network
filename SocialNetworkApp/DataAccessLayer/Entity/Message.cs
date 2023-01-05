@@ -28,5 +28,6 @@ namespace DataAccessLayer.Entity
         public int? AttachmentId { get; set; }
 
         public Attachment Attachment { get; set; }
+        //public IEnumerable<Attachment> Attachments { get; set; }
     }
 }

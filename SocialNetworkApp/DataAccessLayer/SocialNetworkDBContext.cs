@@ -40,8 +40,8 @@ namespace DataAccessLayer
             var userName = Environment.GetEnvironmentVariable("POSTGRES_USER") ?? "postgres";
             var password = Environment.GetEnvironmentVariable("POSTGRES_PASSWORD") ?? "postgres";
             var port = Environment.GetEnvironmentVariable("POSTGRES_PORT") ?? "5432";
-            var mssqlport = Environment.GetEnvironmentVariable("PORT") ?? "1433";
-            var mssqlhost = Environment.GetEnvironmentVariable("HOST") ?? "localhost";
+            var mssqlport = Environment.GetEnvironmentVariable("MSSQL_PORT") ?? "1433";
+            var mssqlhost = Environment.GetEnvironmentVariable("MSSQL_HOST") ?? "localhost";
 
             //connectionString = $"Host={host};Username={userName};Password={password};Port={port};Database={database};";
             connectionString = $"Server={mssqlhost},{mssqlport};Database={database};User Id=SA;Password=mySuper!password9;MultipleActiveResultSets=true;TrustServerCertificate=True;";
@@ -93,7 +93,8 @@ namespace DataAccessLayer
                 .IsUnique();
 
             /* Set owning property of Profile - Address */
-            modelBuilder.Entity<Profile>().OwnsOne(p => p.Address);
+            modelBuilder.Entity<Profile>()
+                .OwnsOne(p => p.Address);
 
             /* Set One-To-Many relationship */
             modelBuilder.Entity<Gallery>()
@@ -142,6 +143,8 @@ namespace DataAccessLayer
                 .WithMany(u => u.Contacts)
                 .HasForeignKey(c => c.User2Id);
 
+            /* Infrustructure needs to ensure deleting of all appropriate
+             * contacts before deleting User1 */
             modelBuilder.Entity<Contact>()
                 .HasOne(c => c.User1)
                 .WithMany(u => u.ContactsOf)
@@ -168,6 +171,7 @@ namespace DataAccessLayer
              * https://stackoverflow.com/questions/49214748/many-to-many-self-referencing-relationship/49219124#49219124
              */
 
+            
             modelBuilder.Entity<User>()
                 .HasMany(u => u.ConversationParticipants)
                 .WithOne(c => c.User)
@@ -176,11 +180,14 @@ namespace DataAccessLayer
             modelBuilder.Entity<User>()
                 .HasOne(u => u.Avatar)
                 .WithOne()
-                .HasForeignKey<User>(u => u.AvatarId); 
+                .HasForeignKey<User>(u => u.AvatarId);
 
+            /* Infrustructure needs to ensure deleting of all appropriate
+             * contacts before deleting User1 */
             modelBuilder.Entity<Message>()
                 .HasOne(m => m.Author)
                 .WithMany()
+                .HasForeignKey(m => m.AuthorId)
                 .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<User>()

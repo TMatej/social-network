@@ -82,5 +82,84 @@ namespace DalUnitTests.EntityTests
                 Assert.Throws<DbUpdateException>(() => db.SaveChanges());
             }
         }
+
+        [Test]
+        public void Delete_Message_Test()
+        {
+            // Arrange
+            using (var db = new SocialNetworkDBContext("social-network-test-db"))
+            {
+                db.Messages.Add(new Message
+                {
+                    Content = "Hello World!",
+                    AuthorId = 1,
+                    ReceiverId = 2
+                });
+                db.SaveChanges();
+            }
+
+            // Act
+            using (var db = new SocialNetworkDBContext("social-network-test-db"))
+            {
+                var message_ret = db.Messages.FirstOrDefault();
+                db.Messages.Remove(message_ret);
+                db.SaveChanges();
+            }
+
+            // Assert
+            using (var db = new SocialNetworkDBContext("social-network-test-db"))
+            {
+                var message_ret = db.Messages.FirstOrDefault();
+                var user1_ret = db.Users.FirstOrDefault();
+                var user2_ret = db.Users.OrderByDescending(u => u.Id).FirstOrDefault();
+                Assert.That(message_ret, Is.Null);
+                Assert.That(user1_ret, Is.Not.Null);
+                Assert.That(user2_ret, Is.Not.Null);
+            }
+        }
+
+        [Test]
+        public void Delete_Message_With_Attachment_Test()
+        {
+            // Arrange
+            using (var db = new SocialNetworkDBContext("social-network-test-db"))
+            {
+                db.Attachments.Add(new Attachment
+                {
+
+                });
+                db.SaveChanges();
+            }
+
+            using (var db = new SocialNetworkDBContext("social-network-test-db"))
+            {
+                db.Messages.Add(new Message
+                {
+                    Content = "Hello World!",
+                    AuthorId = 1,
+                    ReceiverId = 2
+                });
+                db.SaveChanges();
+            }
+
+            // Act
+            using (var db = new SocialNetworkDBContext("social-network-test-db"))
+            {
+                var message_ret = db.Messages.FirstOrDefault();
+                db.Messages.Remove(message_ret);
+                db.SaveChanges();
+            }
+
+            // Assert
+            using (var db = new SocialNetworkDBContext("social-network-test-db"))
+            {
+                var message_ret = db.Messages.FirstOrDefault();
+                var user1_ret = db.Users.FirstOrDefault();
+                var user2_ret = db.Users.OrderByDescending(u => u.Id).FirstOrDefault();
+                Assert.That(message_ret, Is.Null);
+                Assert.That(user1_ret, Is.Not.Null);
+                Assert.That(user2_ret, Is.Not.Null);
+            }
+        }
     }
 }
