@@ -46,6 +46,9 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 5
     container: mcr.microsoft.com/dotnet/sdk:6.0
+    
+    env:
+      PORT: 1401
       
     services:
       mssql:
@@ -54,7 +57,7 @@ jobs:
           SA_PASSWORD: ${{ secrets.TEST_PASSWORD }}
           ACCEPT_EULA: 'Y'
         ports:
-          - 1433:1433
+          - ${{PORT}}:1433
 
     steps:
       - name: Check out code
