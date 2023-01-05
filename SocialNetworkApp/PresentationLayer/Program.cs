@@ -24,6 +24,7 @@ builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory())
   });
 builder.Services.AddCors();
 builder.Services.AddControllers();
+builder.Services.AddSwaggerGen();
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
   .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme,
     options => { options.Cookie.Name = "auth"; options.Cookie.SameSite = SameSiteMode.None; options.Cookie.SecurePolicy = CookieSecurePolicy.Always; builder.Configuration.Bind("CookieSettings", options); });
@@ -42,7 +43,8 @@ using (var serviceScope = app.Services.CreateScope())
 if (app.Environment.IsDevelopment())
 {
     app.UseDeveloperExceptionPage();
-    
+    app.UseSwagger();
+    app.UseSwaggerUI();
 }
 
 app.UseStaticFiles();
