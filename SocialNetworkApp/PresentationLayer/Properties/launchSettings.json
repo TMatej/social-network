@@ -16,7 +16,7 @@
       "useSSL": true,
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development",
-        "DefaultConnection": "Host=pgdb;Username=postgres;Password=postgres;Port=5432;Database=social-network-test-db;"
+        "DefaultConnection": "Server=social-network-mssqldb;Database=social-network-test-db;User Id=SA;Password=mySuper!password9;MultipleActiveResultSets=true"
       }
     }
   }
