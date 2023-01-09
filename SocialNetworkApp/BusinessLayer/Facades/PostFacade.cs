@@ -10,12 +10,14 @@ namespace BusinessLayer.Facades
     {
         IPostService postService;
         ILikeService likeService;
+        IUserService userService;
         IMapper mapper;
 
-        public PostFacade(IPostService postService, ILikeService likeService, IMapper mapper)
+        public PostFacade(IPostService postService, ILikeService likeService, IUserService userService , IMapper mapper)
         {
             this.postService = postService;
             this.likeService = likeService;
+            this.userService = userService;
             this.mapper = mapper;
             
         }
@@ -55,6 +57,11 @@ namespace BusinessLayer.Facades
         public void UnlikePost(int postId, int userId)
         {
             likeService.UnlikePost(postId, userId);
+        }
+        public bool CheckPermission(string claimId, int postId)
+        {
+            var post = postService.GetByID(postId);
+            return post.UserId == int.Parse(claimId) || userService.IsAdmin(int.Parse(claimId));
         }
     }
 }

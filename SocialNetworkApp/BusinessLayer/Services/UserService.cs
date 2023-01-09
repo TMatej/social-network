@@ -172,5 +172,12 @@ namespace BusinessLayer.Services
 
             return mapper.Map<IEnumerable<UserDTO>>(user);
         }
+
+        public bool IsAdmin(int userId)
+        {
+            var user = GetByID(userId);
+            var roles = user.UserRoles.Select(x => x.Role.Name);
+            return roles.Contains("Admin");
+        }
     }
 }

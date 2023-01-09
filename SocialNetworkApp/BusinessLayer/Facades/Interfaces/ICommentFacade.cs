@@ -7,6 +7,6 @@ namespace BusinessLayer.Facades.Interfaces
         IEnumerable<CommentRepresentDTO> GetCommentsForEntity(int entityId, int page = 1, int pageSize = 10);
         void AddComment(int entityId, int userId, CommentCreateDTO commentDTO);
         void RemoveComment(int id);
-
+        public bool CheckPermission(string claimId, int commentId); 
     }
 }

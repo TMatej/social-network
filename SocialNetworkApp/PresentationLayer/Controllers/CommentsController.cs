@@ -48,6 +48,10 @@ namespace PresentationLayer.Controllers
         [HttpDelete("{commentId}")]
         public IActionResult DeleteComment(int commentId)
         {
+            if (!commentFacade.CheckPermission(HttpContext?.User.Identity?.Name, commentId))
+            {
+                return Unauthorized();
+            }
             commentFacade.RemoveComment(commentId);
             return Ok();
         }

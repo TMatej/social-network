@@ -48,9 +48,9 @@ jobs:
     container: mcr.microsoft.com/dotnet/sdk:6.0
     
     env:
-      MSSQL_PORT: 1433
       MSSQL_HOST: mssql
-      
+      MSSQL_PORT: 1433
+    
     services:
       mssql:
         image: mcr.microsoft.com/mssql/server:2019-latest

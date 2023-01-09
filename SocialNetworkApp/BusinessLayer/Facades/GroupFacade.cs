@@ -2,6 +2,7 @@
 using BusinessLayer.Contracts;
 using BusinessLayer.DTOs.Group;
 using BusinessLayer.Facades.Interfaces;
+using BusinessLayer.Services;
 using DataAccessLayer.Entity;
 using DataAccessLayer.Entity.Enum;
 using DataAccessLayer.Entity.JoinEntity;
@@ -11,11 +12,13 @@ namespace BusinessLayer.Facades
     public class GroupFacade : IGroupFacade
     {
         private readonly IGroupService _groupService;
+        private readonly IUserService _userService;
         private readonly IMapper _mapper;
 
-        public GroupFacade(IGroupService groupService, IMapper mapper)
+        public GroupFacade(IGroupService groupService, IUserService userService, IMapper mapper)
         {
             _groupService = groupService;
+            _userService = userService;
             _mapper = mapper;
         }
 
@@ -67,6 +70,16 @@ namespace BusinessLayer.Facades
         public IEnumerable<GroupRepresentDTO> GetGroupsForUser(int userId)
         {
             return _groupService.FindGroupsForUser(userId).Select(x => _mapper.Map<GroupRepresentDTO>(x));
+        }
+
+        public bool CheckPermission(string claimId, int groupId)
+        {
+            var group = _groupService.GetByIdDetailed(groupId);
+            var authors = group?.GroupMembers.Where(x => x.GroupRole == GroupRole.Author).Select(x => x.UserId);
+            var claimInt = int.Parse(claimId);
+            {
+                return authors?.Contains(claimInt) ?? false || _userService.IsAdmin(claimInt);
+            }
         }
     }
 }
