@@ -6,6 +6,7 @@ metadata:
     kuberentes.io/ingress.class: "nginx"                                        
     kubernetes.io/tls-acme: "true"                                              
     cert-manager.io/cluster-issuer: "letsencrypt-prod"
+    nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
 spec:                                                                           
   tls:                                                                          
     - hosts: # Make sure that the domain name does not already exist                                            
@@ -16,9 +17,10 @@ spec:
   - host: "social-network-application-server.dyn.cloud.e-infra.cz"                                          
     http:                                                                       
       paths:                                                                    
-      - backend:                                                                
+      - path: /
+        backend:                                                                
           service:                                                              
             name: social-network-app-server-svc                                          
             port:                                                               
-              number: 5000
+              number: 443
         pathType: ImplementationSpecific

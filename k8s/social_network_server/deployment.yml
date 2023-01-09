@@ -19,7 +19,8 @@ spec:
         runAsNonRoot: true
       containers:
       - name: social-network-app-server
-        image: ghcr.io/tmatej/social-network-server:latest
+        image: ghcr.io/tmatej/social-network-server-mssql:latest
+        # image: ghcr.io/tmatej/social-network-server:latest
         ports:
         - containerPort: 5000
         env:      

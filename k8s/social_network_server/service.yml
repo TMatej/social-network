@@ -6,7 +6,7 @@ spec:
   type: ClusterIP
   ports:
   - name: social-network-app-server-port                                                 
-    port: 5000          # target port                                                            
+    port: 443          # target port                                                            
     targetPort: 5000    # container port 
   selector:
     app: social-network-app-server
