@@ -5,17 +5,17 @@ VisualStudioVersion = 17.3.32825.248
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataAccessLayer", "DataAccessLayer\DataAccessLayer.csproj", "{E85FE97E-6543-4B35-BB2B-9597F73379C8}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DalUnitTests", "DalUnitTests\DalUnitTests.csproj", "{A401CC02-B7D1-4CB7-9E32-0FEC9A26B89D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataAccessLayer.UnitTests", "DalUnitTests\DataAccessLayer.UnitTests.csproj", "{A401CC02-B7D1-4CB7-9E32-0FEC9A26B89D}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Infrastructure", "Infrastructure\Infrastructure.csproj", "{216D5A22-DCAF-4CCE-812C-024A2D0CE645}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Infrastructure.EFCore", "Infrastructure.EFCore\Infrastructure.EFCore.csproj", "{34F5938E-2A6D-4234-9CF7-0A07EAD1DE39}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Infrastructure.EFCore.Test", "Infrastructure.EFCore.Test\Infrastructure.EFCore.Test.csproj", "{F04D36CF-C162-4CE0-BC52-78595BEB58C7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Infrastructure.EFCore.Tests", "Infrastructure.EFCore.Test\Infrastructure.EFCore.Tests.csproj", "{F04D36CF-C162-4CE0-BC52-78595BEB58C7}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BusinessLayer", "BusinessLayer\BusinessLayer.csproj", "{2A9B6DBC-3D05-41E4-A4D9-2DABF650426A}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ServiceTests", "ServiceTests\ServiceTests.csproj", "{E44EAB17-0454-4C55-B141-2CDDC0A346ED}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BussinesLayer.Tests", "ServiceTests\BussinesLayer.Tests.csproj", "{E44EAB17-0454-4C55-B141-2CDDC0A346ED}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PresentationLayer", "PresentationLayer\PresentationLayer.csproj", "{EC75E0EF-EB83-4402-B61C-5E2ABC7A4553}"
 EndProject
