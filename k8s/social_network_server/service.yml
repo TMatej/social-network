@@ -5,8 +5,11 @@ metadata:
 spec:
   type: ClusterIP
   ports:
-  - name: social-network-app-server-port                                                 
-    port: 443          # target port                                                            
+  - name: social-network-app-server-http-port                                                 
+    port: 80          # target port                                                            
     targetPort: 5000    # container port 
+  - name: social-network-app-server-https-port                                                 
+    port: 443          # target port                                                            
+    targetPort: 5001    # container port 
   selector:
     app: social-network-app-server

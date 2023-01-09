@@ -19,8 +19,11 @@ spec:
       paths:                                                                    
       - path: /
         backend:                                                                
-          service:                                                              
-            name: social-network-app-server-svc                                          
+          service:  
+          - name: social-network-app-server-svc-http                                          
+            port:                                                               
+              number: 80                                                            
+          - name: social-network-app-server-svc-https                                          
             port:                                                               
               number: 443
         pathType: ImplementationSpecific
