@@ -6,7 +6,7 @@ metadata:
     kuberentes.io/ingress.class: "nginx"                                        
     kubernetes.io/tls-acme: "true"                                              
     cert-manager.io/cluster-issuer: "letsencrypt-prod"
-    nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
+    #nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
 spec:                                                                           
   tls:                                                                          
     - hosts: # Make sure that the domain name does not already exist                                            
@@ -16,14 +16,18 @@ spec:
   rules:                                                                        
   - host: "social-network-application-server.dyn.cloud.e-infra.cz"                                          
     http:                                                                       
-      paths:                                                                    
+      paths:   
       - path: /
+        pathType: ImplementationSpecific
         backend:                                                                
-          service:  
-          - name: social-network-app-server-svc-http                                          
+          service:                                                           
+            name: social-network-app-server-svc-http                                         
             port:                                                               
               number: 80                                                            
-          - name: social-network-app-server-svc-https                                          
-            port:                                                               
-              number: 443
-        pathType: ImplementationSpecific
+      # - path: /
+      #   pathType: ImplementationSpecific
+      #   backend:                                                                
+      #     service:                                                           
+      #       name: social-network-app-server-svc-https                                          
+      #       port:                                                               
+      #         number: 443

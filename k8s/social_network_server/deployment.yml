@@ -25,7 +25,7 @@ spec:
         - containerPort: 5001
         env:     
         - name: ASPNETCORE_HTTPS_PORT
-          value: 5001  
+          value: "5001"  
         - name: Properties__SeedData
           value: "true"                                                             
         - name: ConnectionStrings__postgres
