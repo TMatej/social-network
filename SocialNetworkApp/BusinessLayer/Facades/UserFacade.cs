@@ -71,5 +71,11 @@ namespace BusinessLayer.Facades
         {
             return groupService.FindGroupsForUser(userId).Select(x => mapper.Map<GroupRepresentDTO>(x));
         }
+
+        public bool CheckPermission(string claimId, int userId)
+        {
+            var claimInt = int.Parse(claimId);
+            return claimInt == userId || userService.IsAdmin(claimInt);
+        }
     }
 }

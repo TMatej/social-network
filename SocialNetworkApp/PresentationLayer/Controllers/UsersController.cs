@@ -38,7 +38,7 @@ public class UsersController : ControllerBase
     [Authorize]
     public IActionResult DeleteUser(int userId)
     {
-        if (userId != int.Parse(HttpContext.User.Identity.Name))
+        if (!userFacade.CheckPermission(HttpContext.User.Identity.Name,userId))
         {
             return Unauthorized();
         }
@@ -69,7 +69,7 @@ public class UsersController : ControllerBase
     [Authorize]
     public IActionResult UpdateAvatar(int userId, [FromForm] UpdateUserAvatarDTO updateUserAvatarDTO)
     {
-        if (userId != int.Parse(HttpContext.User.Identity.Name))
+        if (!userFacade.CheckPermission(HttpContext.User.Identity.Name, userId))
         {
             return Unauthorized();
         }
@@ -81,13 +81,11 @@ public class UsersController : ControllerBase
     [Authorize]
     public IActionResult UpdateUserProfile(int userId, [FromBody] ProfileUpdateDTO profileUpdateDTO)
     {
+        if (!userFacade.CheckPermission(HttpContext.User.Identity.Name, userId))
+        {
+            return Unauthorized();
+        }
         profileFacade.UpdateProfile(int.Parse(HttpContext.User.Identity.Name), profileUpdateDTO);
-        return Ok();
-    }
-
-    [HttpDelete("{userId}/profile")]
-    public IActionResult DeleteUserProfile(int userId)
-    {
         return Ok();
     }
 }

@@ -1,4 +1,6 @@
 ﻿using BusinessLayer.DTOs.Event;
+using BusinessLayer.DTOs.Group;
+using BusinessLayer.Facades;
 using BusinessLayer.Facades.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
@@ -33,6 +35,10 @@ namespace PresentationLayer.Controllers
         [HttpPut("/event")]
         public IActionResult UpdateEvent([FromBody]EventRepresentDTO eventRepresentDTO)
         {
+            if (!eventFacade.CheckPermission(HttpContext.User.Identity.Name, eventRepresentDTO.Id))
+            {
+                return Unauthorized();
+            }
             eventFacade.UpdateEvent(eventRepresentDTO);
             return Ok();
         }
@@ -40,6 +46,10 @@ namespace PresentationLayer.Controllers
         [HttpDelete("/event")]
         public IActionResult DeleteEvent([FromBody]EventRepresentDTO eventRepresentDTO)
         {
+            if (!eventFacade.CheckPermission(HttpContext.User.Identity.Name, eventRepresentDTO.Id))
+            {
+                return Unauthorized();
+            }
             eventFacade.DeleteEvent(eventRepresentDTO);
             return Ok();
         }
@@ -47,6 +57,10 @@ namespace PresentationLayer.Controllers
         [HttpDelete("/participation")]
         public IActionResult DeleteParticipation([FromBody]EventParticipationDTO eventParticipationDTO)
         {
+            if (!(eventFacade.CheckPermission(HttpContext.User.Identity.Name, eventParticipationDTO.EventId) || int.Parse(HttpContext.User.Identity.Name) == eventParticipationDTO.UserId))
+            {
+                return Unauthorized();
+            }
             var success = eventFacade.RemoveParticipant(eventParticipationDTO);
             return success ? Ok() : NotFound();
         }

@@ -10,11 +10,13 @@ namespace BusinessLayer.Facades
     public class CommentFacade : ICommentFacade
     {
         ICommentService commentService;
+        IUserService userService;
         IMapper mapper;
 
-        public CommentFacade(ICommentService commentService, IMapper mapper)
+        public CommentFacade(ICommentService commentService, IUserService userService, IMapper mapper)
         {
             this.commentService = commentService;
+            this.userService = userService;
             this.mapper = mapper;
         }
 
@@ -27,6 +29,12 @@ namespace BusinessLayer.Facades
             });
         }
 
+        public bool CheckPermission(string claimId, int commentId)
+        {
+            var comment = commentService.GetByID(commentId);
+            return comment.UserId == int.Parse(claimId) || userService.IsAdmin(int.Parse(claimId));
+        }
+
         public IEnumerable<CommentRepresentDTO> GetCommentsForEntity(int entityId, int page = 1, int pageSize = 10)
         {
             var services = commentService.getCommentsForEntity(entityId, page, pageSize);
@@ -37,5 +45,6 @@ namespace BusinessLayer.Facades
         {
             commentService.Delete(id);
         }
+        
     }
 }

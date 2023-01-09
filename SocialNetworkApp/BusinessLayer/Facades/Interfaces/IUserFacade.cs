@@ -13,5 +13,7 @@ namespace BusinessLayer.Facades.Interfaces
         public IEnumerable<UserDTO> GetAllUsersPaginated(int page, int size);
         void DeleteUser(int userId);
         public IEnumerable<GroupRepresentDTO> GetGroupsForUser(int userId);
+
+        public bool CheckPermission(string claimId, int userId);
     }
 }

@@ -4,6 +4,8 @@ using BusinessLayer.Facades.Interfaces;
 using PresentationLayer.Models;
 using BusinessLayer.DTOs.Post;
 using Microsoft.AspNetCore.Authorization;
+using BusinessLayer.Facades;
+using DataAccessLayer.Entity;
 
 namespace PresentationLayer.Controllers
 {
@@ -59,6 +61,10 @@ namespace PresentationLayer.Controllers
         [HttpPut]
         public IActionResult UpdateGroup(GroupRepresentDTO groupRepresentDTO)
         {
+            if (!groupFacade.CheckPermission(HttpContext.User.Identity.Name, groupRepresentDTO.Id))
+            {
+                return Unauthorized();
+            }
             groupFacade.UpdateGroup(groupRepresentDTO);
             return Ok();
         }
@@ -66,6 +72,10 @@ namespace PresentationLayer.Controllers
         [HttpDelete("{groupId}")]
         public IActionResult DeleteGroup(int groupId)
         {
+            if (!groupFacade.CheckPermission(HttpContext.User.Identity.Name, groupId))
+            {
+                return Unauthorized();
+            }
             groupFacade.DeleteGroup(groupId);
             return Ok();
         }
@@ -73,6 +83,10 @@ namespace PresentationLayer.Controllers
         [HttpDelete("/membership")]
         public IActionResult DeleteMembership(GroupMembershipDTO groupMembershipDTO)
         {
+            if (!(groupFacade.CheckPermission(HttpContext.User.Identity.Name, groupMembershipDTO.GroupId)|| int.Parse(HttpContext.User.Identity.Name)==groupMembershipDTO.UserId))
+            {
+                return Unauthorized();
+            }
             var success = groupFacade.RemoveFromGroup(groupMembershipDTO);
             return success ? Ok() : NotFound();
         }
@@ -80,6 +94,10 @@ namespace PresentationLayer.Controllers
         [HttpPost("/membership")]
         public IActionResult AddMembership(GroupMembershipDTO groupMembershipDTO)
         {
+            if (int.Parse(HttpContext.User.Identity.Name) != groupMembershipDTO.UserId)
+            {
+                return Unauthorized();
+            }
             groupFacade.AddToGroup(groupMembershipDTO);
             return Ok();
         }

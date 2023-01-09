@@ -10,5 +10,6 @@ namespace BusinessLayer.Facades.Interfaces
         public void DeleteGroup(int groupId);
         public void AddToGroup(GroupMembershipDTO groupMembershipDTO);
         public bool RemoveFromGroup(GroupMembershipDTO groupMembershipDTO);
+        public bool CheckPermission(string claimId, int groupId);
     }
 }

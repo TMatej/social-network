@@ -4,17 +4,21 @@ using BusinessLayer.DTOs.Event;
 using BusinessLayer.DTOs.Group;
 using BusinessLayer.DTOs.User;
 using BusinessLayer.Facades.Interfaces;
+using BusinessLayer.Services;
 using DataAccessLayer.Entity;
+using DataAccessLayer.Entity.Enum;
 
 namespace BusinessLayer.Facades
 {
     public class EventFacade : IEventFacade
     {
         IEventService eventService;
+        IUserService userService;
         IMapper mapper;
-        public EventFacade(IEventService eventService, IMapper mapper)
+        public EventFacade(IEventService eventService, IUserService userService, IMapper mapper)
         {
             this.eventService = eventService;
+            this.userService = userService;
             this.mapper = mapper;
         }
             public void CreateEvent(EventCreateDTO eventCreateDTO)
@@ -73,6 +77,16 @@ namespace BusinessLayer.Facades
         {
             var _event = eventService.GetByID(id);
             return _event == null ? null : mapper.Map<EventRepresentDTO>(_event);
+        }
+
+        public bool CheckPermission(string claimId, int eventId)
+        {
+            var _event = eventService.GetByID(eventId);
+            var owner = _event.UserId;
+            var claimInt = int.Parse(claimId);
+            {
+                return owner == claimInt || userService.IsAdmin(claimInt);
+            }
         }
     }
 }
