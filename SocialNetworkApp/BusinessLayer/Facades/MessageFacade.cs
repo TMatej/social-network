@@ -32,12 +32,8 @@ namespace BusinessLayer.Facades
                 {
                     AuthorId = messageDTO.AuthorId,
                     ReceiverId = messageDTO.ReceiverId,
-                    Content = messageDTO.Content,
-                    AttachmentId = messageDTO.AttachmentId
-                }
-                );
-
-            
+                    Content = messageDTO.Content
+                });
         }
 
         public IEnumerable<MessageRepresentDTO> GetDirectMessagesBetween(int user1Id, int user2Id, int page = 1, int pageSize = 10)

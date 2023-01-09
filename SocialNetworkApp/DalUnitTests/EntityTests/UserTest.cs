@@ -60,6 +60,7 @@ namespace DalUnitTests.EntityTests
                 Assert.Throws<DbUpdateException>(() => db.SaveChanges());
             }
         }
+
         [Test]
         public void Test_Add_Long()
         {
@@ -70,6 +71,6 @@ namespace DalUnitTests.EntityTests
 
                 Assert.Throws<DbUpdateException>(() => db.SaveChanges());
             }
-        }
+        }  
     }
 }

@@ -78,10 +78,7 @@ namespace BusinessLayer.Services
             Guard.Against.Null(id);
             var user = userRepo.GetByID(id);
 
-            // remove all conversationParticipations
-            // remove all eventParticipations
-            // remove all contacts
-
+            // remove all contacts where user is User1
             var contacts = contactQuery
                 .Where<int>(x => x == user.Id, "User1Id")
                 .Execute();
@@ -90,6 +87,10 @@ namespace BusinessLayer.Services
             {
                 contactRepo.Delete(contact.Id);
             }
+
+            // remove all conversations where user is Owner
+            // remove all messages where user is Author
+            // remove all eventParticipations
 
             userRepo.Delete(id);
             _uow.Commit();
