@@ -47,6 +47,10 @@ namespace PresentationLayer.Controllers
         [HttpDelete("{postId}")]
         public IActionResult DeletePost(int postId)
         {
+            if (!_postFacade.CheckPermission(HttpContext?.User.Identity?.Name, postId))
+            {
+                return Unauthorized();
+            }
             _postFacade.DeletePost(postId);
             return Ok();
         }

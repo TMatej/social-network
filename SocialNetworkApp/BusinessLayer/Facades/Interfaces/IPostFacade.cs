@@ -10,5 +10,6 @@ namespace BusinessLayer.Facades.Interfaces
         void CreatePost(PostCreateDTO postDTO);
         void DeletePost(int postId);
         IEnumerable<PostRepresentDTO> GetPostForPostable(int postableId, int page, int pageSize);
+        public bool CheckPermission(string claimId, int postId);
     }
 }

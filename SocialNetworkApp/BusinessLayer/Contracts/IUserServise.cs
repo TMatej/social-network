@@ -14,5 +14,6 @@ namespace BusinessLayer.Contracts
         public IEnumerable<User> FindByName(string name, int pageSize, int page);
         public UserDTO GetByIdDetailed(int userId);
         public IEnumerable<UserDTO> GetAllUsersPaginated(int page, int size);
+        public bool IsAdmin(int userId);
     }
 }

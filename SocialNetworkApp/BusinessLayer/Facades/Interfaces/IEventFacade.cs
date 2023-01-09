@@ -19,5 +19,7 @@ namespace BusinessLayer.Facades.Interfaces
         public void DeleteEvent(EventRepresentDTO eventRepresentDTO);
 
         public EventRepresentDTO? GetEvent(int id);
+
+        public bool CheckPermission(string claimId, int eventId);
     }
 }
