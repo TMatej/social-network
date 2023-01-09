@@ -48,8 +48,8 @@ jobs:
     container: mcr.microsoft.com/dotnet/sdk:6.0
     
     env:
-      PORT: 1433
-      HOST: mssql
+      MSSQL_PORT: 1433
+      MSSQL_HOST: mssql
       
     services:
       mssql:
