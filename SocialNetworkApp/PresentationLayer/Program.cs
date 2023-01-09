@@ -29,11 +29,11 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
   .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme,
     options => { options.Cookie.Name = "auth"; options.Cookie.SameSite = SameSiteMode.None; options.Cookie.SecurePolicy = CookieSecurePolicy.Always; builder.Configuration.Bind("CookieSettings", options); });
-builder.Services.AddHttpsRedirection(options =>
+/*builder.Services.AddHttpsRedirection(options =>
 {
     options.RedirectStatusCode = (int)HttpStatusCode.TemporaryRedirect;
     options.HttpsPort = 5001;
-});
+});*/
 
 var app = builder.Build();
 

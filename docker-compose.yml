@@ -51,6 +51,7 @@ services:
       # docker network ls
       # docker network inspect <bridge_tag>
       # find the sql ipv4 address
+      ASPNETCORE_HTTPS_PORT: "5001"
       ConnectionStrings__mssql: "Server=172.19.0.2,1433;Database=social_network_test_db;User Id=SA;Password=mySuper!password9;MultipleActiveResultSets=true;TrustServerCertificate=True;"
       Properties__SeedData: true
     ports:
