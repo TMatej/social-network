@@ -44,7 +44,7 @@ services:
     container_name: social-network-app-server
     image: social-network-server:latest
     build:
-      context: ./SocialNetworkApp
+      context: ./server
       dockerfile: Dockerfile
     environment:
       # container_name should be enough, but for some reason specific ip must be supplied for server
