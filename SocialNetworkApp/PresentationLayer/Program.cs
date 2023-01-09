@@ -45,7 +45,8 @@ using (var serviceScope = app.Services.CreateScope())
 {
     var context = serviceScope.ServiceProvider.GetRequiredService<SocialNetworkDBContext>();
     if (seeding) context.Database.EnsureDeleted();
-    context.Database.Migrate();
+    context.Database.EnsureCreated();
+    //context.Database.Migrate();
     if (seeding) context.Seed();
 }
 
