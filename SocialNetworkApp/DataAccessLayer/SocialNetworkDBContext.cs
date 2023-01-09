@@ -40,8 +40,11 @@ namespace DataAccessLayer
             var userName = Environment.GetEnvironmentVariable("POSTGRES_USER") ?? "postgres";
             var password = Environment.GetEnvironmentVariable("POSTGRES_PASSWORD") ?? "postgres";
             var port = Environment.GetEnvironmentVariable("POSTGRES_PORT") ?? "5432";
+            var mssqlport = Environment.GetEnvironmentVariable("MSSQL_PORT") ?? "1433";
+            var mssqlhost = Environment.GetEnvironmentVariable("MSSQL_HOST") ?? "localhost";
 
-            connectionString = $"Host={host};Username={userName};Password={password};Port={port};Database={database};";
+            //connectionString = $"Host={host};Username={userName};Password={password};Port={port};Database={database};";
+            connectionString = $"Server={mssqlhost},{mssqlport};Database={database};User Id=SA;Password=mySuper!password9;MultipleActiveResultSets=true;TrustServerCertificate=True;";
             seedData = false;
         }
 
@@ -54,7 +57,8 @@ namespace DataAccessLayer
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder
-                .UseNpgsql(connectionString)
+                .UseSqlServer(connectionString)
+                //.UseNpgsql(connectionString)
                 // logging of SQL commands into console
                 /*
                 .UseLoggerFactory(LoggerFactory.Create(
@@ -69,6 +73,12 @@ namespace DataAccessLayer
             base.OnConfiguring(optionsBuilder);
         }
 
+
+        /* Main rule -> Owner of entity is responsible for the deleting of the entity
+           i.e. -> Owner (User) of conversation (Conversation) must delete all the conversation before owner is deleted.
+                   Auhor (User) of message (Message) must delete all the messages before author is deleted.
+                   User1 (User) in contact (Contact) must delete all the contacts where he is User1, before he is deleted.
+         */
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             /* Unique names for users */
@@ -89,7 +99,8 @@ namespace DataAccessLayer
                 .IsUnique();
 
             /* Set owning property of Profile - Address */
-            modelBuilder.Entity<Profile>().OwnsOne(p => p.Address);
+            modelBuilder.Entity<Profile>()
+                .OwnsOne(p => p.Address);
 
             /* Set One-To-Many relationship */
             modelBuilder.Entity<Gallery>()
@@ -102,12 +113,6 @@ namespace DataAccessLayer
                 .WithMany(g => g.Photos)
                 .HasForeignKey(a => a.GalleryId);
 
-            /* Set One-To-One relationship */
-            /*modelBuilder.Entity<User>()
-                .HasOne<Profile>(u => u.Profile)
-                .WithOne(o => o.User)
-                .HasForeignKey<Profile>(p => p.UserId);*/
-
             /* Commentable */
             modelBuilder.Entity<Comment>().ToTable("Comment");
             modelBuilder.Entity<Photo>().ToTable("Photo");
@@ -117,32 +122,19 @@ namespace DataAccessLayer
             modelBuilder.Entity<Group>().ToTable("Group");
             modelBuilder.Entity<Profile>().ToTable("Profile");
 
-            /* Set Many-To-Many relationship for User <-> Event */
-            /*modelBuilder.Entity<EventParticipant>()
-                .HasKey(ep => new { ep.UserId, ep.EventId });*/
-
-            /* Set Many-To-Many relationship for User <-> Conversation */
-            /*modelBuilder.Entity<ConversationParticipant>()
-                .HasKey(cp => new { cp.UserId, cp.ConversationId });*/
-
-            /* Set Many-To-Many relationship for User <-> Group */
-            /*modelBuilder.Entity<GroupMember>()
-                .HasKey(gm => new { gm.UserId, gm.GroupId });*/
-
-            /* Set Many-To-Many relationship for User <-> User */
-            /*modelBuilder.Entity<Contact>()
-                .HasKey(c => new { c.User1Id, c.User2Id });*/
+            /* Service needs to ensure deleting of all appropriate
+             * contacts before deleting User1 
+               TESTED IN USER ADVANCED TESTS ???? */
+            modelBuilder.Entity<Contact>()
+                .HasOne(c => c.User1)
+                .WithMany(u => u.Contacts)
+                .HasForeignKey(c => c.User1Id)
+                .OnDelete(DeleteBehavior.NoAction);
 
             modelBuilder.Entity<Contact>()
                 .HasOne(c => c.User2)
-                .WithMany(u => u.Contacts)
-                .HasForeignKey(c => c.User2Id);
-
-            modelBuilder.Entity<Contact>()
-                .HasOne(c => c.User1)
                 .WithMany(u => u.ContactsOf)
-                .HasForeignKey(c => c.User1Id)
-                .OnDelete(DeleteBehavior.Restrict);
+                .HasForeignKey(c => c.User2Id);
 
             modelBuilder.Entity<UserRole>()
                 .HasOne(ur => ur.User)
@@ -164,30 +156,53 @@ namespace DataAccessLayer
              * https://stackoverflow.com/questions/49214748/many-to-many-self-referencing-relationship/49219124#49219124
              */
 
+            
             modelBuilder.Entity<User>()
                 .HasMany(u => u.ConversationParticipants)
                 .WithOne(c => c.User)
-                .OnDelete(DeleteBehavior.Restrict);
+                .OnDelete(DeleteBehavior.NoAction);
 
             modelBuilder.Entity<User>()
                 .HasOne(u => u.Avatar)
                 .WithOne()
-                .HasForeignKey<User>(u => u.AvatarId); 
+                .HasForeignKey<User>(u => u.AvatarId);
 
+            /* Service needs to ensure deleting of all appropriate
+             * messages before deleting Author 
+               TESTED IN USER ADVANCED TESTS */
             modelBuilder.Entity<Message>()
                 .HasOne(m => m.Author)
                 .WithMany()
-                .OnDelete(DeleteBehavior.Restrict);
+                .HasForeignKey(m => m.AuthorId)
+                .OnDelete(DeleteBehavior.NoAction);
 
+            /* Service needs to ensure deleting of all appropriate
+             * Conversations before deleting User (owner) 
+               TESTED IN CONVERSATION ADVANCED TESTS */
+            modelBuilder.Entity<Conversation>()
+                .HasOne(c => c.User)
+                .WithMany()
+                .HasForeignKey(c => c.UserId)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            /* Service needs to ensure deleting of all appropriate
+             * Event Participations before deleting User 
+               WILL BE TESTED IN USER ADVANCED TESTS */
             modelBuilder.Entity<User>()
                 .HasMany(u => u.EventParticipants)
                 .WithOne(c => c.User)
-                .OnDelete(DeleteBehavior.Restrict);
+                .OnDelete(DeleteBehavior.NoAction);
 
             modelBuilder.Entity<Comment>()
                 .HasOne(c => c.Commentable)
                 .WithMany(c => c.Comments)
-                .HasForeignKey(c => c.CommentableId);
+                .HasForeignKey(c => c.CommentableId)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            modelBuilder.Entity<Like>()
+                .HasOne(l => l.Post)
+                .WithMany()
+                .OnDelete(DeleteBehavior.NoAction);
 
             modelBuilder.Entity<FileEntity>()
                 .HasIndex(f => f.Guid)
@@ -200,69 +215,69 @@ namespace DataAccessLayer
             // Set default values for timestamps
             modelBuilder.Entity<Comment>()
                 .Property(u => u.CreatedAt)
-                .HasDefaultValueSql("now()");
+                .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
             modelBuilder.Entity<Contact>()
                 .Property(u => u.CreatedAt)
-                .HasDefaultValueSql("now()");
+                .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
             modelBuilder.Entity<Conversation>()
                 .Property(u => u.CreatedAt)
-                .HasDefaultValueSql("now()");
+                .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
             modelBuilder.Entity<ConversationParticipant>()
                 .Property(u => u.CreatedAt)
-                .HasDefaultValueSql("now()");
+                .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
             modelBuilder.Entity<Event>()
                 .Property(u => u.CreatedAt)
-                .HasDefaultValueSql("now()");
+                .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
             modelBuilder.Entity<FileEntity>()
                 .Property(u => u.CreatedAt)
-                .HasDefaultValueSql("now()");
+                .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
             modelBuilder.Entity<EventParticipant>()
                 .Property(u => u.CreatedAt)
-                .HasDefaultValueSql("now()");
+                .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
             modelBuilder.Entity<Gallery>()
                 .Property(u => u.CreatedAt)
-                .HasDefaultValueSql("now()");
+                .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
             modelBuilder.Entity<Group>()
                 .Property(u => u.CreatedAt)
-                .HasDefaultValueSql("now()");
+                .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
             modelBuilder.Entity<GroupMember>()
                 .Property(u => u.CreatedAt)
-                .HasDefaultValueSql("now()");
+                .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
             modelBuilder.Entity<Message>()
                 .Property(u => u.CreatedAt)
-                .HasDefaultValueSql("now()");
+                .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
             modelBuilder.Entity<ParticipationType>()
                 .Property(u => u.CreatedAt)
-                .HasDefaultValueSql("now()");
+                .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
             modelBuilder.Entity<Photo>()
                 .Property(u => u.CreatedAt)
-                .HasDefaultValueSql("now()");
+                .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
             modelBuilder.Entity<Post>()
                 .Property(u => u.CreatedAt)
-                .HasDefaultValueSql("now()");
+                .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
             modelBuilder.Entity<Profile>()
                 .Property(u => u.CreatedAt)
-                .HasDefaultValueSql("now()");
+                .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
             modelBuilder.Entity<User>()
                 .Property(u => u.CreatedAt)
-                .HasDefaultValueSql("now()");
+                .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
-            if (seedData) modelBuilder.Seed();
+            //if (seedData) modelBuilder.Seed();
 
             base.OnModelCreating(modelBuilder);
         }

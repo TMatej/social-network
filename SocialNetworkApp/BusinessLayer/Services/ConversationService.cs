@@ -62,7 +62,7 @@ namespace BusinessLayer.Services
 
             if (attachment != null)
             {
-                message.Attachment = attachment;
+                message.Attachments.Append(attachment);
             }
             messageRepo.Insert(message);
             _uow.Commit();
