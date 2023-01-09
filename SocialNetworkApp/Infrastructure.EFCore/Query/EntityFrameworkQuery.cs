@@ -28,10 +28,10 @@ namespace Infrastructure.EFCore.Query
                 query = ApplyWhere(query);
             }
 
-            if (IncludeParameters.Count != 0)
+            /*if (IncludeParameters.Count != 0)
             {
                 query.ExecuteDelete();
-            }
+            }*/
 
             if (IncludeParameters.Count != 0)
             {
