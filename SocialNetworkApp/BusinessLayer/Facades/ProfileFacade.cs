@@ -66,13 +66,8 @@ namespace BusinessLayer.Facades
           profileService.Update(profile);
         }
 
-        public IEnumerable<GalleryRepresentDTO> GetGalleriesByProfileId(int userId, int profileId)
+        public IEnumerable<GalleryRepresentDTO> GetGalleriesByProfileId(int profileId)
         {
-            var profile = profileService.GetByUserId(userId);
-            if (profile.Id != profileId)
-            {
-                throw new Exception("User is not owner of profile");
-            }
             return galleryService.GetGalleriesByProfileId(profileId);
         }
     }

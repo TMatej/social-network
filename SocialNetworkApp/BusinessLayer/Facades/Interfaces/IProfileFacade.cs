@@ -9,6 +9,6 @@ namespace BusinessLayer.Facades.Interfaces
         public void UpdateProfile(int userId, ProfileUpdateDTO profile);
         public void CreateGallery(int userId, int profileId, GalleryCreateDTO galleryCreateDTO);
         public void DeleteGallery(int userId, int profileId, int galleryId);
-        public IEnumerable<GalleryRepresentDTO> GetGalleriesByProfileId(int userId, int profileId);
+        public IEnumerable<GalleryRepresentDTO> GetGalleriesByProfileId(int profileId);
     }
 }

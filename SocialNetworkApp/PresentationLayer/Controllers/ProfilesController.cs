@@ -48,8 +48,7 @@ public class ProfilesController : ControllerBase
     [HttpGet("{profileId}/galleries")]
     public IActionResult GetGalleries(int profileId)
     {
-        var userId = int.Parse(HttpContext.User.Identity.Name);
-        var galleries = profileFacade.GetGalleriesByProfileId(userId, profileId);
+        var galleries = profileFacade.GetGalleriesByProfileId(profileId);
         return Ok(galleries);
     }
 
