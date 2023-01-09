@@ -45,8 +45,8 @@ using (var serviceScope = app.Services.CreateScope())
 {
     var context = serviceScope.ServiceProvider.GetRequiredService<SocialNetworkDBContext>();
     if (seeding) context.Database.EnsureDeleted();
-    context.Database.EnsureCreated();
-    //context.Database.Migrate();
+    //context.Database.EnsureCreated();
+    context.Database.Migrate();
     if (seeding) context.Seed();
 }
 
@@ -57,7 +57,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-//app.UseHttpsRedirection();
+// app.UseHttpsRedirection(); // use this if HTTPS is required (in cluster we use HTTPS on in ingress)
 app.UseStaticFiles();
 app.UseRouting();
 app.UseCors(builder => {
