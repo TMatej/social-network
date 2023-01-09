@@ -31,7 +31,7 @@ namespace BusinessLayer.Facades
 
         public void CreateGallery(int userId, int profileId, GalleryCreateDTO galleryCreateDTO)
         {
-            var profile = profileService.GetByUserId(profileId);
+            var profile = profileService.GetByUserId(userId);
             if (profile.Id != profileId)
             {
                 throw new Exception("User is not owner of profile");
