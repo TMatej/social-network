@@ -39,7 +39,7 @@ jobs:
       - name: Build&Push Image
         uses: docker/build-push-action@v3
         with:
-          context: SocialNetworkApp
+          context: server
           push: true
           tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}-mssql:${{ env.IMAGE_TAG }} # ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}

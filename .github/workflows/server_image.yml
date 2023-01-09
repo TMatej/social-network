@@ -24,11 +24,11 @@ jobs:
 
       - name: Restore dependencies
         run: dotnet restore
-        working-directory: SocialNetworkApp
+        working-directory: server
 
       - name: Build
         run: dotnet build --no-restore
-        working-directory: SocialNetworkApp
+        working-directory: server
 
   tests:
     needs: build
@@ -65,23 +65,23 @@ jobs:
 
       - name: Restore dependencies
         run: dotnet restore
-        working-directory: SocialNetworkApp
+        working-directory: server
 
       - name: Build
         run: dotnet build --no-restore
-        working-directory: SocialNetworkApp
+        working-directory: server
 
       - name: Run Unit-tests
         run: dotnet test --no-build --verbosity normal
-        working-directory: SocialNetworkApp/DalUnitTests
+        working-directory: server/DalUnitTests
 
       - name: Run Infrastructure-tests
         run: dotnet test --no-build --verbosity normal
-        working-directory: SocialNetworkApp/Infrastructure.EFCore.Test
+        working-directory: server/Infrastructure.EFCore.Test
 
       - name: Run Service-tests
         run: dotnet test --no-build --verbosity normal
-        working-directory: SocialNetworkApp/ServiceTests
+        working-directory: server/ServiceTests
 
   build-image:
     needs: tests
@@ -119,7 +119,7 @@ jobs:
       - name: Build&Push Image
         uses: docker/build-push-action@v3
         with:
-          context: SocialNetworkApp
+          context: server
           push: true
           tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }} # ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
