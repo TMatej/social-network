@@ -11,7 +11,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Infrastructure", "Infrastru
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Infrastructure.EFCore", "Infrastructure.EFCore\Infrastructure.EFCore.csproj", "{34F5938E-2A6D-4234-9CF7-0A07EAD1DE39}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Infrastructure.EFCore.Test", "Infrastructure.EFCore.Test\Infrastructure.EFCore.Test.csproj", "{F04D36CF-C162-4CE0-BC52-78595BEB58C7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Infrastructure.EFCore.Tests", "Infrastructure.EFCore.Test\Infrastructure.EFCore.Tests.csproj", "{F04D36CF-C162-4CE0-BC52-78595BEB58C7}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BusinessLayer", "BusinessLayer\BusinessLayer.csproj", "{2A9B6DBC-3D05-41E4-A4D9-2DABF650426A}"
 EndProject
