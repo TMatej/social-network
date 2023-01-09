@@ -35,7 +35,7 @@ namespace DalUnitTests.EntityTests
 
                 db.Conversations.Add(new Conversation
                 {
-                    UserId = 1
+                    UserId = 1 // author of message must be also the owner of conversation (each owner is responsible for handling its entities)
                 });
                 db.SaveChanges();
             }
@@ -50,6 +50,7 @@ namespace DalUnitTests.EntityTests
                 db.Dispose();
             }
         }
+
         [Test]
         public void Test_Add()
         {
@@ -59,7 +60,8 @@ namespace DalUnitTests.EntityTests
                 {
                     Content = "Hello World!",
                     AuthorId = 1,
-                    ReceiverId = 2
+                    ReceiverId = 2,
+                    ConversationId = 1
                 });
                 db.SaveChanges();
 
@@ -93,7 +95,8 @@ namespace DalUnitTests.EntityTests
                 {
                     Content = "Hello World!",
                     AuthorId = 1,
-                    ReceiverId = 2
+                    ReceiverId = 2,
+                    ConversationId = 1
                 });
                 db.SaveChanges();
             }
@@ -122,22 +125,35 @@ namespace DalUnitTests.EntityTests
         public void Delete_Message_With_Attachment_Test()
         {
             // Arrange
+            var message = new Message
+            {
+                Content = "Hello World!",
+                AuthorId = 1,
+                ReceiverId = 2,
+                ConversationId = 1
+            };
+
+            var fileEntity = new FileEntity
+            {
+                Guid = Guid.NewGuid(),
+                Name = "Photo name",
+                Data = new byte[] { },
+                FileType = "image/jpg",
+            };
+
             using (var db = new SocialNetworkDBContext("social-network-test-db"))
             {
-                db.Attachments.Add(new Attachment
-                {
-
-                });
+                db.Messages.Add(message);
+                db.FileEntities.Add(fileEntity);
                 db.SaveChanges();
             }
 
             using (var db = new SocialNetworkDBContext("social-network-test-db"))
             {
-                db.Messages.Add(new Message
+                db.Attachments.Add(new Attachment
                 {
-                    Content = "Hello World!",
-                    AuthorId = 1,
-                    ReceiverId = 2
+                    MessageId = message.Id,
+                    FileEntityId = fileEntity.Id
                 });
                 db.SaveChanges();
             }
@@ -156,10 +172,16 @@ namespace DalUnitTests.EntityTests
                 var message_ret = db.Messages.FirstOrDefault();
                 var user1_ret = db.Users.FirstOrDefault();
                 var user2_ret = db.Users.OrderByDescending(u => u.Id).FirstOrDefault();
+                var convers_ret = db.Conversations.FirstOrDefault();
+                var attach_ret = db.Attachments.FirstOrDefault();
+                var file_ret = db.FileEntities.FirstOrDefault();
                 Assert.That(message_ret, Is.Null);
+                Assert.That(attach_ret, Is.Null);
+                Assert.That(file_ret, Is.Not.Null);
+                Assert.That(convers_ret, Is.Not.Null);
                 Assert.That(user1_ret, Is.Not.Null);
                 Assert.That(user2_ret, Is.Not.Null);
             }
-        }
+        } 
     }
 }

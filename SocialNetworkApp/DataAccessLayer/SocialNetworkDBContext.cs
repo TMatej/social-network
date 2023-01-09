@@ -73,6 +73,12 @@ namespace DataAccessLayer
             base.OnConfiguring(optionsBuilder);
         }
 
+
+        /* Main rule -> Owner of entity is responsible for the deleting of the entity
+           i.e. -> Owner (User) of conversation (Conversation) must delete all the conversation before owner is deleted.
+                   Auhor (User) of message (Message) must delete all the messages before author is deleted.
+                   User1 (User) in contact (Contact) must delete all the contacts where he is User1, before he is deleted.
+         */
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             /* Unique names for users */
@@ -107,12 +113,6 @@ namespace DataAccessLayer
                 .WithMany(g => g.Photos)
                 .HasForeignKey(a => a.GalleryId);
 
-            /* Set One-To-One relationship */
-            /*modelBuilder.Entity<User>()
-                .HasOne<Profile>(u => u.Profile)
-                .WithOne(o => o.User)
-                .HasForeignKey<Profile>(p => p.UserId);*/
-
             /* Commentable */
             modelBuilder.Entity<Comment>().ToTable("Comment");
             modelBuilder.Entity<Photo>().ToTable("Photo");
@@ -122,34 +122,19 @@ namespace DataAccessLayer
             modelBuilder.Entity<Group>().ToTable("Group");
             modelBuilder.Entity<Profile>().ToTable("Profile");
 
-            /* Set Many-To-Many relationship for User <-> Event */
-            /*modelBuilder.Entity<EventParticipant>()
-                .HasKey(ep => new { ep.UserId, ep.EventId });*/
-
-            /* Set Many-To-Many relationship for User <-> Conversation */
-            /*modelBuilder.Entity<ConversationParticipant>()
-                .HasKey(cp => new { cp.UserId, cp.ConversationId });*/
-
-            /* Set Many-To-Many relationship for User <-> Group */
-            /*modelBuilder.Entity<GroupMember>()
-                .HasKey(gm => new { gm.UserId, gm.GroupId });*/
-
-            /* Set Many-To-Many relationship for User <-> User */
-            /*modelBuilder.Entity<Contact>()
-                .HasKey(c => new { c.User1Id, c.User2Id });*/
+            /* Service needs to ensure deleting of all appropriate
+             * contacts before deleting User1 
+               TESTED IN USER ADVANCED TESTS ???? */
+            modelBuilder.Entity<Contact>()
+                .HasOne(c => c.User1)
+                .WithMany(u => u.Contacts)
+                .HasForeignKey(c => c.User1Id)
+                .OnDelete(DeleteBehavior.NoAction);
 
             modelBuilder.Entity<Contact>()
                 .HasOne(c => c.User2)
-                .WithMany(u => u.Contacts)
-                .HasForeignKey(c => c.User2Id);
-
-            /* Infrustructure needs to ensure deleting of all appropriate
-             * contacts before deleting User1 */
-            modelBuilder.Entity<Contact>()
-                .HasOne(c => c.User1)
                 .WithMany(u => u.ContactsOf)
-                .HasForeignKey(c => c.User1Id)
-                .OnDelete(DeleteBehavior.Restrict);
+                .HasForeignKey(c => c.User2Id);
 
             modelBuilder.Entity<UserRole>()
                 .HasOne(ur => ur.User)
@@ -175,36 +160,49 @@ namespace DataAccessLayer
             modelBuilder.Entity<User>()
                 .HasMany(u => u.ConversationParticipants)
                 .WithOne(c => c.User)
-                .OnDelete(DeleteBehavior.Restrict);
+                .OnDelete(DeleteBehavior.NoAction);
 
             modelBuilder.Entity<User>()
                 .HasOne(u => u.Avatar)
                 .WithOne()
                 .HasForeignKey<User>(u => u.AvatarId);
 
-            /* Infrustructure needs to ensure deleting of all appropriate
-             * contacts before deleting User1 */
+            /* Service needs to ensure deleting of all appropriate
+             * messages before deleting Author 
+               TESTED IN USER ADVANCED TESTS */
             modelBuilder.Entity<Message>()
                 .HasOne(m => m.Author)
                 .WithMany()
                 .HasForeignKey(m => m.AuthorId)
-                .OnDelete(DeleteBehavior.Restrict);
+                .OnDelete(DeleteBehavior.NoAction);
 
+            /* Service needs to ensure deleting of all appropriate
+             * Conversations before deleting User (owner) 
+               TESTED IN CONVERSATION ADVANCED TESTS */
+            modelBuilder.Entity<Conversation>()
+                .HasOne(c => c.User)
+                .WithMany()
+                .HasForeignKey(c => c.UserId)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            /* Service needs to ensure deleting of all appropriate
+             * Event Participations before deleting User 
+               WILL BE TESTED IN USER ADVANCED TESTS */
             modelBuilder.Entity<User>()
                 .HasMany(u => u.EventParticipants)
                 .WithOne(c => c.User)
-                .OnDelete(DeleteBehavior.Restrict);
+                .OnDelete(DeleteBehavior.NoAction);
 
             modelBuilder.Entity<Comment>()
                 .HasOne(c => c.Commentable)
                 .WithMany(c => c.Comments)
                 .HasForeignKey(c => c.CommentableId)
-                .OnDelete(DeleteBehavior.Restrict);
+                .OnDelete(DeleteBehavior.NoAction);
 
             modelBuilder.Entity<Like>()
                 .HasOne(l => l.Post)
                 .WithMany()
-                .OnDelete(DeleteBehavior.Restrict);
+                .OnDelete(DeleteBehavior.NoAction);
 
             modelBuilder.Entity<FileEntity>()
                 .HasIndex(f => f.Guid)

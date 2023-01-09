@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DataAccessLayer.Entity
 {
@@ -10,24 +11,30 @@ namespace DataAccessLayer.Entity
         [Required]
         public int ReceiverId { get; set; }
 
-        [Required]
+        // maybe ConversationParticipant instead of User?
+        // and remove receiver for group chat
+        [ForeignKey(nameof(ReceiverId))]
         public User Receiver { get; set; }
 
         [Required]
         public int AuthorId { get; set; }
 
-        [Required]
+        // maybe ConversationParticipant instead of User?
+        [ForeignKey(nameof(AuthorId))]
         public User Author { get; set; }
 
         [Required]
         public string Content { get; set; }
 
         [Required]
+        public int ConversationId { get; set; }
+
+        [ForeignKey(nameof(ConversationId))]
+        public Conversation Conversation { get; set; }
+
+        [Required]
         public DateTime CreatedAt { get; set; }
 
-        public int? AttachmentId { get; set; }
-
-        public Attachment Attachment { get; set; }
-        //public IEnumerable<Attachment> Attachments { get; set; }
+        public IEnumerable<Attachment> Attachments { get; set; }
     }
 }

@@ -23,14 +23,19 @@ namespace Infrastructure.EFCore.Query
         {
             IQueryable<TEntity> query = Dbcontext.Set<TEntity>();
 
-            if (IncludeParameters.Count != 0)
-            {
-                query = ApplyInclude(query);
-            }
-
             if (WherePredicate.Count != 0)
             {
                 query = ApplyWhere(query);
+            }
+
+            if (IncludeParameters.Count != 0)
+            {
+                query.ExecuteDelete();
+            }
+
+            if (IncludeParameters.Count != 0)
+            {
+                query = ApplyInclude(query);
             }
 
             if (OrderByContainer != null)

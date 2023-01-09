@@ -40,9 +40,9 @@ namespace DalUnitTests.EntityTests
                 {
                     Content = "Hello World!",
                     AuthorId = 1,
-                    ReceiverId = 2
+                    ReceiverId = 2,
+                    ConversationId = 1
                 });
-
                 db.SaveChanges();
             }
         }
@@ -65,7 +65,6 @@ namespace DalUnitTests.EntityTests
                 {
                     FileEntity = new FileEntity
                     {
-                        //Id = 1,
                         Guid = Guid.NewGuid(),
                         Name = "Photo name",
                         Data = new byte[] {},
@@ -90,7 +89,6 @@ namespace DalUnitTests.EntityTests
                 {
                     FileEntity = new FileEntity
                     {
-                        Id = 1,
                         Guid = Guid.NewGuid(),
                         Name = "Photo name",
                         Data = new byte[] {},

@@ -25,7 +25,7 @@ namespace DalUnitTests.EntityTests
                 db.Groups.Add(new Group
                 {
                     Name = "Example Group",
-                    Description = "This is an example group",
+                    Description = "This is a test group",
                 });
                 db.SaveChanges();
             }
@@ -40,6 +40,7 @@ namespace DalUnitTests.EntityTests
                 db.Dispose();
             }
         }
+
         [Test]
         public void Test_Add()
         {
@@ -73,6 +74,7 @@ namespace DalUnitTests.EntityTests
                 Assert.Throws<DbUpdateException>(() => db.SaveChanges());
             }
         }
+
         [Test]
         public void Test_Add_Long()
         {
@@ -86,6 +88,26 @@ namespace DalUnitTests.EntityTests
                     Description = new String('l', 1000),
                 });
                 Assert.Throws<DbUpdateException>(() => db.SaveChanges());
+            }
+        }
+
+        [Test]
+        public void Delete_Test()
+        {
+            using (var db = new SocialNetworkDBContext("social-network-test-db"))
+            {
+                db.Events.Add(new Event
+                {
+                    UserId = 1,
+                    GroupId = 1,
+                    Title = "Example Event",
+                    Description = "This is an example event",
+                });
+                db.SaveChanges();
+
+                var _event = db.Events.FirstOrDefault();
+                Assert.That(_event, Is.Not.Null);
+                Assert.That(_event.Id, Is.EqualTo(1));
             }
         }
     }

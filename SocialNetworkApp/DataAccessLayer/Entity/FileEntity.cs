@@ -24,6 +24,6 @@ namespace DataAccessLayer.Entity
 
         public DateTime? UpdatedAt { get; set; }
 
-        //public IEnumerable<Attachment> Attachments { get; set; }
+        public IEnumerable<Attachment> Attachments { get; set; }
     }
 }
