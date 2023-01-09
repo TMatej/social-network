@@ -44,8 +44,7 @@ var seeding = app.Configuration
 using (var serviceScope = app.Services.CreateScope())
 {
     var context = serviceScope.ServiceProvider.GetRequiredService<SocialNetworkDBContext>();
-    context.Database.EnsureDeleted();
-    //context.Database.EnsureCreated();
+    if (seeding) context.Database.EnsureDeleted();
     context.Database.Migrate();
     if (seeding) context.Seed();
 }
@@ -57,7 +56,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseHttpsRedirection();
+//app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseRouting();
 app.UseCors(builder => {
