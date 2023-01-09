@@ -49,8 +49,14 @@ public class UsersController : ControllerBase
     [HttpGet("{userId}/profile")]
     public IActionResult GetUserProfile(int userId)
     {
-        var profile = profileFacade.GetProfileByUserId(userId);
-        return Ok(profile);
+        try
+        {
+            var profile = profileFacade.GetProfileByUserId(userId);
+            return Ok(profile);
+        } catch (Exception ex)
+        {
+            return NotFound("Resource not found!");
+        }
     }
 
     [HttpGet("{userId}/groups")]

@@ -5,6 +5,7 @@ using BusinessLayer;
 using DataAccessLayer;
 using Infrastructure.EFCore;
 using Microsoft.EntityFrameworkCore;
+using System.Net;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Configuration.AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
@@ -28,9 +29,17 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
   .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme,
     options => { options.Cookie.Name = "auth"; options.Cookie.SameSite = SameSiteMode.None; options.Cookie.SecurePolicy = CookieSecurePolicy.Always; builder.Configuration.Bind("CookieSettings", options); });
+builder.Services.AddHttpsRedirection(options =>
+{
+    options.RedirectStatusCode = (int)HttpStatusCode.TemporaryRedirect;
+    options.HttpsPort = 5001;
+});
 
 var app = builder.Build();
 
+var seeding = app.Configuration
+    .GetSection("Properties")
+    .GetValue<bool>("SeedData");
 // this should be used only in DEV mode. PROD mode should use sql scripts for db creating and population.
 using (var serviceScope = app.Services.CreateScope())
 {
@@ -38,6 +47,7 @@ using (var serviceScope = app.Services.CreateScope())
     context.Database.EnsureDeleted();
     //context.Database.EnsureCreated();
     context.Database.Migrate();
+    if (seeding) context.Seed();
 }
 
 if (app.Environment.IsDevelopment())
@@ -47,6 +57,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseRouting();
 app.UseCors(builder => {

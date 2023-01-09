@@ -277,7 +277,7 @@ namespace DataAccessLayer
                 .Property(u => u.CreatedAt)
                 .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
-            if (seedData) modelBuilder.Seed();
+            //if (seedData) modelBuilder.Seed();
 
             base.OnModelCreating(modelBuilder);
         }
