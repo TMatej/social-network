@@ -22,10 +22,10 @@ spec:
         image: ghcr.io/tmatej/social-network-server-mssql:latest
         # image: ghcr.io/tmatej/social-network-server:latest
         ports:
-        - containerPort: 5001
+        - containerPort: 5000
         env:     
-        - name: ASPNETCORE_HTTPS_PORT
-          value: "5001"  
+        # - name: ASPNETCORE_HTTPS_PORT
+        #   value: "5001"  
         - name: Properties__SeedData
           value: "true"                                                             
         - name: ConnectionStrings__postgres

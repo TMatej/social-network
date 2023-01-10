@@ -17,17 +17,17 @@ spec:
   - host: "social-network-application-server.dyn.cloud.e-infra.cz"                                          
     http:                                                                       
       paths:   
-      - path: /
-        pathType: ImplementationSpecific
-        backend:                                                                
+      - backend:                                                                
           service:                                                           
-            name: social-network-app-server-svc-http                                         
+            name: social-network-app-server-svc                                        
             port:                                                               
-              number: 80                                                            
+              number: 5000  
+        pathType: ImplementationSpecific
+                                                                  
       # - path: /
       #   pathType: ImplementationSpecific
       #   backend:                                                                
       #     service:                                                           
-      #       name: social-network-app-server-svc-https                                          
+      #       name: social-network-app-server-svc                                         
       #       port:                                                               
       #         number: 443
