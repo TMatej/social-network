@@ -49,6 +49,7 @@ export const Chat = () => {
         .then((res) => res.data),
     getNextPageParam: (data) => (data.items.length ? data.page + 1 : undefined),
     suspense: false,
+    refetchInterval: 5000,
     enabled: id !== undefined,
   });
 
