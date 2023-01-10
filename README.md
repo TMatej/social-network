@@ -12,18 +12,18 @@ Here comes name and credentials
 #### **Basic user**
 ```
 {
-  username: "",
-  email: "",
-  password: ""
+  username: "user",
+  email: "user@gmail.com",
+  password: "user"
 }
 ```
 
 #### **Admin**
 ```
 {
-  username: "",
-  email: "",
-  password: ""
+  username: "admin",
+  email: "admin@gmail.com",
+  password: "admin"
 }
 ```
 ## GitHub workflows
