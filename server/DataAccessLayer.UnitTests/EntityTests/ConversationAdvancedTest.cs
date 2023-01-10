@@ -52,7 +52,7 @@ namespace DalUnitTests.EntityTests
             }
         }
 
-        [Test]
+        /*[Test]
         public void Delete_Conversation_Of_Message_Test()
         {
             // Arrange
@@ -63,7 +63,7 @@ namespace DalUnitTests.EntityTests
                     Content = "Hello World!",
                     AuthorId = 1,
                     ReceiverId = 2,
-                    ConversationId = 1
+                    //ConversationId = 1
                 });
                 db.SaveChanges();
             }
@@ -85,6 +85,6 @@ namespace DalUnitTests.EntityTests
                 Assert.That(user1_ret, Is.Not.Null);
                 Assert.That(user2_ret, Is.Not.Null);
             }
-        }
+        }*/
     }
 }

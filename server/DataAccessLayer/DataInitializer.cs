@@ -252,7 +252,7 @@ namespace DataAccessLayer.Data
                 Content = "I have two attachments!",
                 AuthorId = 1,
                 ReceiverId = 2,
-                ConversationId = 1
+                //ConversationId = 1
             };
 
             var message_without_attachment = new Message
@@ -261,7 +261,7 @@ namespace DataAccessLayer.Data
                 Content = "I am just plain text",
                 AuthorId = 2,
                 ReceiverId = 1,
-                ConversationId = 1
+                //ConversationId = 1
             };
 
             modelBuilder.Entity<Message>().HasData(message);
