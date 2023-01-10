@@ -1,19 +1,19 @@
 name: CI - server - mssql
 
 on:
-  #push:
-  #  branches: ["main"]
-  #  paths:
-  #    - 'SocialNetworkApp/**'
-  #pull_request:
-  #  types:
-  #    - opened
-  #    - edited
-  #    - synchronize
-  #    - reopened
-  #  branches: ["main"]
-  #  paths:
-  #    - 'SocialNetworkApp/**'
+  push:
+   branches: ["main"]
+   paths:
+     - 'server/**'
+  pull_request:
+   types:
+     - opened
+     - edited
+     - synchronize
+     - reopened
+   branches: ["main"]
+   paths:
+     - 'server/**'
 
   # for manual running
   workflow_dispatch:

@@ -4,19 +4,19 @@
 name: CI - server
 
 on:
-  push:
-    branches: ["main"]
-    paths:
-      - 'server/**'
-  pull_request:
-    types:
-      - opened
-      - edited
-      - synchronize
-      - reopened
-    branches: ["main"]
-    paths:
-      - 'server/**'
+  # push:
+  #   branches: ["main"]
+  #   paths:
+  #     - 'server/**'
+  # pull_request:
+  #   types:
+  #     - opened
+  #     - edited
+  #     - synchronize
+  #     - reopened
+  #   branches: ["main"]
+  #   paths:
+  #     - 'server/**'
 
   # for manual running
   workflow_dispatch:
