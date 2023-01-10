@@ -79,15 +79,15 @@ jobs:
 
       - name: Run Unit-tests
         run: dotnet test --no-build --verbosity normal
-        working-directory: server/DalUnitTests
+        working-directory: server/DataAccessLayer.UnitTests
 
       - name: Run Infrastructure-tests
         run: dotnet test --no-build --verbosity normal
-        working-directory: server/Infrastructure.EFCore.Test
+        working-directory: server/Infrastructure.EFCore.Tests
 
       - name: Run Service-tests
         run: dotnet test --no-build --verbosity normal
-        working-directory: server/ServiceTests
+        working-directory: server/BusinessLayer.Tests
 
   build-image:
     needs: tests
