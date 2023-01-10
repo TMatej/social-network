@@ -52,19 +52,21 @@ services:
       # docker network inspect <bridge_tag>
       # find the sql ipv4 address
       ASPNETCORE_HTTPS_PORT: "5001"
-      ConnectionStrings__mssql: "Server=172.19.0.2,1433;Database=social_network_test_db;User Id=SA;Password=mySuper!password9;MultipleActiveResultSets=true;TrustServerCertificate=True;"
+      ConnectionStrings__mssql: "Server=social-network-mssqldb,1433;Database=social_network_test_db;User Id=SA;Password=mySuper!password9;MultipleActiveResultSets=true;TrustServerCertificate=True;"
       Properties__SeedData: true
     ports:
       - 5000:5000
     depends_on:
       - db-mssql
-# 172.19.0.2
+# 172.18.0.2
   client:
     container_name: social-network-app-client
     image: social_network_client:latest
     build:
       context: ./client
       dockerfile: Dockerfile
+    environment:
+      VITE_DEV: true
     ports:
       - 3000:80
     depends_on:

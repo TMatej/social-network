@@ -15,7 +15,9 @@ namespace DataAccessLayer
         public static void Seed(this SocialNetworkDBContext dbContext)
         {
             SeedFileEntities(dbContext);
+            SeedRoles(dbContext);
             SeedUsers(dbContext);
+            SeedUserRoles(dbContext);
             SeedProfiles(dbContext);
             SeedContacts(dbContext);
             SeedGalleries(dbContext);
@@ -99,10 +101,10 @@ namespace DataAccessLayer
 
         private static void SeedEvents(SocialNetworkDBContext dbContext)
         {
-            var groupId = 3;
+            var groupId = 5;
             var event1 = new Event
             {
-                UserId = 1,
+                UserId = 2,
                 GroupId = groupId,
                 Title = "Example Event",
                 Description = $"This is an example event for Group {groupId}",
@@ -110,7 +112,7 @@ namespace DataAccessLayer
 
             var eventWithNoParticipants = new Event
             {
-                UserId = 1,
+                UserId = 2,
                 GroupId = groupId,
                 Title = "Example Userless Event",
                 Description = $"This is an example event without participants for Group {groupId}",
@@ -179,19 +181,31 @@ namespace DataAccessLayer
                 City = "Example City"
             };
 
-            var profile1 = new Profile
+            var adminprofile = new Profile
             {
                 UserId = 1,
                 Address = fullAddress
             };
 
-            var profile2 = new Profile
+            var userprofile = new Profile
             {
                 UserId = 2,
                 Address = partialAdderss
             };
 
-            dbContext.Profiles.AddRange(profile1, profile2);
+            var jozoprofile = new Profile
+            {
+                UserId = 3,
+                Address = fullAddress
+            };
+
+            var lokomotivarprofile = new Profile
+            {
+                UserId = 4,
+                Address = partialAdderss
+            };
+
+            dbContext.Profiles.AddRange(adminprofile, userprofile, jozoprofile, lokomotivarprofile);
             dbContext.SaveChanges();
         }
 
@@ -217,8 +231,8 @@ namespace DataAccessLayer
         {
             var groupmember = new GroupMember
             {
-                GroupId = 3,
-                UserId = 1,
+                GroupId = 5,
+                UserId = 3,
                 GroupRole = GroupRole.Author,
             };
 
@@ -334,8 +348,43 @@ namespace DataAccessLayer
             dbContext.SaveChanges();
         }
 
+        private static void SeedRoles(SocialNetworkDBContext dbContext)
+        {
+            var adminRole = new Role
+            {
+                Name = "Admin"
+            };
+            dbContext.Roles.Add(adminRole);
+            dbContext.SaveChanges();
+
+            var userRole = new Role
+            {
+                Name = "User"
+            };
+            dbContext.Roles.Add(userRole);
+            dbContext.SaveChanges();
+        }
+
         private static void SeedUsers(SocialNetworkDBContext dbContext)
         {
+            var valid_admin = new User
+            {
+                Username = "admin",
+                Email = "admin@gmail.com",
+                PasswordHash = "$argon2id$v=19$m=4096,t=3,p=1$YmZ6eWcwZGc0cWIwMDAwMA$KTt1pbNZf0bwb4SlL3T83VdhMuRl/pZwJtlY/qgiUF4" // admin
+            };
+            dbContext.Users.Add(valid_admin);
+            dbContext.SaveChanges();
+
+            var valid_user = new User
+            {
+                Username = "user",
+                Email = "user@gmail.com",
+                PasswordHash = "$argon2id$v=19$m=4096,t=3,p=1$eWJhdTk1MGxqMjkwMDAwMA$VAxi71Fz2t4ft7j6dnKPSG16qeo/xtu5Ok4jgaZ01lc" // user
+            };
+            dbContext.Users.Add(valid_user);
+            dbContext.SaveChanges();
+
             var userJozo = new User
             {
                 Username = "jozkoVajda123",
@@ -349,8 +398,24 @@ namespace DataAccessLayer
                 Email = "cokoloko@gmail.com",
                 PasswordHash = "0123456789abcde0"
             };
-
             dbContext.Users.AddRange(userJozo, namelessUser);
+            dbContext.SaveChanges();
+        }
+
+        private static void SeedUserRoles(SocialNetworkDBContext dbContext)
+        {
+            var adminAdmin = new UserRole
+            {
+                UserId = 1,
+                RoleId = 1
+            };
+
+            var userUser = new UserRole
+            {
+                UserId = 2,
+                RoleId = 2
+            };
+            dbContext.UserRoles.AddRange(adminAdmin, userUser);
             dbContext.SaveChanges();
         }
 
