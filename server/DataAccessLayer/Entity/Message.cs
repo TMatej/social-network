@@ -26,11 +26,11 @@ namespace DataAccessLayer.Entity
         [Required]
         public string Content { get; set; }
 
-        [Required]
+        /*[Required]
         public int ConversationId { get; set; }
 
         [ForeignKey(nameof(ConversationId))]
-        public Conversation Conversation { get; set; }
+        public Conversation Conversation { get; set; }*/
 
         [Required]
         public DateTime CreatedAt { get; set; }

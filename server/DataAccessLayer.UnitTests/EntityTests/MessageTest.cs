@@ -61,7 +61,7 @@ namespace DalUnitTests.EntityTests
                     Content = "Hello World!",
                     AuthorId = 1,
                     ReceiverId = 2,
-                    ConversationId = 1
+                    //ConversationId = 1
                 });
                 db.SaveChanges();
 
@@ -96,7 +96,7 @@ namespace DalUnitTests.EntityTests
                     Content = "Hello World!",
                     AuthorId = 1,
                     ReceiverId = 2,
-                    ConversationId = 1
+                    //ConversationId = 1
                 });
                 db.SaveChanges();
             }
@@ -130,7 +130,7 @@ namespace DalUnitTests.EntityTests
                 Content = "Hello World!",
                 AuthorId = 1,
                 ReceiverId = 2,
-                ConversationId = 1
+                //ConversationId = 1
             };
 
             var fileEntity = new FileEntity
