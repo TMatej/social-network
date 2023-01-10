@@ -69,7 +69,7 @@ jobs:
       - name: Build Image
         uses: docker/build-push-action@v3
         with:
-          context: SocialNetworkApp
+          context: server
           push: false
           tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }} # ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}  
