@@ -1,5 +1,6 @@
 using DataAccessLayer;
 using DataAccessLayer.Entity;
+using DataAccessLayer.Entity.JoinEntity;
 using Infrastructure.EFCore.Query;
 using Infrastructure.EFCore.UnitOfWork;
 
@@ -64,6 +65,62 @@ namespace Infrastructure.EFCore.Test
         {
             dbContext.Database.EnsureDeleted();
             dbContext.Dispose();
+        }
+
+        [Test]
+        public void Include_UserRoles_Test()
+        {
+            var adminRole = new Role
+            {
+                Name = "Admin"
+            };
+            dbContext.Roles.Add(adminRole);
+            dbContext.SaveChanges();
+
+            var userRole = new Role
+            {
+                Name = "User"
+            };
+            dbContext.Roles.Add(userRole);
+            dbContext.SaveChanges();
+
+            var adminAdmin = new UserRole
+            {
+                UserId = 1,
+                RoleId = 1
+            };
+
+            var userUser = new UserRole
+            {
+                UserId = 2,
+                RoleId = 2
+            };
+            dbContext.UserRoles.AddRange(adminAdmin, userUser);
+            dbContext.SaveChanges();
+
+            using (var dbContextIn = new SocialNetworkDBContext("social-network-test-db"))
+            {
+                var unitOfWorkIn = new EFUnitOfWork(dbContextIn);
+                var query = new EntityFrameworkQuery<User>(dbContextIn, unitOfWorkIn);
+                var email = "ben@gmail.com";
+
+                var user = query.Where<string>(u => u == email, nameof(User.Email))
+                  .Include(nameof(User.UserRoles))
+                  .Include(nameof(User.UserRoles) + "." + nameof(UserRole.Role))
+                  .Include(nameof(User.Avatar))
+                  .Execute()
+                  .Items
+                  .FirstOrDefault();
+
+                Assert.That(user, Is.Not.Null);
+                Assert.That(user.UserRoles, Is.Not.Null);
+                Assert.That(user.UserRoles, Is.Not.Empty);
+                Assert.That(user.UserRoles.FirstOrDefault(), Is.Not.Null);
+                Assert.That(user.UserRoles.First().RoleId, Is.EqualTo(1));
+                Assert.That(user.UserRoles.First().Role, Is.Not.Null);
+                Assert.That(user.UserRoles.First().Role.Name, Is.EqualTo("Admin"));
+            }
+            
         }
 
         [Test]

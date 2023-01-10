@@ -118,6 +118,7 @@ namespace BusinessLayer.Services
         {
             var user = userQuery.Where<string>(e => e == userLoginDTO.Email, nameof(User.Email))
               .Include(nameof(User.UserRoles))
+              .Include(nameof(User.UserRoles) + "." + nameof(UserRole.Role))
               .Include(nameof(User.Avatar))
               .Execute()
               .Items
@@ -154,6 +155,7 @@ namespace BusinessLayer.Services
         {
             var user = userQuery.Where<int>(id => id == userId, nameof(User.Id))
               .Include(nameof(User.UserRoles))
+              .Include(nameof(User.UserRoles) + "." + nameof(UserRole.Role))
               .Include(nameof(User.Avatar))
               .Execute()
               .Items
