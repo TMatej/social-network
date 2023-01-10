@@ -8,7 +8,7 @@ Server part is deployed on kubernetes using cerit [rancher](https://docs.cerit.i
 Client part of the app is available through [vercel](https://vercel.com/). Below you can find links that will allow you to interact with the deployed app.
 
 - [api server link](https://social-network-application-server.dyn.cloud.e-infra.cz/) - build from image [social-network-server-mssql](https://github.com/TMatej/social-network/pkgs/container/social-network-server-mssql)
-- [react client link](https://social-network-7dc31dpgp-ciza99.vercel.app) - build from image [social-network-client](https://github.com/TMatej/social-network/pkgs/container/social-network-client) 
+- [react client link](https://social-network-lilac.vercel.app/) - build from image [social-network-client](https://github.com/TMatej/social-network/pkgs/container/social-network-client) 
 
 
 ## Login name and credentials 
