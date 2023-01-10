@@ -101,7 +101,7 @@ export const Signup = () => {
             </Button>
           </Paper>
           <span className="mt-2">
-            Don't have an account yet? <NavLink to="/login">Login</NavLink>
+            Already have an account? <NavLink to="/login">Login</NavLink>
           </span>
         </div>
       </Form>
