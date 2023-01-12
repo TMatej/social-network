@@ -2,7 +2,6 @@
 using BusinessLayer.Contracts;
 using BusinessLayer.DTOs.Group;
 using BusinessLayer.Facades.Interfaces;
-using BusinessLayer.Services;
 using DataAccessLayer.Entity;
 using DataAccessLayer.Entity.Enum;
 using DataAccessLayer.Entity.JoinEntity;
@@ -50,14 +49,14 @@ namespace BusinessLayer.Facades
             _groupService.Delete(groupId);
         }
 
-        public void AddToGroup(GroupMembershipDTO groupMembershipDTO)
+        public void AddToGroup(int groupId, int userId)
         {
-            _groupService.AddToGroup(groupMembershipDTO.GroupId, groupMembershipDTO.UserId);
+            _groupService.AddToGroup(groupId, userId);
         }
 
-        public bool RemoveFromGroup(GroupMembershipDTO groupMembershipDTO)
+        public bool RemoveFromGroup(int groupId, int userId)
         {
-            return _groupService.RemoveFromGroup(groupMembershipDTO.GroupId, groupMembershipDTO.UserId);
+            return _groupService.RemoveFromGroup(userId, groupId);
         }
 
         public GroupRepresentDTO? GetGroup(int id)

@@ -63,7 +63,7 @@ app.UseRouting();
 app.UseCors(builder => {
   builder
     .SetIsOriginAllowedToAllowWildcardSubdomains()
-    .WithOrigins("http://localhost:3000", "https://*.vercel.app")
+    .WithOrigins("http://localhost:3000", "http://localhost:5173", "https://*.vercel.app")
     .AllowCredentials()
     .AllowAnyHeader()
     .AllowAnyMethod();

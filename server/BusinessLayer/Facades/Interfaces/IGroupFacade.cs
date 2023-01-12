@@ -8,8 +8,8 @@ namespace BusinessLayer.Facades.Interfaces
         public GroupRepresentDTO? GetGroup(int id);
         public void UpdateGroup(GroupRepresentDTO groupRepresentDTO);
         public void DeleteGroup(int groupId);
-        public void AddToGroup(GroupMembershipDTO groupMembershipDTO);
-        public bool RemoveFromGroup(GroupMembershipDTO groupMembershipDTO);
+        public void AddToGroup(int groupId, int userId);
+        public bool RemoveFromGroup(int groupId, int userId);
         public bool CheckPermission(string claimId, int groupId);
     }
 }

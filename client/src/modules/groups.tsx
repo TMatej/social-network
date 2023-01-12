@@ -5,7 +5,7 @@ import { Container } from "components/container";
 import { faAdd, faClose } from "@fortawesome/free-solid-svg-icons";
 import { Button } from "components/button";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { axios } from "api/axios";
 import { Group } from "models";
 import { AddGroupDialog } from "components/dialogs/add-group-dialog";
@@ -13,8 +13,26 @@ import { AddGroupDialog } from "components/dialogs/add-group-dialog";
 export const Groups = () => {
   const user = useStore((store) => store.user);
   const openDialog = useStore((store) => store.openDialog);
+  const queryClient = useQueryClient();
+  const showNotification = useStore((store) => store.showNotification);
   const { data: groups } = useQuery(["users", user?.id, "groups"], () =>
     axios.get<Group[]>(`/users/${user?.id}/groups`).then((res) => res.data)
+  );
+
+  const { mutate: deleteGroup } = useMutation(
+    (id: number) => axios.delete(`/groups/${id}`),
+    {
+      onSuccess: () => {
+        showNotification({
+          message: "Group deleted successfully",
+          type: "success",
+        });
+        queryClient.invalidateQueries(["users", user?.id, "groups"]);
+      },
+      onError: () => {
+        showNotification({ message: "Failed to delete group", type: "error" });
+      },
+    }
   );
 
   return (
@@ -41,7 +59,11 @@ export const Groups = () => {
           {groups?.map((group) => (
             <Paper key={group.id} className="flex items-center gap-2 p-2">
               <NavLink to={`/groups/${group.id}`}>{group.name}</NavLink>
-              <Button className="ml-auto" variant="clear">
+              <Button
+                className="ml-auto"
+                variant="clear"
+                onClick={() => deleteGroup(group.id)}
+              >
                 <FontAwesomeIcon className="text-red-500" icon={faClose} />
               </Button>
             </Paper>

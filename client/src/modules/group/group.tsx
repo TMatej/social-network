@@ -1,4 +1,8 @@
-import { faTrash } from "@fortawesome/free-solid-svg-icons";
+import {
+  faArrowRightFromBracket,
+  faArrowRightToBracket,
+  faTrash,
+} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { axios } from "api/axios";
@@ -29,6 +33,10 @@ export const Group = () => {
     axios.get<GroupType>(`/groups/${id}`).then((res) => res.data)
   );
 
+  const isMember = group?.groupMembers.some(
+    (member) => member.user.id === user?.id
+  );
+
   const { mutate: deleteGroup } = useMutation(
     () => axios.delete(`/groups/${group?.id}`),
     {
@@ -43,6 +51,28 @@ export const Group = () => {
       onError: () => {
         showNotification({
           message: "Failed to delete group",
+          type: "error",
+        });
+      },
+    }
+  );
+
+  const { mutate: changeMembership } = useMutation(
+    () =>
+      isMember
+        ? axios.delete(`/groups/${group?.id}/membership`)
+        : axios.put(`/groups/${group?.id}/membership`),
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries(["groups"]);
+        showNotification({
+          message: "Successfully joined group",
+          type: "success",
+        });
+      },
+      onError: () => {
+        showNotification({
+          message: "Failed to join group",
           type: "error",
         });
       },
@@ -81,6 +111,21 @@ export const Group = () => {
                 onClick={() => deleteGroup()}
               >
                 Delete
+              </Button>
+            )}
+            {!isCreator && (
+              <Button
+                variant="outlined"
+                leftIcon={
+                  <FontAwesomeIcon
+                    icon={
+                      isMember ? faArrowRightFromBracket : faArrowRightToBracket
+                    }
+                  />
+                }
+                onClick={() => changeMembership()}
+              >
+                {isMember ? "Leave" : "Join"}
               </Button>
             )}
           </div>

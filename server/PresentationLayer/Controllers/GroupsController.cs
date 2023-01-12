@@ -4,13 +4,12 @@ using BusinessLayer.Facades.Interfaces;
 using PresentationLayer.Models;
 using BusinessLayer.DTOs.Post;
 using Microsoft.AspNetCore.Authorization;
-using BusinessLayer.Facades;
-using DataAccessLayer.Entity;
 
 namespace PresentationLayer.Controllers
 {
     [ApiController]
     [Route("[controller]")]
+    [Authorize]
     public class GroupsController : Controller
     {
         private readonly IGroupFacade groupFacade;
@@ -37,7 +36,6 @@ namespace PresentationLayer.Controllers
         }
 
         [HttpGet("{groupId}/posts")]
-        [Authorize]
         public IActionResult GetGroupPosts(int groupId, int page = 1, int size = 10)
         {
             var posts = postFacade.GetPostForPostable(groupId, page, size);
@@ -50,7 +48,6 @@ namespace PresentationLayer.Controllers
             return Ok(paginatedPosts);
         }
 
-        [Authorize]
         [HttpPost("{groupId}/posts")]
         public IActionResult AddGroupPost(int groupId, [FromBody] PostCreateDTO post)
         {
@@ -80,25 +77,19 @@ namespace PresentationLayer.Controllers
             return Ok();
         }
 
-        [HttpDelete("/membership")]
-        public IActionResult DeleteMembership(GroupMembershipDTO groupMembershipDTO)
+        [HttpDelete("{groupId}/membership")]
+        public IActionResult DeleteMembership(int groupId)
         {
-            if (!(groupFacade.CheckPermission(HttpContext.User.Identity.Name, groupMembershipDTO.GroupId)|| int.Parse(HttpContext.User.Identity.Name)==groupMembershipDTO.UserId))
-            {
-                return Unauthorized();
-            }
-            var success = groupFacade.RemoveFromGroup(groupMembershipDTO);
+            var userId = int.Parse(HttpContext.User.Identity.Name);
+            var success = groupFacade.RemoveFromGroup(groupId, userId);
             return success ? Ok() : NotFound();
         }
 
-        [HttpPost("/membership")]
-        public IActionResult AddMembership(GroupMembershipDTO groupMembershipDTO)
+        [HttpPut("{groupId}/membership")]
+        public IActionResult AddMembership(int groupId)
         {
-            if (int.Parse(HttpContext.User.Identity.Name) != groupMembershipDTO.UserId)
-            {
-                return Unauthorized();
-            }
-            groupFacade.AddToGroup(groupMembershipDTO);
+            var userId = int.Parse(HttpContext.User.Identity.Name);
+            groupFacade.AddToGroup(groupId, userId);
             return Ok();
         }
     }
