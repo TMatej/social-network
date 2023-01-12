@@ -10,7 +10,7 @@ namespace BusinessLayer.Facades.Interfaces
         void Register(UserRegisterDTO userRegisterDTO);
         public UserDTO GetUserFromCookieAuthId(int id);
         public void UpdateUserAvatar(int userId, IFormFile avatar);
-        public IEnumerable<UserDTO> GetAllUsersPaginated(int page, int size);
+        public (long, IEnumerable<UserDTO>) GetAllUsersPaginated(int page, int size);
         void DeleteUser(int userId);
         public IEnumerable<GroupRepresentDTO> GetGroupsForUser(int userId);
 

@@ -57,6 +57,7 @@ export type Paginated<TItem> = {
   page: number;
   size: number;
   items: TItem[];
+  total: number;
 };
 
 export type Comment = {

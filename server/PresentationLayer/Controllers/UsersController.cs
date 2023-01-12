@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using BusinessLayer.Facades.Interfaces;
 using BusinessLayer.DTOs.Profile;
 using Microsoft.AspNetCore.Authorization;
+using PresentationLayer.Models;
 
 namespace PresentationLayer.Controllers;
 
@@ -30,8 +31,15 @@ public class UsersController : ControllerBase
     [Authorize]
     public IActionResult GetAllUsers(int page = 1, int size = 10)
     {
-        var users = userFacade.GetAllUsersPaginated(page, size);
-        return Ok(users);
+        var (total, users) = userFacade.GetAllUsersPaginated(page, size);
+        var paginatedUsers = new Paginated<UserDTO>()
+        {
+            Items = users,
+            Page = page,
+            Size = size,
+            Total = total
+        };
+        return Ok(paginatedUsers);
     }
 
     [HttpDelete("{userId}")]

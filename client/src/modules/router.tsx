@@ -21,6 +21,7 @@ import { Group } from "./group/group";
 import { Members } from "./group/members";
 import { Wall as GroupWall } from "./group/wall";
 import { Events } from "./group/events";
+import { Users } from "./users";
 
 export const Router = () => {
   const user = useStore((state) => state.user);
@@ -88,6 +89,8 @@ export const Router = () => {
               <Route path="following" element={<ProfileFollowing />} />
             </Route>
 
+            <Route path="/users" element={<Users />} />
+
             <Route
               path="login"
               element={<Navigate to={`/profile/${user.id}`} />}
@@ -96,6 +99,7 @@ export const Router = () => {
               path="signup"
               element={<Navigate to={`/profile/${user.id}`} />}
             />
+            <Route path="*" element={<Navigate to={`/profile/${user.id}`} />} />
           </Route>
         ) : (
           <>

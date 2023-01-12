@@ -3,9 +3,12 @@ import {
   faMessage,
   faPeopleGroup,
   faUserFriends,
+  faUsers,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import clsx from "clsx";
+import { roles } from "constants/roles";
+import { useUserRoles } from "hooks/use-user-roles";
 import { ReactNode } from "react";
 import { NavLink } from "react-router-dom";
 import { useStore } from "store";
@@ -13,6 +16,8 @@ import { Paper } from "./paper";
 
 export const Sidebar = () => {
   const user = useStore((store) => store.user);
+  const { hasRoles } = useUserRoles();
+  const isAdmin = hasRoles(roles.admin);
 
   return (
     <Paper className="sticky h-[calc(100vh-theme(spacing.16))] top-16 border-t !rounded-none border-t-slate-900 p-4 min-w-[200px] md:min-w-[250px]">
@@ -36,6 +41,13 @@ export const Sidebar = () => {
         icon={<FontAwesomeIcon icon={faPeopleGroup} />}
         label="Groups"
       />
+      {isAdmin && (
+        <NavItem
+          to={`/users`}
+          icon={<FontAwesomeIcon icon={faUsers} />}
+          label="Users"
+        />
+      )}
     </Paper>
   );
 };

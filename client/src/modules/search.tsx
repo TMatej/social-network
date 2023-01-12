@@ -54,7 +54,7 @@ export const Search = () => {
                         ? `/profile/${result.id}`
                         : result.type === "Group"
                         ? `/groups/${result.id}`
-                        : "."
+                        : `.?q=${search.get("q")}`
                     }
                     className="text-xl font-bold mb-2"
                   >

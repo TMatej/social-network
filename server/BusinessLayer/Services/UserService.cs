@@ -164,20 +164,26 @@ namespace BusinessLayer.Services
             return mapper.Map<UserDTO>(user);
         }
 
-        public IEnumerable<UserDTO> GetAllUsersPaginated(int page, int size)
+        public QueryResult<User> GetAllUsersPaginated(int page, int size)
         {
-            var user = userQuery.Page(page, size)
-              .Include(nameof(User.UserRoles))
-              .Include(nameof(User.Avatar))
-              .Execute()
-              .Items;
-
-            return mapper.Map<IEnumerable<UserDTO>>(user);
+            return userQuery.Page(page, size)
+              .Include(nameof(User.Avatar), nameof(User.UserRoles), $"{nameof(User.UserRoles)}.{nameof(UserRole.Role)}")
+              .Execute();
         }
 
         public bool IsAdmin(int userId)
         {
-            var user = GetByID(userId);
+            var user = userQuery.Where<int>(id => id == userId, nameof(User.Id))
+              .Include(nameof(User.UserRoles))
+              .Include(nameof(User.UserRoles) + "." + nameof(UserRole.Role))
+              .Execute()
+              .Items
+              .FirstOrDefault();
+
+            if (user == null) {
+              return false;
+            }
+
             var roles = user.UserRoles.Select(x => x.Role.Name);
             return roles.Contains("Admin");
         }

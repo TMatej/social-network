@@ -49,8 +49,8 @@ export const Chat = () => {
         .then((res) => res.data),
     getNextPageParam: (data) => (data.items.length ? data.page + 1 : undefined),
     suspense: false,
-    refetchInterval: 5000,
-    enabled: id !== undefined,
+    refetchInterval: id !== undefined ? 5000 : false,
+    enabled: user?.id !== undefined && id !== undefined,
   });
 
   useQuery(
@@ -59,7 +59,7 @@ export const Chat = () => {
     {
       retry: false,
       suspense: false,
-      enabled: !!user?.id,
+      enabled: user?.id !== undefined,
     }
   );
 
@@ -127,7 +127,10 @@ export const Chat = () => {
             <Formik<SendMessageData>
               validationSchema={schema}
               initialValues={{ content: "" }}
-              onSubmit={(data) => sendMessage(data)}
+              onSubmit={(data, { resetForm }) => {
+                sendMessage(data);
+                resetForm();
+              }}
             >
               <Form className="mt-4 flex gap-2 items-center">
                 <FormTextField
@@ -210,7 +213,7 @@ const Contacts = () => {
 
   const filteredFollowing = useMemo(
     () => following?.filter(({ id }) => !userIdToIsInContacts[id]),
-    [following]
+    [following, userIdToIsInContacts]
   );
 
   return (

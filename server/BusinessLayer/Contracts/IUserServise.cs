@@ -1,5 +1,6 @@
 ﻿using BusinessLayer.DTOs.User;
 using DataAccessLayer.Entity;
+using Infrastructure.Query;
 using Microsoft.AspNetCore.Http;
 
 namespace BusinessLayer.Contracts
@@ -13,7 +14,7 @@ namespace BusinessLayer.Contracts
         public IEnumerable<User> FindByName(string name);
         public IEnumerable<User> FindByName(string name, int pageSize, int page);
         public UserDTO GetByIdDetailed(int userId);
-        public IEnumerable<UserDTO> GetAllUsersPaginated(int page, int size);
+        public QueryResult<User> GetAllUsersPaginated(int page, int size);
         public bool IsAdmin(int userId);
     }
 }

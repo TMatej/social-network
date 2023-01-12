@@ -56,9 +56,11 @@ namespace BusinessLayer.Facades
           unitOfWork.Commit();
         }
 
-        public IEnumerable<UserDTO> GetAllUsersPaginated(int page, int size)
+        public (long, IEnumerable<UserDTO>) GetAllUsersPaginated(int page, int size)
         {
-            return userService.GetAllUsersPaginated(page, size);
+          
+           var result = userService.GetAllUsersPaginated(page, size);
+           return (result.TotalItemsCount, mapper.Map<IEnumerable<UserDTO>>(result.Items));
         }
 
         public void DeleteUser(int userId)
